@@ -1,0 +1,13 @@
+module COpenGLES [system] {
+    module gles1 {
+        header "/opt/vc/include/GLES/gl.h"
+        header "/opt/vc/include/GLES/glext.h"
+    }
+
+    module gles2 {
+        header "/opt/vc/include/GLES2/gl2.h"
+        header "/opt/vc/include/GLES2/gl2ext.h"
+    }
+    link "GLESv2"
+    export *
+}

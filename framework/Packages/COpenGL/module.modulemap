@@ -1,0 +1,7 @@
+module COpenGL [system] {
+	header "proto.h"
+    header "/usr/include/GL/gl.h"
+    header "/usr/include/GL/glext.h"
+    link "GL"
+    export *
+}

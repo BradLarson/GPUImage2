@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BC7F5B661CBEA06600C39D33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC7F5B651CBEA06600C39D33 /* Assets.xcassets */; };
+		BC91EDB21C91DC4600C704A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC91EDB11C91DC4600C704A8 /* AppDelegate.swift */; };
+		BC91EDB71C91DC4600C704A8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC91EDB51C91DC4600C704A8 /* MainMenu.xib */; };
+		BC91EDCA1C91DCE100C704A8 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC91EDC41C91DCC600C704A8 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BC91EDCB1C91DCF400C704A8 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC91EDC41C91DCC600C704A8 /* GPUImage.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BC91EDC31C91DCC600C704A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
+			remoteInfo = GPUImage;
+		};
+		BC91EDC51C91DCC600C704A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
+			remoteInfo = GPUImageTests;
+		};
+		BC91EDC71C91DCD100C704A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BC6E7CAA1C39A9D8006DF678;
+			remoteInfo = GPUImage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BC91EDC91C91DCD800C704A8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BC91EDCA1C91DCE100C704A8 /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BC7F5B651CBEA06600C39D33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../SharedAssets/Assets.xcassets; sourceTree = "<group>"; };
+		BC91EDAE1C91DC4600C704A8 /* SimpleVideoFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC91EDB11C91DC4600C704A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BC91EDB61C91DC4600C704A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BC91EDB81C91DC4600C704A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-Mac.xcodeproj"; path = "../../../../framework/GPUImage-Mac.xcodeproj"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BC91EDAB1C91DC4600C704A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC91EDCB1C91DCF400C704A8 /* GPUImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BC91EDA51C91DC4500C704A8 = {
+			isa = PBXGroup;
+			children = (
+				BC91EDB01C91DC4600C704A8 /* Application */,
+				BCD985D71CA49AC3001FF01F /* Resources */,
+				BC91EDAF1C91DC4600C704A8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BC91EDAF1C91DC4600C704A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC91EDAE1C91DC4600C704A8 /* SimpleVideoFilter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC91EDB01C91DC4600C704A8 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				BC91EDB11C91DC4600C704A8 /* AppDelegate.swift */,
+				BC91EDB51C91DC4600C704A8 /* MainMenu.xib */,
+				BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */,
+			);
+			name = Application;
+			path = SimpleVideoFilter;
+			sourceTree = "<group>";
+		};
+		BC91EDBF1C91DCC600C704A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC91EDC41C91DCC600C704A8 /* GPUImage.framework */,
+				BC91EDC61C91DCC600C704A8 /* GPUImage.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCD985D71CA49AC3001FF01F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BC7F5B651CBEA06600C39D33 /* Assets.xcassets */,
+				BC91EDB81C91DC4600C704A8 /* Info.plist */,
+			);
+			name = Resources;
+			path = SimpleVideoFilter;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BC91EDAD1C91DC4600C704A8 /* SimpleVideoFilter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC91EDBB1C91DC4600C704A8 /* Build configuration list for PBXNativeTarget "SimpleVideoFilter" */;
+			buildPhases = (
+				BC91EDAA1C91DC4600C704A8 /* Sources */,
+				BC91EDAB1C91DC4600C704A8 /* Frameworks */,
+				BC91EDAC1C91DC4600C704A8 /* Resources */,
+				BC91EDC91C91DCD800C704A8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BC91EDC81C91DCD100C704A8 /* PBXTargetDependency */,
+			);
+			name = SimpleVideoFilter;
+			productName = SimpleVideoFilter;
+			productReference = BC91EDAE1C91DC4600C704A8 /* SimpleVideoFilter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BC91EDA61C91DC4500C704A8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Sunset Lake Software LLC";
+				TargetAttributes = {
+					BC91EDAD1C91DC4600C704A8 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = BC91EDA91C91DC4500C704A8 /* Build configuration list for PBXProject "SimpleVideoFilter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BC91EDA51C91DC4500C704A8;
+			productRefGroup = BC91EDAF1C91DC4600C704A8 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BC91EDBF1C91DCC600C704A8 /* Products */;
+					ProjectRef = BC91EDBE1C91DCC600C704A8 /* GPUImage-Mac.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				BC91EDAD1C91DC4600C704A8 /* SimpleVideoFilter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		BC91EDC41C91DCC600C704A8 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BC91EDC31C91DCC600C704A8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BC91EDC61C91DCC600C704A8 /* GPUImage.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImage.xctest;
+			remoteRef = BC91EDC51C91DCC600C704A8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BC91EDAC1C91DC4600C704A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC7F5B661CBEA06600C39D33 /* Assets.xcassets in Resources */,
+				BC91EDB71C91DC4600C704A8 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC91EDAA1C91DC4600C704A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC91EDB21C91DC4600C704A8 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BC91EDC81C91DCD100C704A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = BC91EDC71C91DCD100C704A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BC91EDB51C91DC4600C704A8 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC91EDB61C91DC4600C704A8 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BC91EDB91C91DC4600C704A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BC91EDBA1C91DC4600C704A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BC91EDBC1C91DC4600C704A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimpleVideoFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BC91EDBD1C91DC4600C704A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimpleVideoFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC91EDA91C91DC4500C704A8 /* Build configuration list for PBXProject "SimpleVideoFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC91EDB91C91DC4600C704A8 /* Debug */,
+				BC91EDBA1C91DC4600C704A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC91EDBB1C91DC4600C704A8 /* Build configuration list for PBXNativeTarget "SimpleVideoFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC91EDBC1C91DC4600C704A8 /* Debug */,
+				BC91EDBD1C91DC4600C704A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BC91EDA61C91DC4500C704A8 /* Project object */;
+}

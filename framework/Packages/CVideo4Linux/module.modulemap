@@ -1,0 +1,7 @@
+module CVideo4Linux [system] {
+    header "/usr/include/libv4l2.h"
+	header "/usr/include/linux/videodev2.h"
+    link "v4l2"
+	link "v4lconvert"
+    export *
+}

@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCD985B01CA43FD5001FF01F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */; };
+		BCD985B21CA43FD5001FF01F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985B11CA43FD5001FF01F /* ViewController.swift */; };
+		BCD985B51CA43FD5001FF01F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCD985B31CA43FD5001FF01F /* Main.storyboard */; };
+		BCD985BA1CA43FD5001FF01F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCD985B81CA43FD5001FF01F /* LaunchScreen.storyboard */; };
+		BCD985CC1CA46BBF001FF01F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD985C71CA43FF2001FF01F /* GPUImage.framework */; };
+		BCD985D01CA46BD3001FF01F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCD985C71CA43FF2001FF01F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BCD985D51CA48F15001FF01F /* WID-small.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCD985D41CA48F15001FF01F /* WID-small.jpg */; };
+		BCFB058C1CBF17FD009B2333 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCD985C61CA43FF2001FF01F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+		BCD985C81CA43FF2001FF01F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
+			remoteInfo = GPUImageTests;
+		};
+		BCD985CD1CA46BC6001FF01F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BCD985CF1CA46BC9001FF01F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BCD985D01CA46BD3001FF01F /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleImageFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BCD985B11CA43FD5001FF01F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BCD985B41CA43FD5001FF01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BCD985B91CA43FD5001FF01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BCD985BB1CA43FD5001FF01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-iOS.xcodeproj"; path = "../../../../framework/GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
+		BCD985D41CA48F15001FF01F /* WID-small.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "WID-small.jpg"; path = "../../../SharedAssets/WID-small.jpg"; sourceTree = "<group>"; };
+		BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Assets-iOS.xcassets"; path = "../../../SharedAssets/Assets-iOS.xcassets"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCD985A91CA43FD5001FF01F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD985CC1CA46BBF001FF01F /* GPUImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCD985A31CA43FD5001FF01F = {
+			isa = PBXGroup;
+			children = (
+				BCD985AE1CA43FD5001FF01F /* SimpleImageFilter */,
+				BCD985CB1CA4400E001FF01F /* Frameworks */,
+				BCD985AD1CA43FD5001FF01F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCD985AD1CA43FD5001FF01F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCD985AE1CA43FD5001FF01F /* SimpleImageFilter */ = {
+			isa = PBXGroup;
+			children = (
+				BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */,
+				BCD985B11CA43FD5001FF01F /* ViewController.swift */,
+				BCD985B31CA43FD5001FF01F /* Main.storyboard */,
+				BCD985CA1CA44005001FF01F /* Resources */,
+			);
+			path = SimpleImageFilter;
+			sourceTree = "<group>";
+		};
+		BCD985C21CA43FF2001FF01F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCD985C71CA43FF2001FF01F /* GPUImage.framework */,
+				BCD985C91CA43FF2001FF01F /* GPUImageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCD985CA1CA44005001FF01F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */,
+				BCD985D41CA48F15001FF01F /* WID-small.jpg */,
+				BCD985B81CA43FD5001FF01F /* LaunchScreen.storyboard */,
+				BCD985BB1CA43FD5001FF01F /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		BCD985CB1CA4400E001FF01F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */,
+			);
+			name = Frameworks;
+			path = SimpleImageFilter;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCD985AB1CA43FD5001FF01F /* SimpleImageFilter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCD985BE1CA43FD5001FF01F /* Build configuration list for PBXNativeTarget "SimpleImageFilter" */;
+			buildPhases = (
+				BCD985A81CA43FD5001FF01F /* Sources */,
+				BCD985A91CA43FD5001FF01F /* Frameworks */,
+				BCD985AA1CA43FD5001FF01F /* Resources */,
+				BCD985CF1CA46BC9001FF01F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCD985CE1CA46BC6001FF01F /* PBXTargetDependency */,
+			);
+			name = SimpleImageFilter;
+			productName = SimpleImageFilter;
+			productReference = BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCD985A41CA43FD5001FF01F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Sunset Lake Software LLC";
+				TargetAttributes = {
+					BCD985AB1CA43FD5001FF01F = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = BCD985A71CA43FD5001FF01F /* Build configuration list for PBXProject "SimpleImageFilter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BCD985A31CA43FD5001FF01F;
+			productRefGroup = BCD985AD1CA43FD5001FF01F /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BCD985C21CA43FF2001FF01F /* Products */;
+					ProjectRef = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				BCD985AB1CA43FD5001FF01F /* SimpleImageFilter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		BCD985C71CA43FF2001FF01F /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BCD985C61CA43FF2001FF01F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BCD985C91CA43FF2001FF01F /* GPUImageTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests.xctest;
+			remoteRef = BCD985C81CA43FF2001FF01F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCD985AA1CA43FD5001FF01F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD985BA1CA43FD5001FF01F /* LaunchScreen.storyboard in Resources */,
+				BCD985D51CA48F15001FF01F /* WID-small.jpg in Resources */,
+				BCFB058C1CBF17FD009B2333 /* Assets-iOS.xcassets in Resources */,
+				BCD985B51CA43FD5001FF01F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCD985A81CA43FD5001FF01F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD985B21CA43FD5001FF01F /* ViewController.swift in Sources */,
+				BCD985B01CA43FD5001FF01F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BCD985CE1CA46BC6001FF01F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = BCD985CD1CA46BC6001FF01F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BCD985B31CA43FD5001FF01F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCD985B41CA43FD5001FF01F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BCD985B81CA43FD5001FF01F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCD985B91CA43FD5001FF01F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BCD985BC1CA43FD5001FF01F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCD985BD1CA43FD5001FF01F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCD985BF1CA43FD5001FF01F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleImageFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleImageFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BCD985C01CA43FD5001FF01F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleImageFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleImageFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCD985A71CA43FD5001FF01F /* Build configuration list for PBXProject "SimpleImageFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCD985BC1CA43FD5001FF01F /* Debug */,
+				BCD985BD1CA43FD5001FF01F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCD985BE1CA43FD5001FF01F /* Build configuration list for PBXNativeTarget "SimpleImageFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCD985BF1CA43FD5001FF01F /* Debug */,
+				BCD985C01CA43FD5001FF01F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCD985A41CA43FD5001FF01F /* Project object */;
+}
