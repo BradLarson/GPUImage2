@@ -24,6 +24,11 @@
 		BC6A13AD1CBB503900387779 /* CameraConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6A139F1CBB503900387779 /* CameraConversion.swift */; };
 		BC6A13AF1CBB52F000387779 /* SaturationAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6A13AE1CBB52F000387779 /* SaturationAdjustment.swift */; };
 		BCA4E2231CC1FB62007B51BA /* PictureOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2221CC1FB62007B51BA /* PictureOutput.swift */; };
+		BCA4E2351CC313AA007B51BA /* Solarize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2341CC313AA007B51BA /* Solarize.swift */; };
+		BCA4E23D1CC35252007B51BA /* Vibrance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E23C1CC35252007B51BA /* Vibrance.swift */; };
+		BCA4E2411CC3ED1A007B51BA /* HighlightAndShadowTint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2401CC3ED1A007B51BA /* HighlightAndShadowTint.swift */; };
+		BCA4E24F1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E24E1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift */; };
+		BCA4E2551CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2541CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift */; };
 		BCD03F0F1CA23D6300271751 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD03F0E1CA23D6300271751 /* Camera.swift */; };
 		BCD1B1301C66A262001F2BDC /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1B1251C66A262001F2BDC /* GPUImage.framework */; };
 		BCD1B1351C66A262001F2BDC /* GPUImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */; };
@@ -183,6 +188,17 @@
 		BC6A139F1CBB503900387779 /* CameraConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraConversion.swift; path = Source/CameraConversion.swift; sourceTree = "<group>"; };
 		BC6A13AE1CBB52F000387779 /* SaturationAdjustment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaturationAdjustment.swift; path = Source/Operations/SaturationAdjustment.swift; sourceTree = "<group>"; };
 		BCA4E2221CC1FB62007B51BA /* PictureOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PictureOutput.swift; path = Source/iOS/PictureOutput.swift; sourceTree = "<group>"; };
+		BCA4E2341CC313AA007B51BA /* Solarize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Solarize.swift; path = Source/Operations/Solarize.swift; sourceTree = "<group>"; };
+		BCA4E2361CC313BC007B51BA /* Solarize_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Solarize_GLES.fsh; path = Source/Operations/Shaders/Solarize_GLES.fsh; sourceTree = "<group>"; };
+		BCA4E23C1CC35252007B51BA /* Vibrance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vibrance.swift; path = Source/Operations/Vibrance.swift; sourceTree = "<group>"; };
+		BCA4E23E1CC35265007B51BA /* Vibrance_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Vibrance_GLES.fsh; path = Source/Operations/Shaders/Vibrance_GLES.fsh; sourceTree = "<group>"; };
+		BCA4E2401CC3ED1A007B51BA /* HighlightAndShadowTint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighlightAndShadowTint.swift; path = Source/Operations/HighlightAndShadowTint.swift; sourceTree = "<group>"; };
+		BCA4E2421CC3ED5D007B51BA /* HighlightShadowTint_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HighlightShadowTint_GLES.fsh; path = Source/Operations/Shaders/HighlightShadowTint_GLES.fsh; sourceTree = "<group>"; };
+		BCA4E24E1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColourFASTFeatureDetection.swift; path = Source/Operations/ColourFASTFeatureDetection.swift; sourceTree = "<group>"; };
+		BCA4E2501CC3F3F9007B51BA /* ColourFASTDecriptor_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ColourFASTDecriptor_GLES.fsh; path = Source/Operations/Shaders/ColourFASTDecriptor_GLES.fsh; sourceTree = "<group>"; };
+		BCA4E2511CC3F3F9007B51BA /* ColourFASTDecriptor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ColourFASTDecriptor.vsh; path = Source/Operations/Shaders/ColourFASTDecriptor.vsh; sourceTree = "<group>"; };
+		BCA4E2541CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorLocalBinaryPattern.swift; path = Source/Operations/ColorLocalBinaryPattern.swift; sourceTree = "<group>"; };
+		BCA4E2561CC3F7B7007B51BA /* ColorLocalBinaryPattern_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ColorLocalBinaryPattern_GLES.fsh; path = Source/Operations/Shaders/ColorLocalBinaryPattern_GLES.fsh; sourceTree = "<group>"; };
 		BCD03F0E1CA23D6300271751 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Camera.swift; path = Source/iOS/Camera.swift; sourceTree = "<group>"; };
 		BCD1B1251C66A262001F2BDC /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD1B12F1C66A262001F2BDC /* GPUImageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -645,6 +661,10 @@
 				BCFB06861CBF22F2009B2333 /* AverageLuminanceExtractor.swift */,
 				BCFB068D1CBF230F009B2333 /* AverageLuminance_GLES.fsh */,
 				BCFB06871CBF22F2009B2333 /* AverageLuminanceThreshold.swift */,
+				BCA4E23C1CC35252007B51BA /* Vibrance.swift */,
+				BCA4E23E1CC35265007B51BA /* Vibrance_GLES.fsh */,
+				BCA4E2401CC3ED1A007B51BA /* HighlightAndShadowTint.swift */,
+				BCA4E2421CC3ED5D007B51BA /* HighlightShadowTint_GLES.fsh */,
 			);
 			name = "Color processing";
 			sourceTree = "<group>";
@@ -715,6 +735,8 @@
 				BCFB06E21CBF29F4009B2333 /* Laplacian_GLES.fsh */,
 				BCFB06991CBF284A009B2333 /* LocalBinaryPattern.swift */,
 				BCFB06E31CBF29F4009B2333 /* LocalBinaryPattern_GLES.fsh */,
+				BCA4E2541CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift */,
+				BCA4E2561CC3F7B7007B51BA /* ColorLocalBinaryPattern_GLES.fsh */,
 				BCFB069A1CBF284A009B2333 /* MedianFilter.swift */,
 				BCFB07171CBF2AA9009B2333 /* Median_GLES.fsh */,
 				BCFB06A01CBF284A009B2333 /* SobelEdgeDetection.swift */,
@@ -775,6 +797,9 @@
 				BCFB07111CBF2A3C009B2333 /* Transform.vsh */,
 				BCFB06CD1CBF295A009B2333 /* MotionDetector.swift */,
 				BCFB06E41CBF29F4009B2333 /* MotionComparison_GLES.fsh */,
+				BCA4E24E1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift */,
+				BCA4E2511CC3F3F9007B51BA /* ColourFASTDecriptor.vsh */,
+				BCA4E2501CC3F3F9007B51BA /* ColourFASTDecriptor_GLES.fsh */,
 			);
 			name = "Image processing";
 			sourceTree = "<group>";
@@ -832,6 +857,8 @@
 				BCFB075A1CBF2CC6009B2333 /* MotionBlur.vsh */,
 				BCFB07591CBF2CC6009B2333 /* MotionBlur_GLES.fsh */,
 				BCFB07211CBF2B94009B2333 /* iOSBlur.swift */,
+				BCA4E2341CC313AA007B51BA /* Solarize.swift */,
+				BCA4E2361CC313BC007B51BA /* Solarize_GLES.fsh */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -954,6 +981,7 @@
 				BCFB06451CBF2145009B2333 /* Haze.swift in Sources */,
 				BCFB073F1CBF2BC1009B2333 /* Pixellate.swift in Sources */,
 				BCFB05FB1CBF1FF8009B2333 /* ColorBurnBlend.swift in Sources */,
+				BCA4E23D1CC35252007B51BA /* Vibrance.swift in Sources */,
 				BC6A13AB1CBB503900387779 /* TextureSamplingOperation.swift in Sources */,
 				BCFB06B11CBF284A009B2333 /* ShiTomasiFeatureDetector.swift in Sources */,
 				BC6A13A71CBB503900387779 /* RawDataInput.swift in Sources */,
@@ -1012,6 +1040,7 @@
 				BCFB06051CBF1FF8009B2333 /* MultiplyBlend.swift in Sources */,
 				BCE316FE1CA0E69800323D5B /* Pipeline.swift in Sources */,
 				BC6A13A31CBB503900387779 /* ImageOrientation.swift in Sources */,
+				BCA4E2551CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift in Sources */,
 				BCFB06781CBF228B009B2333 /* AmatorkaFilter.swift in Sources */,
 				BCFB06801CBF22AC009B2333 /* WhiteBalance.swift in Sources */,
 				BCFB065F1CBF21E1009B2333 /* LevelsAdjustment.swift in Sources */,
@@ -1028,6 +1057,7 @@
 				BC6A13A21CBB503900387779 /* ImageGenerator.swift in Sources */,
 				BCE317001CA0E69800323D5B /* ShaderProgram.swift in Sources */,
 				BC6A13AA1CBB503900387779 /* Size.swift in Sources */,
+				BCA4E24F1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift in Sources */,
 				BCFB06B01CBF284A009B2333 /* Sharpen.swift in Sources */,
 				BC6A13A01CBB503900387779 /* Color.swift in Sources */,
 				BCFB065E1CBF21E1009B2333 /* HighlightsAndShadows.swift in Sources */,
@@ -1052,6 +1082,7 @@
 				BCFB06511CBF219D009B2333 /* HueAdjustment.swift in Sources */,
 				BCFB07491CBF2BC1009B2333 /* TiltShift.swift in Sources */,
 				BCFB06AF1CBF284A009B2333 /* PrewittEdgeDetection.swift in Sources */,
+				BCA4E2351CC313AA007B51BA /* Solarize.swift in Sources */,
 				BCFB07301CBF2B94009B2333 /* PinchDistortion.swift in Sources */,
 				BCE3171A1CA0EAF300323D5B /* RenderView.swift in Sources */,
 				BCFB06A91CBF284A009B2333 /* ImageBuffer.swift in Sources */,
@@ -1079,6 +1110,7 @@
 				BCFB06041CBF1FF8009B2333 /* LuminosityBlend.swift in Sources */,
 				BCE316FB1CA0E69800323D5B /* FramebufferCache.swift in Sources */,
 				BCFB06521CBF219D009B2333 /* LuminanceThreshold.swift in Sources */,
+				BCA4E2411CC3ED1A007B51BA /* HighlightAndShadowTint.swift in Sources */,
 				BC6A13A81CBB503900387779 /* RawDataOutput.swift in Sources */,
 				BCFB067F1CBF22AC009B2333 /* SepiaToneFilter.swift in Sources */,
 				BCFB05FE1CBF1FF8009B2333 /* DifferenceBlend.swift in Sources */,

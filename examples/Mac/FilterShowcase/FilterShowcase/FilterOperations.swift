@@ -253,6 +253,36 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback: nil,
         filterOperationType:.SingleInput
     ),
+    FilterOperation(
+        filter:{Solarize()},
+        listName:"Solarize",
+        titleName:"Solarize",
+        sliderConfiguration:.Enabled(minimumValue:0.0, maximumValue:1.0, initialValue:0.5),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.threshold = sliderValue
+        },
+        filterOperationType:.SingleInput
+    ),
+    FilterOperation(
+        filter:{Vibrance()},
+        listName:"Vibrance",
+        titleName:"Vibrance",
+        sliderConfiguration:.Enabled(minimumValue:-1.2, maximumValue:1.2, initialValue:0.0),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.vibrance = sliderValue
+        },
+        filterOperationType:.SingleInput
+    ),
+    FilterOperation(
+        filter:{HighlightAndShadowTint()},
+        listName:"Highlight and shadow tint",
+        titleName:"Highlight / Shadow Tint",
+        sliderConfiguration:.Enabled(minimumValue:0.0, maximumValue:1.0, initialValue:0.0),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.shadowTintIntensity = sliderValue
+        },
+        filterOperationType:.SingleInput
+    ),
     FilterOperation (
         filter:{Luminance()},
         listName:"Luminance",
@@ -329,7 +359,6 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.SingleInput
     ),
-    // TODO: Solarize
     FilterOperation(
         filter:{Pixellate()},
         listName:"Pixellate",
@@ -518,8 +547,14 @@ let filterOperations: Array<FilterOperationInterface> = [
         })
     ),
     // TODO: Hough transform line detector
-    // TODO: ColourFAST feature detector
-    
+    FilterOperation(
+        filter:{ColourFASTFeatureDetection()},
+        listName:"ColourFAST feature detection",
+        titleName:"ColourFAST Features",
+        sliderConfiguration:.Disabled,
+        sliderUpdateCallback:nil,
+        filterOperationType:.SingleInput
+    ),
     FilterOperation(
         filter:{LowPassFilter()},
         listName:"Low pass",
@@ -892,7 +927,14 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback:nil,
         filterOperationType:.SingleInput
     ),
-    // TODO: Color local binary pattern
+    FilterOperation(
+        filter:{ColorLocalBinaryPattern()},
+        listName:"Local binary pattern (color)",
+        titleName:"Local Binary Pattern (Color)",
+        sliderConfiguration:.Disabled,
+        sliderUpdateCallback:nil,
+        filterOperationType:.SingleInput
+    ),
     FilterOperation(
         filter:{DissolveBlend()},
         listName:"Dissolve blend",

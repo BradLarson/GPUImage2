@@ -1,8 +1,8 @@
 public class TextureSamplingOperation: BasicOperation {
     public var overriddenTexelSize:Size?
     
-    public init(vertexShader:String = NearbyTexelSamplingVertexShader, fragmentShader:String) {
-        super.init(vertexShader:vertexShader, fragmentShader:fragmentShader, numberOfInputs:1)
+    public init(vertexShader:String = NearbyTexelSamplingVertexShader, fragmentShader:String, numberOfInputs:UInt = 1) {
+        super.init(vertexShader:vertexShader, fragmentShader:fragmentShader, numberOfInputs:numberOfInputs)
     }
     
     override func configureFramebufferSpecificUniforms(inputFramebuffer:Framebuffer) {

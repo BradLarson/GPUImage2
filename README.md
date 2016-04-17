@@ -14,7 +14,7 @@ contact@sunsetlakesoftware.com
 
 GPUImage 2 is the second generation of the <a href="https://github.com/BradLarson/GPUImage">GPUImage framework</a>, an open source project for performing GPU-accelerated image and video processing on Mac, iOS, and now Linux. The original GPUImage framework was written in Objective-C and targeted Mac and iOS, but this latest version is written entirely in Swift and can also target Linux and future platforms that support Swift code.
 
-The objective of the framework is to make it as easy as possible to set up and perform realtime video processing or machine vision against image or video sources. By relying on the GPU to run these operations, performance improvements of 100X or more over CPU-bound code can be realized. This is particularly noticeable in mobile or embedded devices. On an iPhone 4S, this framework can easily process 1080p video at over 60 FPS. On a Raspberri Pi 3, it can perform Sobel edge detection on live 720p video at over 20 FPS.
+The objective of the framework is to make it as easy as possible to set up and perform realtime video processing or machine vision against image or video sources. By relying on the GPU to run these operations, performance improvements of 100X or more over CPU-bound code can be realized. This is particularly noticeable in mobile or embedded devices. On an iPhone 4S, this framework can easily process 1080p video at over 60 FPS. On a Raspberry Pi 3, it can perform Sobel edge detection on live 720p video at over 20 FPS.
 
 ## License ##
 
@@ -116,6 +116,61 @@ Functionality not completed.
 
 ### Writing a custom image processing operation ###
 
+The framework uses a series of protocols to define types that can output images to be processed, take in an image for processing, or do both. These are the ImageSource, ImageConsumer, and ImageProcessingOperation protocols, respectively. Any type can comply to these, but typically classes are used.
+
+Many common filters and other image processing operations can be described as subclasses of the BasicOperation class. BasicOperation provides much of the internal code required for taking in an image frame from one or more inputs, rendering a rectangular image (quad) from those inputs using a specified shader program, and providing that image to all of its targets. Variants on BasicOperation, such as TextureSamplingOperation or TwoStageOperation, provide additional information to the shader program that may be needed for certain kinds of operations.
+
+To build a simple, one-input filter, you may not even need to create a subclass of your own. All you need to do is supply a fragment shader and the number of inputs needed when instantiating a BasicOperation:
+
+```swift
+let myFilter = BasicOperation(fragmentShaderFile:MyFilterFragmentShaderURL, numberOfInputs:1)
+```
+
+A shader program is composed of matched vertex and fragment shaders that are compiled and linked together into one program. By default, the framework uses a series of stock vertex shaders based on the number of input images feeding into an operation. Usually, all you'll need to do is provide the custom fragment shader that is used to perform your filtering or other processing.
+
+Fragment shaders used by GPUImage look something like this:
+
+```
+varying highp vec2 textureCoordinate;
+
+uniform sampler2D inputImageTexture;
+uniform lowp float gamma;
+
+void main()
+{
+    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    
+    gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);
+}
+```
+
+The naming convention for texture coordinates is that textureCoordinate, textureCoordinate2, etc. are provided as varyings from the vertex shader. inputImageTexture, inputImageTexture2, etc. are the textures that represent each image being passed into the shader program. Uniforms can be defined to control the properties of whatever shader you're running. You'll need to provide two fragment shaders, one for OpenGL ES, which has precision qualifiers, and one for OpenGL, which does not.
+
+Within the framework itself, a custom script converts these shader files into inlined string constants so that they are bundled with the compiled framework. If you add a new operation to the framework, you'll need to run
+
+```
+./ShaderConverter.sh *
+```
+
+within the Operations/Shaders directory to update these inlined constants.
+
+### Grouping operations ###
+
+If you wish to group a series of operations into a single unit to pass around, you can create a new instance of OperationGroup. OperationGroup provides a configureGroup property that takes a closure which specifies how the group should be configured:
+
+```swift
+let boxBlur = BoxBlur()
+let contrast = ContrastAdjustment()
+
+let myGroup = OperationGroup()
+
+myGroup.configureGroup{input, output in
+    input --> self.boxBlur --> self.contrast --> output
+}
+```
+
+Frames coming in to the OperationGroup are represented by the input in the above closure, and frames going out of the entire group by the output. After setup, myGroup in the above will appear like any other operation, even though it is composed of multiple sub-operations. This group can then be passed or worked with like a single operation.
+
 ### Interacting with OpenGL / OpenGL ES ###
 
 GPUImage can both export and import textures from OpenGL (ES) through the use of its TextureOutput and TextureInput classes, respectively. This lets you record a movie from an OpenGL scene that is rendered to a framebuffer object with a bound texture, or filter video or images and then feed them into OpenGL as a texture to be displayed in the scene.
@@ -184,15 +239,15 @@ There are currently over 100 operations built into the framework, divided into t
   - *shadows*: Increase to lighten shadows, from 0.0 to 1.0, with 0.0 as the default.
   - *highlights*: Decrease to darken highlights, from 1.0 to 0.0, with 1.0 as the default.
 
-- **LookupFilter**: Uses an RGB color lookup image to remap the colors in an image. First, use your favourite photo editing application to apply a filter to lookup.png from GPUImage/framework/Resources. For this to work properly each pixel color must not depend on other pixels (e.g. blur will not work). If you need a more complex filter you can create as many lookup tables as required. Once ready, use your new lookup.png file as  the basis of a PictureInput that you provide for the lookupImage property.
+- **LookupFilter**: Uses an RGB color lookup image to remap the colors in an image. First, use your favourite photo editing application to apply a filter to lookup.png from framework/Operations/LookupImages. For this to work properly each pixel color must not depend on other pixels (e.g. blur will not work). If you need a more complex filter you can create as many lookup tables as required. Once ready, use your new lookup.png file as  the basis of a PictureInput that you provide for the lookupImage property.
   - *intensity*: The intensity of the applied effect, from 0.0 (stock image) to 1.0 (fully applied effect).
   - *lookupImage*: The image to use as the lookup reference, in the form of a PictureInput.
 
-- **AmatorkaFilter**: A photo filter based on a Photoshop action by Amatorka: http://amatorka.deviantart.com/art/Amatorka-Action-2-121069631 . If you want to use this effect you have to add lookup_amatorka.png from the GPUImage Operations/LookupImages folder to your application bundle.
+- **AmatorkaFilter**: A photo filter based on a Photoshop action by Amatorka: http://amatorka.deviantart.com/art/Amatorka-Action-2-121069631 . If you want to use this effect you have to add lookup_amatorka.png from the GPUImage framework/Operations/LookupImages folder to your application bundle.
 
-- **MissEtikateFilter**: A photo filter based on a Photoshop action by Miss Etikate: http://miss-etikate.deviantart.com/art/Photoshop-Action-15-120151961 . If you want to use this effect you have to add lookup_miss_etikate.png from the GPUImage Operations/LookupImages folder to your application bundle.
+- **MissEtikateFilter**: A photo filter based on a Photoshop action by Miss Etikate: http://miss-etikate.deviantart.com/art/Photoshop-Action-15-120151961 . If you want to use this effect you have to add lookup_miss_etikate.png from the GPUImage framework/Operations/LookupImages folder to your application bundle.
 
-- **SoftElegance**: Another lookup-based color remapping filter. If you want to use this effect you have to add lookup_soft_elegance_1.png and lookup_soft_elegance_2.png from the GPUImage Operations/LookupImages folder to your application bundle.
+- **SoftElegance**: Another lookup-based color remapping filter. If you want to use this effect you have to add lookup_soft_elegance_1.png and lookup_soft_elegance_2.png from the GPUImage framework/Operations/LookupImages folder to your application bundle.
 
 - **ColorInversion**: Inverts the colors of an image
 
@@ -232,6 +287,15 @@ There are currently over 100 operations built into the framework, divided into t
 - **ChromaKeying**: For a given color in the image, sets the alpha channel to 0. This is similar to the ChromaKeyBlend, only instead of blending in a second image for a matching color this doesn't take in a second image and just turns a given color transparent.
   - *thresholdSensitivity*: How close a color match needs to exist to the target color to be replaced (default of 0.4)
   - *smoothing*: How smoothly to blend for the color match (default of 0.1)
+
+- **Vibrance**: Adjusts the vibrance of an image
+  - *vibrance*: The vibrance adjustment to apply, using 0.0 as the default, and a suggested min/max of around -1.2 and 1.2, respectively.
+
+- **HighlightShadowTint**: Allows you to tint the shadows and highlights of an image independently using a color and intensity
+  - *shadowTintColor*: Shadow tint RGB color (GPUVector4). Default: `{1.0f, 0.0f, 0.0f, 1.0f}` (red).
+  - *highlightTintColor*: Highlight tint RGB color (GPUVector4). Default: `{0.0f, 0.0f, 1.0f, 1.0f}` (blue).
+  - *shadowTintIntensity*: Shadow tint intensity, from 0.0 to 1.0. Default: 0.0
+  - *highlightTintIntensity*: Highlight tint intensity, from 0.0 to 1.0, with 0.0 as the default.
 
 ### Image processing ###
 
@@ -319,6 +383,8 @@ There are currently over 100 operations built into the framework, divided into t
 
 - **LocalBinaryPattern**: This performs a comparison of intensity of the red channel of the 8 surrounding pixels and that of the central one, encoding the comparison results in a bit string that becomes this pixel intensity. The least-significant bit is the top-right comparison, going counterclockwise to end at the right comparison as the most significant bit.
 
+- **ColorLocalBinaryPattern**: This performs a comparison of intensity of all color channels of the 8 surrounding pixels and that of the central one, encoding the comparison results in a bit string that becomes each color channel's intensity. The least-significant bit is the top-right comparison, going counterclockwise to end at the right comparison as the most significant bit.
+
 - **LowPassFilter**: This applies a low pass filter to incoming video frames. This basically accumulates a weighted rolling average of previous frames with the current ones as they come in. This can be used to denoise video, add motion blur, or be used to create a high pass filter.
   - *strength*: This controls the degree by which the previous accumulated frames are blended with the current one. This ranges from 0.0 to 1.0, with a default of 0.5.
 
@@ -335,6 +401,9 @@ There are currently over 100 operations built into the framework, divided into t
 - **ZoomBlur**: Applies a directional motion blur to an image
   - *blurSize*: A multiplier for the blur size, ranging from 0.0 on up, with a default of 1.0
   - *blurCenter*: The normalized center of the blur. (0.5, 0.5) by default
+
+- **ColourFASTFeatureDetection**: Brings out the ColourFAST feature descriptors for an image
+  - *blurRadiusInPixels*: The underlying blur radius for the box blur. Default is 3.0.
 
 ### Blending modes ###
 
@@ -425,7 +494,7 @@ There are currently over 100 operations built into the framework, divided into t
   - *threshold*: The sensitivity of the edge detection, with lower values being more sensitive. Ranges from 0.0 to 1.0, with 0.2 as the default
   - *quantizationLevels*: The number of color levels to represent in the final image. Default is 10.0
 
-- **SmoothToonFilter**: This uses a similar process as the GPUImageToonFilter, only it precedes the toon effect with a Gaussian blur to smooth out noise.
+- **SmoothToonFilter**: This uses a similar process as the ToonFilter, only it precedes the toon effect with a Gaussian blur to smooth out noise.
   - *blurRadiusInPixels*: The radius of the underlying Gaussian blur. The default is 2.0.
   - *threshold*: The sensitivity of the edge detection, with lower values being more sensitive. Ranges from 0.0 to 1.0, with 0.2 as the default
   - *quantizationLevels*: The number of color levels to represent in the final image. Default is 10.0
@@ -459,7 +528,7 @@ There are currently over 100 operations built into the framework, divided into t
   - *radius*: The radius of the distortion, ranging from 0.0 to 1.0, with a default of 0.25
   - *refractiveIndex*: The index of refraction for the sphere, with a default of 0.71
 
-- **GlassSphereRefraction**: Same as the GPUImageSphereRefractionFilter, only the image is not inverted and there's a little bit of frosting at the edges of the glass
+- **GlassSphereRefraction**: Same as SphereRefraction, only the image is not inverted and there's a little bit of frosting at the edges of the glass
   - *center*: The center about which to apply the distortion, with a default of (0.5, 0.5)
   - *radius*: The radius of the distortion, ranging from 0.0 to 1.0, with a default of 0.25
   - *refractiveIndex*: The index of refraction for the sphere, with a default of 0.71
@@ -477,4 +546,6 @@ There are currently over 100 operations built into the framework, divided into t
 
 - **CGAColorspace**: Simulates the colorspace of a CGA monitor
 
+- **Solarize**: Applies a solarization effect
+  - *threshold*: Pixels with a luminance above the threshold will invert their color. Ranges from 0.0 to 1.0, with 0.5 as the default.
 
