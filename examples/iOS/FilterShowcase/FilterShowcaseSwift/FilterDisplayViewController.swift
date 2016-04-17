@@ -9,28 +9,31 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     @IBOutlet var filterSlider: UISlider?
     @IBOutlet var filterView: RenderView?
     
-    let videoCamera:Camera
+    let videoCamera:Camera?
     var blendImage:PictureInput?
 
     required init(coder aDecoder: NSCoder)
     {
         do {
             videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.BackFacing)
-            videoCamera.runBenchmark = true
+            videoCamera!.runBenchmark = true
         } catch {
-            fatalError("Couldn't initialize camera with error: \(error)")
+            videoCamera = nil
+            print("Couldn't initialize camera with error: \(error)")
         }
 
         super.init(coder: aDecoder)!
     }
     
-    var filterOperation: FilterOperationInterface? {
-        didSet {
-            self.configureView()
-        }
-    }
-
+    var filterOperation: FilterOperationInterface?
+    
     func configureView() {
+        if videoCamera == nil {
+            let errorAlertController = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: "Couldn't initialize camera", preferredStyle: .Alert)
+            errorAlertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Default, handler: nil))
+            self.presentViewController(errorAlertController, animated: true, completion: nil)
+            return
+        }
         if let currentFilterConfiguration = self.filterOperation {
             self.title = currentFilterConfiguration.titleName
             
@@ -38,19 +41,19 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
             if let view = self.filterView {
                 switch currentFilterConfiguration.filterOperationType {
                 case .SingleInput:
-                    videoCamera.addTarget(currentFilterConfiguration.filter)
+                    videoCamera!.addTarget(currentFilterConfiguration.filter)
                     currentFilterConfiguration.filter.addTarget(view)
                 case .Blend:
-                    videoCamera.addTarget(currentFilterConfiguration.filter)
+                    videoCamera!.addTarget(currentFilterConfiguration.filter)
                     self.blendImage = PictureInput(imageName:blendImageName)
                     self.blendImage?.addTarget(currentFilterConfiguration.filter)
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)
                 case let .Custom(filterSetupFunction:setupFunction):
-                    currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera, filter:currentFilterConfiguration.filter, outputView:view))
+                    currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera!, filter:currentFilterConfiguration.filter, outputView:view))
                 }
                 
-                videoCamera.startCapture()
+                videoCamera!.startCapture()
             }
 
             // Hide or display the slider, based on whether the filter needs it
@@ -86,9 +89,12 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     }
 
     override func viewWillDisappear(animated: Bool) {
-        videoCamera.stopCapture()
-        videoCamera.removeAllTargets()
-        blendImage?.removeAllTargets()
+        if let videoCamera = videoCamera {
+            videoCamera.stopCapture()
+            videoCamera.removeAllTargets()
+            blendImage?.removeAllTargets()
+        }
+        
         super.viewWillDisappear(animated)
     }
     
