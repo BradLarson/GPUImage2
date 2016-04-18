@@ -118,8 +118,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         let bufferWidth = CVPixelBufferGetWidth(cameraFrame)
         let bufferHeight = CVPixelBufferGetHeight(cameraFrame)
         
-        let cameraFramebuffer:Framebuffer
-        
         CVPixelBufferLockBaseAddress(cameraFrame, 0)
         sharedImageProcessingContext.runOperationAsynchronously{
             sharedImageProcessingContext.makeCurrentContext()
