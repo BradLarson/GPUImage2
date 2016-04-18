@@ -184,17 +184,13 @@ extension String {
     }
     
     func withGLChar(operation:UnsafePointer<GLchar> -> ()) {
-        let bufferCString = UnsafeMutablePointer<UInt8>.alloc(self.characters.count+1)
-        for (index, characterValue) in self.utf8.enumerate() {
-            bufferCString[index] = characterValue
+        
+        if let value = self.cStringUsingEncoding(NSUTF8StringEncoding) {
+            let pointer = UnsafePointer<GLchar>(value)
+            operation(pointer)
+        } else {
+            fatalError("failed to conver to cString")
         }
-        bufferCString[self.characters.count] = 0 // Have to add a null termination
-        
-//        var bufferCStringPointer = UnsafePointer<GLchar>(bufferCString)
-        
-        operation(UnsafePointer<GLchar>(bufferCString))
-        
-        bufferCString.dealloc(self.characters.count)
     }
 }
 
