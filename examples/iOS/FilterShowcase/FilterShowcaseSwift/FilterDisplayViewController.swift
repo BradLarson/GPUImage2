@@ -28,7 +28,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     var filterOperation: FilterOperationInterface?
     
     func configureView() {
-        if videoCamera == nil {
+        guard let videoCamera = videoCamera else {
             let errorAlertController = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: "Couldn't initialize camera", preferredStyle: .Alert)
             errorAlertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Default, handler: nil))
             self.presentViewController(errorAlertController, animated: true, completion: nil)
@@ -41,19 +41,19 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
             if let view = self.filterView {
                 switch currentFilterConfiguration.filterOperationType {
                 case .SingleInput:
-                    videoCamera!.addTarget(currentFilterConfiguration.filter)
+                    videoCamera.addTarget(currentFilterConfiguration.filter)
                     currentFilterConfiguration.filter.addTarget(view)
                 case .Blend:
-                    videoCamera!.addTarget(currentFilterConfiguration.filter)
+                    videoCamera.addTarget(currentFilterConfiguration.filter)
                     self.blendImage = PictureInput(imageName:blendImageName)
                     self.blendImage?.addTarget(currentFilterConfiguration.filter)
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)
                 case let .Custom(filterSetupFunction:setupFunction):
-                    currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera!, filter:currentFilterConfiguration.filter, outputView:view))
+                    currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera, filter:currentFilterConfiguration.filter, outputView:view))
                 }
                 
-                videoCamera!.startCapture()
+                videoCamera.startCapture()
             }
 
             // Hide or display the slider, based on whether the filter needs it
