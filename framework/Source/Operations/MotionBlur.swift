@@ -1,3 +1,7 @@
+#if os(Linux)
+import Glibc
+#endif
+
 import Foundation
 
 public class MotionBlur: BasicOperation {
@@ -15,12 +19,12 @@ public class MotionBlur: BasicOperation {
         let aspectRatio = inputFramebuffer.aspectRatioForRotation(outputRotation)
         let directionalTexelStep:Position
         if outputRotation.flipsDimensions() {
-            let xOffset = blurSize * sin(blurAngle * Float(M_PI) / 180.0) * aspectRatio * texelSize.width
-            let yOffset = blurSize * cos(blurAngle * Float(M_PI) / 180.0) * texelSize.width
+            let xOffset = blurSize * Float(sin(Double(blurAngle) * M_PI / 180.0)) * aspectRatio * texelSize.width
+            let yOffset = blurSize * Float(cos(Double(blurAngle) * M_PI / 180.0)) * texelSize.width
             directionalTexelStep = Position(xOffset, yOffset)
         } else {
-            let xOffset = blurSize * cos(blurAngle * Float(M_PI) / 180.0) * aspectRatio * texelSize.width
-            let yOffset = blurSize * sin(blurAngle * Float(M_PI) / 180.0) * texelSize.width
+            let xOffset = blurSize * Float(cos(Double(blurAngle) * M_PI / 180.0)) * aspectRatio * texelSize.width
+            let yOffset = blurSize * Float(sin(Double(blurAngle) * M_PI / 180.0)) * texelSize.width
             directionalTexelStep = Position(xOffset, yOffset)
         }
         

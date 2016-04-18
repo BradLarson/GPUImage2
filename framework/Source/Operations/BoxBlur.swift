@@ -1,3 +1,7 @@
+#if os(Linux)
+import Glibc
+#endif
+
 import Foundation
 
 public class BoxBlur: TwoStageOperation {
@@ -12,7 +16,7 @@ public class BoxBlur: TwoStageOperation {
     
     public init() {
         blurRadiusInPixels = 2.0
-        let pixelRadius = UInt(round(round(blurRadiusInPixels / 2.0) * 2.0))
+        let pixelRadius = UInt(round(round(Double(blurRadiusInPixels) / 2.0) * 2.0))
         let initialShader = crashOnShaderCompileFailure("BoxBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedBoxBlurOfRadius(pixelRadius), fragmentShader:fragmentShaderForOptimizedBoxBlurOfRadius(pixelRadius))}
         super.init(shader:initialShader, numberOfInputs:1)
     }

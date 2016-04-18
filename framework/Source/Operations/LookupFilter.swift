@@ -1,3 +1,5 @@
+// PictureInput isn't defined yet on Linux, so  this operation is inoperable there
+#if !os(Linux)
 public class LookupFilter: BasicOperation {
     public var intensity:Float = 1.0 { didSet { uniformSettings["intensity"] = intensity } }
     public var lookupImage:PictureInput? { // TODO: Check for retain cycles in all cases here
@@ -13,3 +15,4 @@ public class LookupFilter: BasicOperation {
         ({intensity = 1.0})()
     }
 }
+#endif

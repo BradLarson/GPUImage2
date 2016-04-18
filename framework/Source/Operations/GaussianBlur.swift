@@ -1,3 +1,8 @@
+#if os(Linux)
+import Glibc
+let M_PI = 3.14159265359 // TODO: remove this once Foundation pulls this in on Linux
+#endif
+
 import Foundation
 
 public class GaussianBlur: TwoStageOperation {
@@ -12,7 +17,7 @@ public class GaussianBlur: TwoStageOperation {
     
     public init() {
         blurRadiusInPixels = 2.0
-        let pixelRadius = pixelRadiusForBlurSigma(Double(round(blurRadiusInPixels)))
+        let pixelRadius = pixelRadiusForBlurSigma(round(Double(blurRadiusInPixels)))
         let initialShader = crashOnShaderCompileFailure("GaussianBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedGaussianBlurOfRadius(pixelRadius, sigma:2.0), fragmentShader:fragmentShaderForOptimizedGaussianBlurOfRadius(pixelRadius, sigma:2.0))}
         super.init(shader:initialShader, numberOfInputs:1)
     }
@@ -24,7 +29,7 @@ public class GaussianBlur: TwoStageOperation {
 
 func sigmaAndDownsamplingForBlurRadius(radius:Float, limit:Float, override:Bool = false) -> (sigma:Float, downsamplingFactor:Float?) {
     // For now, only do integral sigmas
-    let startingRadius = round(radius)
+    let startingRadius = Float(round(Double(radius)))
     guard ((startingRadius > limit) && (!override)) else { return (sigma:startingRadius, downsamplingFactor:nil) }
     
     return (sigma:limit, downsamplingFactor:startingRadius / limit)

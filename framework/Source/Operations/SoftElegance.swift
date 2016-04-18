@@ -1,3 +1,4 @@
+#if !os(Linux)
 public class SoftElegance: OperationGroup {
     let lookup1 = LookupFilter()
     let lookup2 = LookupFilter()
@@ -18,3 +19,4 @@ public class SoftElegance: OperationGroup {
         }
     }
 }
+#endif

@@ -1,4 +1,5 @@
 #if os(Linux)
+import Glibc
 #if GLES
     import COpenGLES.gles2
     #else
@@ -50,12 +51,12 @@ public class AverageColorExtractor: BasicOperation {
 func averageColorBySequentialReduction(inputFramebuffer inputFramebuffer:Framebuffer, shader:ShaderProgram, extractAverageOperation:(Framebuffer) -> ()) {
     var uniformSettings = ShaderUniformSettings()
     let inputSize = Size(inputFramebuffer.size)
-    let numberOfReductionsInX = floor(log(inputSize.width) / log(4.0))
-    let numberOfReductionsInY = floor(log(inputSize.height) / log(4.0))
+    let numberOfReductionsInX = floor(log(Double(inputSize.width)) / log(4.0))
+    let numberOfReductionsInY = floor(log(Double(inputSize.height)) / log(4.0))
     let reductionsToHitSideLimit = Int(floor(min(numberOfReductionsInX, numberOfReductionsInY)))
     var previousFramebuffer = inputFramebuffer
     for currentReduction in 0..<reductionsToHitSideLimit {
-        let currentStageSize = Size(width:floor(inputSize.width / pow(4.0, Float(currentReduction) + 1.0)), height:floor(inputSize.height / pow(4.0, Float(currentReduction) + 1.0)))
+        let currentStageSize = Size(width:Float(floor(Double(inputSize.width) / pow(4.0, Double(currentReduction) + 1.0))), height:Float(floor(Double(inputSize.height) / pow(4.0, Double(currentReduction) + 1.0))))
         let currentFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:previousFramebuffer.orientation, size:GLSize(currentStageSize))
         currentFramebuffer.lock()
         uniformSettings["texelWidth"] = 0.25 / currentStageSize.width
