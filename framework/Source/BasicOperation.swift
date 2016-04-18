@@ -58,7 +58,7 @@ public class BasicOperation: ImageProcessingOperation {
         usesAspectRatio = shader.uniformIndex("aspectRatio") != nil
     }
     
-    public init(vertexShader:String? = nil, fragmentShader:String, numberOfInputs:UInt = 1, operationName:String = __FILE__) {
+    public init(vertexShader:String? = nil, fragmentShader:String, numberOfInputs:UInt = 1, operationName:String = #file) {
         sharedImageProcessingContext.makeCurrentContext()
         let compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(vertexShader ?? defaultVertexShaderForInputs(numberOfInputs), fragmentShader:fragmentShader)}
         self.maximumInputs = numberOfInputs
@@ -66,7 +66,7 @@ public class BasicOperation: ImageProcessingOperation {
         usesAspectRatio = shader.uniformIndex("aspectRatio") != nil
     }
 
-    public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = __FILE__) throws {
+    public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = #file) throws {
         sharedImageProcessingContext.makeCurrentContext()
         let compiledShader:ShaderProgram
         // TODO: Replace this with caching for the shader programs
