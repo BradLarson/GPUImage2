@@ -9,28 +9,31 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     @IBOutlet var filterSlider: UISlider?
     @IBOutlet var filterView: RenderView?
     
-    let videoCamera:Camera
+    let videoCamera:Camera?
     var blendImage:PictureInput?
 
     required init(coder aDecoder: NSCoder)
     {
         do {
             videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.BackFacing)
-            videoCamera.runBenchmark = true
+            videoCamera!.runBenchmark = true
         } catch {
-            fatalError("Couldn't initialize camera with error: \(error)")
+            videoCamera = nil
+            print("Couldn't initialize camera with error: \(error)")
         }
 
         super.init(coder: aDecoder)!
     }
     
-    var filterOperation: FilterOperationInterface? {
-        didSet {
-            self.configureView()
-        }
-    }
-
+    var filterOperation: FilterOperationInterface?
+    
     func configureView() {
+        guard let videoCamera = videoCamera else {
+            let errorAlertController = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: "Couldn't initialize camera", preferredStyle: .Alert)
+            errorAlertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Default, handler: nil))
+            self.presentViewController(errorAlertController, animated: true, completion: nil)
+            return
+        }
         if let currentFilterConfiguration = self.filterOperation {
             self.title = currentFilterConfiguration.titleName
             
@@ -86,9 +89,12 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     }
 
     override func viewWillDisappear(animated: Bool) {
-        videoCamera.stopCapture()
-        videoCamera.removeAllTargets()
-        blendImage?.removeAllTargets()
+        if let videoCamera = videoCamera {
+            videoCamera.stopCapture()
+            videoCamera.removeAllTargets()
+            blendImage?.removeAllTargets()
+        }
+        
         super.viewWillDisappear(animated)
     }
     

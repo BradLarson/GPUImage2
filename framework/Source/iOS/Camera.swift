@@ -20,16 +20,20 @@ public enum PhysicalCameraLocation {
         }
     }
     
-    func device() -> AVCaptureDevice {
+    func device() -> AVCaptureDevice? {
         let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
         for device in devices {
             if (device.position == self.captureDevicePosition()) {
-                return device as! AVCaptureDevice
+                return device as? AVCaptureDevice
             }
         }
         
         return AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
     }
+}
+
+struct CameraError: ErrorType {
+    
 }
 
 public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -41,7 +45,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     let captureSession:AVCaptureSession
-    let inputCamera:AVCaptureDevice
+    let inputCamera:AVCaptureDevice!
     let videoInput:AVCaptureDeviceInput!
     let videoOutput:AVCaptureVideoDataOutput!
     var supportsFullYUVRange:Bool = false
@@ -54,7 +58,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     var totalFrameTimeDuringCapture:Double = 0.0
     
     public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .BackFacing, captureAsYUV:Bool = true) throws {
-        self.inputCamera = cameraDevice ?? location.device()
         
         self.location = location
         self.captureAsYUV = captureAsYUV
@@ -62,6 +65,21 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         self.captureSession = AVCaptureSession()
         self.captureSession.beginConfiguration()
 
+        if let cameraDevice = cameraDevice {
+            self.inputCamera = cameraDevice
+        } else {
+            if let device = location.device() {
+                self.inputCamera = device
+            } else {
+                self.videoInput = nil
+                self.videoOutput = nil
+                self.yuvConversionShader = nil
+                self.inputCamera = nil
+                super.init()
+                throw CameraError()
+            }
+        }
+        
         do {
             self.videoInput = try AVCaptureDeviceInput(device:inputCamera)
         } catch {
