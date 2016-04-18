@@ -11,15 +11,7 @@ extension SerialDispatch {
         operation()
     }
     
-    func runOperationSynchronously(operation:() -> ()) {
-        operation()
-    }
-    
-    func runOperationSynchronously(operation:() throws -> ()) throws {
-        try operation()
-    }
-    
-    func runOperationSynchronously<T>(operation:() throws -> T) throws -> T {
+    func runOperationSynchronously<T>(operation:() throws -> T) rethrows -> T {
         return try operation()
     }
 }
