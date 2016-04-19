@@ -15,6 +15,8 @@
 #endif
 #endif
 
+import Foundation
+
 struct InputTextureProperties {
     let textureCoordinates:[GLfloat]
     let texture:GLuint
@@ -187,13 +189,25 @@ extension String {
     }
     
     func withGLChar(operation:UnsafePointer<GLchar> -> ()) {
-        
-        if let value = self.cStringUsingEncoding(NSUTF8StringEncoding) {
-            let pointer = UnsafePointer<GLchar>(value)
-            operation(pointer)
-        } else {
-            fatalError("failed to conver to cString")
+#if os(Linux)
+        // cStringUsingEncoding isn't yet defined in the Linux Foundation.
+        // This approach is roughly 35X slower than the cStringUsingEncoding one.
+        let bufferCString = UnsafeMutablePointer<UInt8>.alloc(self.characters.count+1)
+        for (index, characterValue) in self.utf8.enumerate() {
+            bufferCString[index] = characterValue
         }
+        bufferCString[self.characters.count] = 0 // Have to add a null termination
+        
+        operation(UnsafePointer<GLchar>(bufferCString))
+        
+        bufferCString.dealloc(self.characters.count)
+#else
+        if let value = self.cStringUsingEncoding(NSUTF8StringEncoding) {
+            operation(UnsafePointer<GLchar>(value))
+        } else {
+            fatalError("Could not convert this string to UTF8: \(self)")
+        }
+#endif
     }
 }
 
