@@ -21,8 +21,13 @@ let colorConversionMatrix709Default = Matrix3x3(rowMajorValues:[
     1.793, -0.533,   0.0,
 ])
 
-func convertYUVToRGB(shader shader:ShaderProgram, luminanceFramebuffer:Framebuffer, chrominanceFramebuffer:Framebuffer, resultFramebuffer:Framebuffer, colorConversionMatrix:Matrix3x3) {
-    let textureProperties = [luminanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), chrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation)]
+func convertYUVToRGB(shader shader:ShaderProgram, luminanceFramebuffer:Framebuffer, chrominanceFramebuffer:Framebuffer, secondChrominanceFramebuffer:Framebuffer? = nil, resultFramebuffer:Framebuffer, colorConversionMatrix:Matrix3x3) {
+    let textureProperties:[InputTextureProperties]
+    if let secondChrominanceFramebuffer = secondChrominanceFramebuffer {
+        textureProperties = [luminanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), chrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), secondChrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation)]
+    } else {
+        textureProperties = [luminanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), chrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation)]
+    }
     resultFramebuffer.activateFramebufferForRendering()
     clearFramebufferWithColor(Color.Black)
     var uniformSettings = ShaderUniformSettings()
@@ -30,4 +35,5 @@ func convertYUVToRGB(shader shader:ShaderProgram, luminanceFramebuffer:Framebuff
     renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:textureProperties)
     luminanceFramebuffer.unlock()
     chrominanceFramebuffer.unlock()
+    secondChrominanceFramebuffer?.unlock()
 }

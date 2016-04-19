@@ -16,7 +16,7 @@ public class GLUTRenderWindow: ImageConsumer {
 	public init(width:UInt32, height:UInt32, title:String) {
 	    var localArgc = Process.argc
 	    glutInit(&localArgc, Process.unsafeArgv)
-	    glutInitDisplayMode(UInt32(GLUT_SINGLE))
+	    glutInitDisplayMode(UInt32(GLUT_DOUBLE))
 	    glutInitWindowSize(Int32(width), Int32(height))
 	    glutInitWindowPosition(100,100)
 	    glutCreateWindow(title)

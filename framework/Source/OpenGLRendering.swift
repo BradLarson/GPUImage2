@@ -55,8 +55,11 @@ func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSet
     glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, vertices)
 
     for (index, inputTexture) in inputTextures.enumerate() {
-        guard let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) else { fatalError("An attribute named \("inputTextureCoordinate".withNonZeroSuffix(index)) was missing from the shader program during rendering.") }
-        glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, inputTexture.textureCoordinates)
+        if let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) {
+            glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, inputTexture.textureCoordinates)
+        } else if (index == 0) {
+            fatalError("The required attribute named inputTextureCoordinate was missing from the shader program during rendering.")
+        }
         
         glActiveTexture(textureUnitForIndex(index))
         glBindTexture(GLenum(GL_TEXTURE_2D), inputTexture.texture)

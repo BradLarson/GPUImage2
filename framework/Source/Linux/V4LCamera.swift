@@ -1,7 +1,7 @@
 #if GLES
-import COpenGLES.gles2
+    import COpenGLES.gles2
 #else
-import COpenGL
+    import COpenGL
 #endif
 import CVideo4Linux
 import Glibc
@@ -12,7 +12,7 @@ public class V4LCamera:ImageSource {
     
     let devicePath:String
     let device:Int32
-	let size:Size
+    let size:Size
     var cameraOutputTexture:GLuint = 0
     var buffers = [buffer]()
     var currentBuffer:Int32 = 0
@@ -20,25 +20,22 @@ public class V4LCamera:ImageSource {
     public var runBenchmark:Bool = false
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
-	
+    let yuvConversionShader:ShaderProgram?
+    
     public init(devicePath:String = "/dev/video0", size:Size) {
         self.devicePath = devicePath
         self.size = size
-		
+        
         device = v4l2_open_swift(devicePath, O_RDWR, 0) // Maybe switch to O_RDWR | O_NONBLOCK with the ability to kick out if there's no new frame
-        print("Device: \(device)")
         
         var capabilities:v4l2_capability = v4l2_capability()
         
         var format:v4l2_format = v4l2_generate_YUV420_format(Int32(round(Double(size.width))), Int32(round(Double(size.height))))
         
-        print("Device resolution: \(format.fmt.pix.width) x \(format.fmt.pix.height)")
+        v4l2_ioctl_S_FMT(device, &format)
+        v4l2_ioctl_QUERYCAP(device, &capabilities)
         
-        let result = v4l2_ioctl_S_FMT(device, &format)
-        let result2 = v4l2_ioctl_QUERYCAP(device, &capabilities)
-        print("Format: \(format), result: \(result)")
-        
-        print("Capabilities: \(capabilities), result: \(result2)")
+        yuvConversionShader = crashOnShaderCompileFailure("V4LCamera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(3), fragmentShader:YUVConversionFullRangeUVPlanarFragmentShader)}
     }
     
     deinit {
@@ -47,8 +44,7 @@ public class V4LCamera:ImageSource {
     
     public func startCapture() {
         let numberOfBuffers:Int32  = 2
-        let requestBuffers = v4l2_request_buffer_size(device, numberOfBuffers)
-        print("Request buffers: \(requestBuffers)")
+        v4l2_request_buffer_size(device, numberOfBuffers)
         
         for index in 0..<numberOfBuffers {
             buffers.append(v4l2_generate_buffer(device, index))
@@ -64,14 +60,30 @@ public class V4LCamera:ImageSource {
     
     public func grabFrame() {
         v4l2_dequeue_buffer(device, currentBuffer)
-
-	let startTime = NSDate()
-
+        
+        let startTime = NSDate()
+        
         let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(size), textureOnly:true)
-
+        luminanceFramebuffer.lock()
+        
         glActiveTexture(GLenum(GL_TEXTURE0))
         glBindTexture(GLenum(GL_TEXTURE_2D), luminanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(round(Double(size.width))), GLsizei(round(Double(size.height))), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), buffers[Int(currentBuffer)].start)
+        
+        // YUV 420 chrominance is split into two planes in V4L
+        let chrominanceFramebuffer1 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
+        chrominanceFramebuffer1.lock()
+        
+        glActiveTexture(GLenum(GL_TEXTURE1))
+        glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer1.texture)
+        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(round(Double(size.width) / 2.0)), GLsizei(round(Double(size.height) / 2.0)), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), buffers[Int(currentBuffer)].start + (Int(round(Double(size.width))) * Int(round(Double(size.height)))))
+        
+        let chrominanceFramebuffer2 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
+        chrominanceFramebuffer2.lock()
+        
+        glActiveTexture(GLenum(GL_TEXTURE2))
+        glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer2.texture)
+        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(round(Double(size.width) / 2.0)), GLsizei(round(Double(size.height) / 2.0)), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), buffers[Int(currentBuffer)].start + (Int(round(Double(size.width * size.height + size.width * size.height / 4.0)))))
         
         v4l2_enqueue_buffer(device, currentBuffer)
         if (currentBuffer == 0) {
@@ -80,14 +92,20 @@ public class V4LCamera:ImageSource {
             currentBuffer = 0
         }
         
-        updateTargetsWithFramebuffer(luminanceFramebuffer)
-	if runBenchmark {
-		let elapsedTime = -startTime.timeIntervalSinceNow
-		print("Current: \(elapsedTime * 1000.0) ms")
-		numberOfFramesCaptured += 1
-		totalFrameTimeDuringCapture += elapsedTime
-		print("Average: \(1000.0 * totalFrameTimeDuringCapture / Double(numberOfFramesCaptured))")
-	}
+        let cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:luminanceFramebuffer.sizeForTargetOrientation(.Portrait), textureOnly:false)
+        
+        let conversionMatrix = colorConversionMatrix601FullRangeDefault
+        convertYUVToRGB(shader:self.yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer1, secondChrominanceFramebuffer:chrominanceFramebuffer2, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
+        
+        updateTargetsWithFramebuffer(cameraFramebuffer)
+        
+        if runBenchmark {
+            let elapsedTime = -startTime.timeIntervalSinceNow
+            print("Current: \(elapsedTime * 1000.0) ms")
+            numberOfFramesCaptured += 1
+            totalFrameTimeDuringCapture += elapsedTime
+            print("Average: \(1000.0 * totalFrameTimeDuringCapture / Double(numberOfFramesCaptured))")
+        }
     }
     
     func stopCapture() {

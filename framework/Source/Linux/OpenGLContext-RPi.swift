@@ -1,4 +1,5 @@
 import COpenGLES.gles2
+import CVideoCore
 
 class OpenGLContext {
     lazy var framebufferCache:FramebufferCache = {
@@ -14,6 +15,7 @@ class OpenGLContext {
     // MARK: Initialization and teardown
 
     init() {
+	    bcm_host_init()
         
         glDisable(GLenum(GL_DEPTH_TEST))
         glEnable(GLenum(GL_TEXTURE_2D))

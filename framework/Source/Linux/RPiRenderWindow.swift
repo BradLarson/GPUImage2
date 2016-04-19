@@ -21,7 +21,7 @@ public class RPiRenderWindow: ImageConsumer {
 	let windowHeight:UInt32
 
 	public init(width:UInt32, height:UInt32) {
-	    bcm_host_init()
+		sharedImageProcessingContext.makeCurrentContext()
 	    display = eglGetDisplay(nil /* EGL_DEFAULT_DISPLAY */)
 	    // guard (display != EGL_NO_DISPLAY) else {throw renderingError(errorString:"Could not obtain display")}
 	    // guard (eglInitialize(display, nil, nil) != EGL_FALSE) else {throw renderingError(errorString:"Could not initialize display")}

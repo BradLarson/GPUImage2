@@ -65,7 +65,19 @@ struct v4l2_format v4l2_generate_YUV420_format(int width, int height)
 	fmt.fmt.pix.width       = width;
 	fmt.fmt.pix.height      = height;
 	fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUV420;
-	fmt.fmt.pix.field       = V4L2_FIELD_ANY;
+	fmt.fmt.pix.field       = V4L2_FIELD_SEQ_TB;
+	
+	return fmt;
+}
+
+struct v4l2_format v4l2_generate_YUV422_format(int width, int height)
+{
+	struct v4l2_format	fmt;
+	fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	fmt.fmt.pix.width       = width;
+	fmt.fmt.pix.height      = height;
+	fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUV422P;
+	fmt.fmt.pix.field       = V4L2_FIELD_SEQ_TB;
 	
 	return fmt;
 }

@@ -16,6 +16,7 @@ int v4l2_streamon(int fd);
 int v4l2_streamoff(int fd);
 struct v4l2_format v4l2_generate_RGB24_format(int width, int height);
 struct v4l2_format v4l2_generate_YUV420_format(int width, int height);
+struct v4l2_format v4l2_generate_YUV422_format(int width, int height);
 struct buffer v4l2_generate_buffer(int fd, int index);
 struct v4l2_requestbuffers v4l2_request_buffer_size(int fd, int buffers);
 // void v4l2_enqueue_initial_buffers(int fd, int buffers);

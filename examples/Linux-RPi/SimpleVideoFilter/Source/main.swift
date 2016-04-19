@@ -1,7 +1,8 @@
 import GPUImage
 
-let camera = V4LCamera(size:Size(width:1280.0, height:720.0))
+// For now, rendering requires the window to be created first
 let renderWindow = RPiRenderWindow(width:1280, height:720)
+let camera = V4LCamera(size:Size(width:1280.0, height:720.0))
 let edgeDetection = SobelEdgeDetection()
 
 camera --> edgeDetection --> renderWindow
