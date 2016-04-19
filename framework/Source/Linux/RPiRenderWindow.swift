@@ -85,7 +85,7 @@ public class RPiRenderWindow: ImageConsumer {
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClear(GLenum(GL_COLOR_BUFFER_BIT))
 
-        renderQuadWithShader(self.displayShader, vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.PortraitUpsideDown)])
+        renderQuadWithShader(self.displayShader, vertices:verticallyInvertedImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.Portrait)])
 		framebuffer.unlock()
 	    eglSwapBuffers(display, surface)
     }
