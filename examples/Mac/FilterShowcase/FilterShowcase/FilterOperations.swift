@@ -388,7 +388,12 @@ let filterOperations: Array<FilterOperationInterface> = [
         filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! Pixellate
             castFilter.fractionalWidthOfAPixel = 0.05
+            // TODO: Find a way to not hardcode these values
+#if os(iOS)
+            let circleGenerator = CircleGenerator(size:Size(width:480, height:640))
+#else
             let circleGenerator = CircleGenerator(size:Size(width:1280, height:720))
+#endif
             castFilter.mask = circleGenerator
             circleGenerator.renderCircleOfRadius(0.25, center:Position.Center, circleColor:Color.White, backgroundColor:Color.Transparent)
             camera --> castFilter --> outputView

@@ -84,24 +84,30 @@ func clearFramebufferWithColor(color:Color) {
 
 func renderStencilMaskFromFramebuffer(framebuffer:Framebuffer) {
     let inputTextureProperties = framebuffer.texturePropertiesForOutputRotation(.NoRotation)
+    glEnable(GLenum(GL_STENCIL_TEST))
     glClearStencil(0)
     glClear (GLenum(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT))
     glColorMask(GLboolean(GL_FALSE), GLboolean(GL_FALSE), GLboolean(GL_FALSE), GLboolean(GL_FALSE))
-    glDisable(GLenum(GL_DEPTH_TEST))
-    glEnable(GLenum(GL_STENCIL_TEST))
-    glEnable(GLenum(GL_ALPHA_TEST))
-    glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
-    glAlphaFunc(GLenum(GL_NOTEQUAL), 0.0)
     glStencilFunc(GLenum(GL_ALWAYS), 1, 1)
     glStencilOp(GLenum(GL_KEEP), GLenum(GL_KEEP), GLenum(GL_REPLACE))
     
+#if GL
+    glEnable(GLenum(GL_ALPHA_TEST))
+    glAlphaFunc(GLenum(GL_NOTEQUAL), 0.0)
     renderQuadWithShader(sharedImageProcessingContext.passthroughShader, vertices:standardImageVertices, inputTextures:[inputTextureProperties])
+#else
+    let alphaTestShader = crashOnShaderCompileFailure("Stencil"){return try sharedImageProcessingContext.programForVertexShader(OneInputVertexShader, fragmentShader:AlphaTestFragmentShader)}
+    renderQuadWithShader(alphaTestShader, vertices:standardImageVertices, inputTextures:[inputTextureProperties])
+#endif
     
     glColorMask(GLboolean(GL_TRUE), GLboolean(GL_TRUE), GLboolean(GL_TRUE), GLboolean(GL_TRUE))
+    
     glStencilFunc(GLenum(GL_EQUAL), 1, 1)
     glStencilOp(GLenum(GL_KEEP), GLenum(GL_KEEP), GLenum(GL_KEEP))
     
+#if GL
     glDisable(GLenum(GL_ALPHA_TEST))
+#endif
 }
 
 func disableStencil() {
@@ -139,7 +145,7 @@ func generateTexture(minFilter minFilter:Int32, magFilter:Int32, wrapS:Int32, wr
     return texture
 }
 
-func generateFramebufferForTexture(texture:GLuint, width:GLint, height:GLint, internalFormat:Int32, format:Int32, type:Int32, stencil:Bool) throws -> GLuint {
+func generateFramebufferForTexture(texture:GLuint, width:GLint, height:GLint, internalFormat:Int32, format:Int32, type:Int32, stencil:Bool) throws -> (GLuint, GLuint?) {
     var framebuffer:GLuint = 0
     glActiveTexture(GLenum(GL_TEXTURE1))
 
@@ -155,13 +161,16 @@ func generateFramebufferForTexture(texture:GLuint, width:GLint, height:GLint, in
         throw FramebufferCreationError(errorCode:status)
     }
     
+    let stencilBuffer:GLuint?
     if stencil {
-        try attachStencilBuffer(width:width, height:height)
+        stencilBuffer = try attachStencilBuffer(width:width, height:height)
+    } else {
+        stencilBuffer = nil
     }
     
     glBindTexture(GLenum(GL_TEXTURE_2D), 0)
     glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
-    return framebuffer
+    return (framebuffer, stencilBuffer)
 }
 
 func attachStencilBuffer(width width:GLint, height:GLint) throws -> GLuint {
@@ -169,8 +178,13 @@ func attachStencilBuffer(width width:GLint, height:GLint) throws -> GLuint {
     glGenRenderbuffers(1, &stencilBuffer);
     glBindRenderbuffer(GLenum(GL_RENDERBUFFER), stencilBuffer)
     glRenderbufferStorage(GLenum(GL_RENDERBUFFER), GLenum(GL_DEPTH24_STENCIL8), width, height) // iOS seems to only support combination depth + stencil, from references
+#if os(iOS)
+    glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_DEPTH_ATTACHMENT), GLenum(GL_RENDERBUFFER), stencilBuffer)
+#endif
     glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_STENCIL_ATTACHMENT), GLenum(GL_RENDERBUFFER), stencilBuffer)
 
+    glBindRenderbuffer(GLenum(GL_RENDERBUFFER), 0)
+    
     let status = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
     if (status != GLenum(GL_FRAMEBUFFER_COMPLETE)) {
         throw FramebufferCreationError(errorCode:status)

@@ -36,6 +36,7 @@ public enum FramebufferTimingStyle {
 public class Framebuffer {
     let texture:GLuint
     let framebuffer:GLuint?
+    let stencilBuffer:GLuint?
     let size:GLSize
     let orientation:ImageOrientation
     let internalFormat:Int32
@@ -65,12 +66,16 @@ public class Framebuffer {
         
         if (!textureOnly) {
             do {
-                framebuffer = try generateFramebufferForTexture(texture, width:size.width, height:size.height, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+                let (createdFrameBuffer, createdStencil) = try generateFramebufferForTexture(texture, width:size.width, height:size.height, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+                framebuffer = createdFrameBuffer
+                stencilBuffer = createdStencil
             } catch {
+                stencilBuffer = nil
                 framebuffer = nil
                 throw error
             }
         } else {
+            stencilBuffer = nil
             framebuffer = nil
         }
     }
@@ -85,6 +90,11 @@ public class Framebuffer {
         if let framebuffer = framebuffer {
 			var mutableFramebuffer = framebuffer
             glDeleteFramebuffers(1, &mutableFramebuffer)
+        }
+
+        if let stencilBuffer = stencilBuffer {
+            var mutableStencil = stencilBuffer
+            glDeleteRenderbuffers(1, &mutableStencil)
         }
     }
     
