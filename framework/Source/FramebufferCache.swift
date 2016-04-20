@@ -43,10 +43,12 @@ class FramebufferCache {
     
     func returnFramebufferToCache(framebuffer:Framebuffer) {
 //        print("Returning to cache: \(framebuffer)")
-        if (framebufferCache[framebuffer.hash] != nil) {
-            framebufferCache[framebuffer.hash]!.append(framebuffer)
-        } else {
-            framebufferCache[framebuffer.hash] = [framebuffer]
+        context.runOperationSynchronously{
+            if (self.framebufferCache[framebuffer.hash] != nil) {
+                self.framebufferCache[framebuffer.hash]!.append(framebuffer)
+            } else {
+                self.framebufferCache[framebuffer.hash] = [framebuffer]
+            }
         }
     }
     

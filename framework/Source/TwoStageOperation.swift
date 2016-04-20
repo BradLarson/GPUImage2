@@ -13,7 +13,7 @@ public class TwoStageOperation: BasicOperation {
         let firstStageTextureProperties:[InputTextureProperties]
         let downsamplingFramebuffer:Framebuffer?
         if let downsamplingFactor = downsamplingFactor {
-            internalStageSize = GLSize(Size(width:Float(renderFramebuffer.size.width) / downsamplingFactor, height:Float(renderFramebuffer.size.height) / downsamplingFactor))
+            internalStageSize = GLSize(Size(width:max(5.0, Float(renderFramebuffer.size.width) / downsamplingFactor), height:max(5.0, Float(renderFramebuffer.size.height) / downsamplingFactor)))
             downsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:internalStageSize, stencil:false)
             downsamplingFramebuffer!.lock()
             downsamplingFramebuffer!.activateFramebufferForRendering()

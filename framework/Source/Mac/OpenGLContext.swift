@@ -3,7 +3,7 @@ import Cocoa
 
 // TODO: Figure out way to allow for multiple contexts for different GPUs
 
-class OpenGLContext {
+class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
@@ -15,10 +15,18 @@ class OpenGLContext {
         return crashOnShaderCompileFailure("OpenGLContext"){return try self.programForVertexShader(OneInputVertexShader, fragmentShader:PassthroughFragmentShader)}
     }()
 
+    let serialDispatchQueue:dispatch_queue_t = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.processingQueue", nil)
+    var dispatchKey:Int = 1
+    let dispatchQueueKey:UnsafePointer<Void>
+
     // MARK: -
     // MARK: Initialization and teardown
 
     init() {
+        let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
+        dispatchQueueKey = UnsafePointer<Void>(bitPattern:dispatchKey)
+        dispatch_queue_set_specific(serialDispatchQueue, dispatchQueueKey, context, nil)
+
         let pixelFormatAttributes:[NSOpenGLPixelFormatAttribute] = [
             NSOpenGLPixelFormatAttribute(NSOpenGLPFADoubleBuffer),
             NSOpenGLPixelFormatAttribute(NSOpenGLPFAAccelerated), 0,

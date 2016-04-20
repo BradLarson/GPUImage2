@@ -32,7 +32,6 @@ class OpenGLContext: SerialDispatch {
 
     init() {
         let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
-
         dispatchQueueKey = UnsafePointer<Void>(bitPattern:dispatchKey)
         dispatch_queue_set_specific(serialDispatchQueue, dispatchQueueKey, context, nil)
         
