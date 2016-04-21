@@ -480,8 +480,12 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! HarrisCornerDetector
-            
+            // TODO: Get this more dynamically sized
+#if os(iOS)
+            let crosshairGenerator = CrosshairGenerator(size:Size(width:480, height:640))
+#else
             let crosshairGenerator = CrosshairGenerator(size:Size(width:1280, height:720))
+#endif
             crosshairGenerator.crosshairWidth = 15.0
             
             castFilter.cornersDetectedCallback = { corners in
@@ -507,8 +511,12 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! NobleCornerDetector
-            
-            let crosshairGenerator = CrosshairGenerator(size:Size(width:1280, height:720))
+            // TODO: Get this more dynamically sized
+#if os(iOS)
+                let crosshairGenerator = CrosshairGenerator(size:Size(width:480, height:640))
+#else
+                let crosshairGenerator = CrosshairGenerator(size:Size(width:1280, height:720))
+#endif
             crosshairGenerator.crosshairWidth = 15.0
             
             castFilter.cornersDetectedCallback = { corners in
@@ -534,8 +542,12 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! ShiTomasiFeatureDetector
-            
-            let crosshairGenerator = CrosshairGenerator(size:Size(width:1280, height:720))
+            // TODO: Get this more dynamically sized
+#if os(iOS)
+                let crosshairGenerator = CrosshairGenerator(size:Size(width:480, height:640))
+#else
+                let crosshairGenerator = CrosshairGenerator(size:Size(width:1280, height:720))
+#endif
             crosshairGenerator.crosshairWidth = 15.0
             
             castFilter.cornersDetectedCallback = { corners in

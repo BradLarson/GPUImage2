@@ -46,9 +46,10 @@ public extension ImageSource {
     
     public func updateTargetsWithFramebuffer(framebuffer:Framebuffer) {
         if targets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
+            framebuffer.lock()
             framebuffer.unlock()
         } else {
-            // Lock first for each output, to guarantee proper ordering on multi-output operations 
+            // Lock first for each output, to guarantee proper ordering on multi-output operations
             for _ in targets {
                 framebuffer.lock()
             }
@@ -149,6 +150,7 @@ public class ImageRelay: ImageProcessingOperation {
     public let sources = SourceContainer()
     public let targets = TargetContainer()
     public let maximumInputs:UInt = 1
+    public var preventRelay:Bool = false
     
     init() {
     }
@@ -156,15 +158,20 @@ public class ImageRelay: ImageProcessingOperation {
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let newImageCallback = newImageCallback {
             newImageCallback(framebuffer)
-        } else {
-            // Need to override to guarantee a removal of the previously applied lock
-            for _ in targets {
-                framebuffer.lock()
-            }
-            framebuffer.unlock()
-            for (target, index) in targets {
-                target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
-            }
+        }
+        if (!preventRelay) {
+            relayFramebufferOnward(framebuffer)
+        }
+    }
+    
+    public func relayFramebufferOnward(framebuffer:Framebuffer) {
+        // Need to override to guarantee a removal of the previously applied lock
+        for _ in targets {
+            framebuffer.lock()
+        }
+        framebuffer.unlock()
+        for (target, index) in targets {
+            target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
         }
     }
 }

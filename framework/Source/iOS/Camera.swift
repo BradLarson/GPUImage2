@@ -52,7 +52,9 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = dispatch_semaphore_create(1)
-    
+    let cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)
+    let audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)
+
     public var runBenchmark:Bool = false
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
@@ -125,6 +127,15 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         captureSession.commitConfiguration()
 
         super.init()
+        
+        videoOutput.setSampleBufferDelegate(self, queue:cameraProcessingQueue)
+    }
+    
+    deinit {
+        sharedImageProcessingContext.runOperationSynchronously{
+            self.stopCapture()
+//            self.videoOutput.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
+        }
     }
     
     public func captureOutput(captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, fromConnection connection:AVCaptureConnection!) {
@@ -210,9 +221,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
 
     public func startCapture() {
-        // Moved this from init() in a first attempt at avoiding some issues
-        videoOutput.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
-
         if (!captureSession.running) {
             captureSession.startRunning()
         }

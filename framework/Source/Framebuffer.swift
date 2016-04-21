@@ -152,6 +152,10 @@ public class Framebuffer {
     func lock() {
         framebufferRetainCount += 1
     }
+
+    func resetRetainCount() {
+        framebufferRetainCount = 0
+    }
     
     func unlock() {
         framebufferRetainCount -= 1

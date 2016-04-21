@@ -48,8 +48,6 @@ public class HarrisCornerDetector: OperationGroup {
             if let cornersDetectedCallback = self?.cornersDetectedCallback {
                 cornersDetectedCallback(extractCornersFromImage(framebuffer))
             }
-            
-            self?.updateTargetsWithFramebuffer(framebuffer)
         }
         
         self.configureGroup{input, output in
