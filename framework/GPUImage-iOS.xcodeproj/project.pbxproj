@@ -29,6 +29,8 @@
 		BCA4E2411CC3ED1A007B51BA /* HighlightAndShadowTint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2401CC3ED1A007B51BA /* HighlightAndShadowTint.swift */; };
 		BCA4E24F1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E24E1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift */; };
 		BCA4E2551CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA4E2541CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift */; };
+		BCB825BE1CC9CA6B00339790 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BD1CC9CA6B00339790 /* Timestamp.swift */; };
+		BCB825C01CC9CA8100339790 /* MovieOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BF1CC9CA8100339790 /* MovieOutput.swift */; };
 		BCD03F0F1CA23D6300271751 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD03F0E1CA23D6300271751 /* Camera.swift */; };
 		BCD1B1301C66A262001F2BDC /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1B1251C66A262001F2BDC /* GPUImage.framework */; };
 		BCD1B1351C66A262001F2BDC /* GPUImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */; };
@@ -199,6 +201,8 @@
 		BCA4E2511CC3F3F9007B51BA /* ColourFASTDecriptor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ColourFASTDecriptor.vsh; path = Source/Operations/Shaders/ColourFASTDecriptor.vsh; sourceTree = "<group>"; };
 		BCA4E2541CC3F7A0007B51BA /* ColorLocalBinaryPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorLocalBinaryPattern.swift; path = Source/Operations/ColorLocalBinaryPattern.swift; sourceTree = "<group>"; };
 		BCA4E2561CC3F7B7007B51BA /* ColorLocalBinaryPattern_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ColorLocalBinaryPattern_GLES.fsh; path = Source/Operations/Shaders/ColorLocalBinaryPattern_GLES.fsh; sourceTree = "<group>"; };
+		BCB825BD1CC9CA6B00339790 /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Timestamp.swift; path = Source/Timestamp.swift; sourceTree = "<group>"; };
+		BCB825BF1CC9CA8100339790 /* MovieOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieOutput.swift; path = Source/iOS/MovieOutput.swift; sourceTree = "<group>"; };
 		BCD03F0E1CA23D6300271751 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Camera.swift; path = Source/iOS/Camera.swift; sourceTree = "<group>"; };
 		BCD1B1251C66A262001F2BDC /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD1B12F1C66A262001F2BDC /* GPUImageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -582,6 +586,8 @@
 				BC6A139A1CBB503900387779 /* RawDataOutput.swift */,
 				BCFB079B1CBF4B92009B2333 /* TextureOutput.swift */,
 				BCA4E2221CC1FB62007B51BA /* PictureOutput.swift */,
+				BCB825BD1CC9CA6B00339790 /* Timestamp.swift */,
+				BCB825BF1CC9CA8100339790 /* MovieOutput.swift */,
 			);
 			name = Outputs;
 			sourceTree = "<group>";
@@ -1014,6 +1020,7 @@
 				BCFB074C1CBF2BC1009B2333 /* ZoomBlur.swift in Sources */,
 				BCFB05D81CBF1F61009B2333 /* Luminance.swift in Sources */,
 				BCFB06001CBF1FF8009B2333 /* DivideBlend.swift in Sources */,
+				BCB825C01CC9CA8100339790 /* MovieOutput.swift in Sources */,
 				BCFB06B81CBF287C009B2333 /* HistogramDisplay.swift in Sources */,
 				BCFB07461CBF2BC1009B2333 /* StretchDistortion.swift in Sources */,
 				BCFB06501CBF219D009B2333 /* ColorInversion.swift in Sources */,
@@ -1057,6 +1064,7 @@
 				BC6A13A21CBB503900387779 /* ImageGenerator.swift in Sources */,
 				BCE317001CA0E69800323D5B /* ShaderProgram.swift in Sources */,
 				BC6A13AA1CBB503900387779 /* Size.swift in Sources */,
+				BCB825BE1CC9CA6B00339790 /* Timestamp.swift in Sources */,
 				BCA4E24F1CC3F3E7007B51BA /* ColourFASTFeatureDetection.swift in Sources */,
 				BCFB06B01CBF284A009B2333 /* Sharpen.swift in Sources */,
 				BC6A13A01CBB503900387779 /* Color.swift in Sources */,

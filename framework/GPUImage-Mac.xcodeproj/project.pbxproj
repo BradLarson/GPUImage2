@@ -141,6 +141,8 @@
 		BCB279E81C8D0BA30013E213 /* BasicOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279E71C8D0BA30013E213 /* BasicOperation.swift */; };
 		BCB279EA1C8D0E800013E213 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279E91C8D0E800013E213 /* Camera.swift */; };
 		BCB279EC1C8D11630013E213 /* Framebuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279EB1C8D11630013E213 /* Framebuffer.swift */; };
+		BCB825B61CC9C1F100339790 /* MovieOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825B51CC9C1F100339790 /* MovieOutput.swift */; };
+		BCB825BB1CC9C96B00339790 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BA1CC9C96B00339790 /* Timestamp.swift */; };
 		BCD1B14A1C66AE00001F2BDC /* SerialDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */; };
 		BCD1B14C1C66B225001F2BDC /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B14B1C66B225001F2BDC /* Pipeline.swift */; };
 		BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */; };
@@ -399,6 +401,8 @@
 		BCB279E71C8D0BA30013E213 /* BasicOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicOperation.swift; path = Source/BasicOperation.swift; sourceTree = "<group>"; };
 		BCB279E91C8D0E800013E213 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Camera.swift; path = Source/Mac/Camera.swift; sourceTree = "<group>"; };
 		BCB279EB1C8D11630013E213 /* Framebuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Framebuffer.swift; path = Source/Framebuffer.swift; sourceTree = "<group>"; };
+		BCB825B51CC9C1F100339790 /* MovieOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieOutput.swift; path = Source/Mac/MovieOutput.swift; sourceTree = "<group>"; };
+		BCB825BA1CC9C96B00339790 /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Timestamp.swift; path = Source/Timestamp.swift; sourceTree = "<group>"; };
 		BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SerialDispatch.swift; path = Source/SerialDispatch.swift; sourceTree = "<group>"; };
 		BCD1B14B1C66B225001F2BDC /* Pipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pipeline.swift; path = Source/Pipeline.swift; sourceTree = "<group>"; };
 		BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AverageLuminanceExtractor.swift; path = Source/Operations/AverageLuminanceExtractor.swift; sourceTree = "<group>"; };
@@ -858,6 +862,8 @@
 				BC4EE16E1CB3554200AD8A65 /* RawDataOutput.swift */,
 				BCFB07941CBF399B009B2333 /* TextureOutput.swift */,
 				BC5B866E1CC07145006CDE75 /* PictureOutput.swift */,
+				BCB825BA1CC9C96B00339790 /* Timestamp.swift */,
+				BCB825B51CC9C1F100339790 /* MovieOutput.swift */,
 			);
 			name = Outputs;
 			sourceTree = "<group>";
@@ -1014,6 +1020,7 @@
 				BC7FD0A61CA632B300037949 /* HueAdjustment.swift in Sources */,
 				BC7FD1991CB1FB3B00037949 /* CrosshairGenerator.swift in Sources */,
 				BCFB07951CBF399B009B2333 /* TextureOutput.swift in Sources */,
+				BCB825BB1CC9C96B00339790 /* Timestamp.swift in Sources */,
 				BC7FD0BF1CA77B1A00037949 /* KuwaharaRadius3Filter.swift in Sources */,
 				BC7FD1081CB0778700037949 /* DarkenBlend.swift in Sources */,
 				BC7729661CB326DD004C9E0B /* ToonFilter.swift in Sources */,
@@ -1061,6 +1068,7 @@
 				BC7FD11A1CB0793900037949 /* MultiplyBlend.swift in Sources */,
 				BCA4E2591CC3F832007B51BA /* ColorLocalBinaryPattern.swift in Sources */,
 				BC4EE1561CB3457800AD8A65 /* PrewittEdgeDetection.swift in Sources */,
+				BCB825B61CC9C1F100339790 /* MovieOutput.swift in Sources */,
 				BCFF46D31CB9C24500A0C521 /* HarrisCornerDetector.swift in Sources */,
 				BC7FD1101CB0785B00037949 /* HardLightBlend.swift in Sources */,
 				BC4EE1661CB34B3700AD8A65 /* HistogramDisplay.swift in Sources */,

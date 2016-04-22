@@ -137,8 +137,9 @@ public class BasicOperation: ImageProcessingOperation {
         renderFramebuffer.timingStyle = .StillImage
         for (key, framebuffer) in inputFramebuffers {
             if framebuffer.timingStyle.isTransient() {
+                // TODO: Provide some kind of timestamp synchronization here
+                renderFramebuffer.timingStyle = framebuffer.timingStyle
                 framebuffer.unlock()
-                renderFramebuffer.timingStyle = .VideoFrame(timestamp:0.0)
             } else {
                 remainingFramebuffers[key] = framebuffer
             }

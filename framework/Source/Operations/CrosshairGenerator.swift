@@ -31,7 +31,7 @@ public class CrosshairGenerator: ImageGenerator {
 
     public func renderCrosshairs(positions:[Position]) {
         imageFramebuffer.activateFramebufferForRendering()
-        imageFramebuffer.timingStyle = .VideoFrame(timestamp:0.0)
+        imageFramebuffer.timingStyle = .StillImage
 #if GL
         glEnable(GLenum(GL_POINT_SPRITE))
         glEnable(GLenum(GL_VERTEX_PROGRAM_POINT_SIZE))

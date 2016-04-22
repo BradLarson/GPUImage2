@@ -23,12 +23,21 @@ struct FramebufferCreationError:ErrorType {
 
 public enum FramebufferTimingStyle {
     case StillImage
-    case VideoFrame(timestamp:Double)
+    case VideoFrame(timestamp:Timestamp)
     
     func isTransient() -> Bool {
         switch self {
             case .StillImage: return false
             case .VideoFrame: return true
+        }
+    }
+    
+    var timestamp:Timestamp? {
+        get {
+            switch self {
+                case .StillImage: return nil
+                case let .VideoFrame(timestamp): return timestamp
+            }
         }
     }
 }
