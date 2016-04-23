@@ -146,7 +146,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         let cameraFrame = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let bufferWidth = CVPixelBufferGetWidth(cameraFrame)
         let bufferHeight = CVPixelBufferGetHeight(cameraFrame)
-        
+        let currentTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+
         CVPixelBufferLockBaseAddress(cameraFrame, 0)
         sharedImageProcessingContext.runOperationAsynchronously{
             sharedImageProcessingContext.makeCurrentContext()
@@ -205,7 +206,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             }
             CVPixelBufferUnlockBaseAddress(cameraFrame, 0)
             
-            cameraFramebuffer.timingStyle = .VideoFrame(timestamp:0.0)
+            cameraFramebuffer.timingStyle = .VideoFrame(timestamp:Timestamp(currentTime))
             self.updateTargetsWithFramebuffer(cameraFramebuffer)
             
             if self.runBenchmark {

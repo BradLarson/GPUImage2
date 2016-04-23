@@ -78,16 +78,10 @@ extension SerialDispatch {
     }
     
     func runOperationSynchronously<T>(operation:() throws -> T) throws -> T {
-        var caughtError:ErrorType? = nil
         var returnedValue: T!
-        runOperationSynchronously {
-            do {
-                returnedValue = try operation()
-            } catch {
-                caughtError = error
-            }
+        try runOperationSynchronously {
+            returnedValue = try operation()
         }
-        if (caughtError != nil) {throw caughtError!}
         return returnedValue
     }
 }

@@ -24,13 +24,15 @@ public class RawDataOutput: ImageConsumer {
     // TODO: Replace with texture caches
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
-        
+        renderFramebuffer.lock()
+
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.Black)
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
 
         var data = [UInt8](count:Int(framebuffer.size.width * framebuffer.size.height * 4), repeatedValue:0)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
+        renderFramebuffer.unlock()
 
         dataAvailableCallback?(data)
     }

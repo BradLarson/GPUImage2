@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SimpleVideoRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIZ-bY-Kwk" customClass="RenderView" customModule="GPUImage">
+                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTJ-MM-c4Z">
+                                        <rect key="frame" x="253" y="494" width="95" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="iKd-sJ-ABw"/>
+                                            <constraint firstAttribute="width" constant="95" id="rF1-FD-Rxo"/>
+                                        </constraints>
+                                        <state key="normal" title="Record"/>
+                                        <connections>
+                                            <action selector="capture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BE1-gy-8jg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="cTJ-MM-c4Z" firstAttribute="bottom" secondItem="MIZ-bY-Kwk" secondAttribute="bottomMargin" id="w5J-tE-eCN"/>
+                                    <constraint firstItem="cTJ-MM-c4Z" firstAttribute="centerX" secondItem="MIZ-bY-Kwk" secondAttribute="centerX" id="y7f-cV-kkm"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MIZ-bY-Kwk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="08x-fB-MIr"/>
+                            <constraint firstItem="MIZ-bY-Kwk" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="0Rp-GR-HKi"/>
+                            <constraint firstItem="MIZ-bY-Kwk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="FYm-al-fAC"/>
+                            <constraint firstAttribute="trailing" secondItem="MIZ-bY-Kwk" secondAttribute="trailing" id="HY8-z6-fiK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="renderView" destination="MIZ-bY-Kwk" id="2Sj-7n-kNT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="528" y="549"/>
+        </scene>
+    </scenes>
+</document>

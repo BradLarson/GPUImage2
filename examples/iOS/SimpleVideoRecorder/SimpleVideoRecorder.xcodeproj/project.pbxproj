@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCA0C3341CCBFFAE0034F922 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */; };
+		BCA0C3361CCBFFAE0034F922 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3351CCBFFAE0034F922 /* ViewController.swift */; };
+		BCA0C33E1CCBFFAE0034F922 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C33C1CCBFFAE0034F922 /* LaunchScreen.storyboard */; };
+		BCA0C3471CCBFFE70034F922 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C3461CCBFFE70034F922 /* Assets-iOS.xcassets */; };
+		BCA0C34A1CCC00B20034F922 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C3481CCC00B20034F922 /* Main.storyboard */; };
+		BCA0C3571CCC01250034F922 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCA0C3521CCC01120034F922 /* GPUImage.framework */; };
+		BCA0C3591CCC01350034F922 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCA0C3521CCC01120034F922 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCA0C3511CCC01120034F922 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+		BCA0C3531CCC01120034F922 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
+			remoteInfo = GPUImageTests;
+		};
+		BCA0C3551CCC011D0034F922 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BCA0C3581CCC012A0034F922 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BCA0C3591CCC01350034F922 /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BCA0C3301CCBFFAE0034F922 /* SimpleVideoRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BCA0C3351CCBFFAE0034F922 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BCA0C33D1CCBFFAE0034F922 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BCA0C33F1CCBFFAE0034F922 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCA0C3461CCBFFE70034F922 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Assets-iOS.xcassets"; path = "../../../SharedAssets/Assets-iOS.xcassets"; sourceTree = "<group>"; };
+		BCA0C3491CCC00B20034F922 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-iOS.xcodeproj"; path = "../../../../framework/GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCA0C32D1CCBFFAE0034F922 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCA0C3571CCC01250034F922 /* GPUImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCA0C3271CCBFFAE0034F922 = {
+			isa = PBXGroup;
+			children = (
+				BCA0C3321CCBFFAE0034F922 /* Applications */,
+				BCA0C3451CCBFFB80034F922 /* Resources */,
+				BCA0C3311CCBFFAE0034F922 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCA0C3311CCBFFAE0034F922 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCA0C3301CCBFFAE0034F922 /* SimpleVideoRecorder.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCA0C3321CCBFFAE0034F922 /* Applications */ = {
+			isa = PBXGroup;
+			children = (
+				BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */,
+				BCA0C3351CCBFFAE0034F922 /* ViewController.swift */,
+				BCA0C3481CCC00B20034F922 /* Main.storyboard */,
+				BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */,
+			);
+			name = Applications;
+			path = SimpleVideoRecorder;
+			sourceTree = "<group>";
+		};
+		BCA0C3451CCBFFB80034F922 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BCA0C33C1CCBFFAE0034F922 /* LaunchScreen.storyboard */,
+				BCA0C33F1CCBFFAE0034F922 /* Info.plist */,
+				BCA0C3461CCBFFE70034F922 /* Assets-iOS.xcassets */,
+			);
+			name = Resources;
+			path = SimpleVideoRecorder;
+			sourceTree = "<group>";
+		};
+		BCA0C34D1CCC01120034F922 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCA0C3521CCC01120034F922 /* GPUImage.framework */,
+				BCA0C3541CCC01120034F922 /* GPUImageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCA0C32F1CCBFFAE0034F922 /* SimpleVideoRecorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCA0C3421CCBFFAE0034F922 /* Build configuration list for PBXNativeTarget "SimpleVideoRecorder" */;
+			buildPhases = (
+				BCA0C32C1CCBFFAE0034F922 /* Sources */,
+				BCA0C32D1CCBFFAE0034F922 /* Frameworks */,
+				BCA0C32E1CCBFFAE0034F922 /* Resources */,
+				BCA0C3581CCC012A0034F922 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCA0C3561CCC011D0034F922 /* PBXTargetDependency */,
+			);
+			name = SimpleVideoRecorder;
+			productName = SimpleVideoRecorder;
+			productReference = BCA0C3301CCBFFAE0034F922 /* SimpleVideoRecorder.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCA0C3281CCBFFAE0034F922 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Sunset Lake Software LLC";
+				TargetAttributes = {
+					BCA0C32F1CCBFFAE0034F922 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = BCA0C32B1CCBFFAE0034F922 /* Build configuration list for PBXProject "SimpleVideoRecorder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BCA0C3271CCBFFAE0034F922;
+			productRefGroup = BCA0C3311CCBFFAE0034F922 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BCA0C34D1CCC01120034F922 /* Products */;
+					ProjectRef = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				BCA0C32F1CCBFFAE0034F922 /* SimpleVideoRecorder */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		BCA0C3521CCC01120034F922 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BCA0C3511CCC01120034F922 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BCA0C3541CCC01120034F922 /* GPUImageTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests.xctest;
+			remoteRef = BCA0C3531CCC01120034F922 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCA0C32E1CCBFFAE0034F922 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCA0C34A1CCC00B20034F922 /* Main.storyboard in Resources */,
+				BCA0C3471CCBFFE70034F922 /* Assets-iOS.xcassets in Resources */,
+				BCA0C33E1CCBFFAE0034F922 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCA0C32C1CCBFFAE0034F922 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCA0C3361CCBFFAE0034F922 /* ViewController.swift in Sources */,
+				BCA0C3341CCBFFAE0034F922 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BCA0C3561CCC011D0034F922 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = BCA0C3551CCC011D0034F922 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BCA0C33C1CCBFFAE0034F922 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCA0C33D1CCBFFAE0034F922 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		BCA0C3481CCC00B20034F922 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCA0C3491CCC00B20034F922 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BCA0C3401CCBFFAE0034F922 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCA0C3411CCBFFAE0034F922 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCA0C3431CCBFFAE0034F922 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BCA0C3441CCBFFAE0034F922 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCA0C32B1CCBFFAE0034F922 /* Build configuration list for PBXProject "SimpleVideoRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCA0C3401CCBFFAE0034F922 /* Debug */,
+				BCA0C3411CCBFFAE0034F922 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCA0C3421CCBFFAE0034F922 /* Build configuration list for PBXNativeTarget "SimpleVideoRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCA0C3431CCBFFAE0034F922 /* Debug */,
+				BCA0C3441CCBFFAE0034F922 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCA0C3281CCBFFAE0034F922 /* Project object */;
+}
