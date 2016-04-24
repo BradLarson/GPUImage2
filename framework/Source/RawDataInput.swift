@@ -37,12 +37,7 @@ public class RawDataInput: ImageSource {
     }
 
     public func uploadBytes(bytes:[UInt8], size:Size, pixelFormat:PixelFormat, orientation:ImageOrientation = .Portrait) {
-        let dataFramebuffer:Framebuffer
-        do {
-            dataFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(size), textureOnly:true, internalFormat:pixelFormat.toGL(), format:pixelFormat.toGL())
-        } catch {
-            fatalError("ERROR: Unable to initialize framebuffer of size (\(size)) with error: \(error)")
-        }
+        let dataFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:orientation, size:GLSize(size), textureOnly:true, internalFormat:pixelFormat.toGL(), format:pixelFormat.toGL())
 
         glActiveTexture(GLenum(GL_TEXTURE1))
         glBindTexture(GLenum(GL_TEXTURE_2D), dataFramebuffer.texture)

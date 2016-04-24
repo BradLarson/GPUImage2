@@ -32,6 +32,12 @@
 		BCB825BE1CC9CA6B00339790 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BD1CC9CA6B00339790 /* Timestamp.swift */; };
 		BCB825C01CC9CA8100339790 /* MovieOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BF1CC9CA8100339790 /* MovieOutput.swift */; };
 		BCBEC0D21CCD404900B70ED7 /* Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0D11CCD404900B70ED7 /* Histogram.swift */; };
+		BCBEC0EC1CCD499D00B70ED7 /* HistogramEqualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0EB1CCD499D00B70ED7 /* HistogramEqualization.swift */; };
+		BCBEC0F21CCD49B800B70ED7 /* HistogramEqualizationBlue_GLES.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCBEC0ED1CCD49B800B70ED7 /* HistogramEqualizationBlue_GLES.fsh */; };
+		BCBEC0F31CCD49B800B70ED7 /* HistogramEqualizationGreen_GLES.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCBEC0EE1CCD49B800B70ED7 /* HistogramEqualizationGreen_GLES.fsh */; };
+		BCBEC0F41CCD49B800B70ED7 /* HistogramEqualizationLuminance_GLES.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCBEC0EF1CCD49B800B70ED7 /* HistogramEqualizationLuminance_GLES.fsh */; };
+		BCBEC0F51CCD49B800B70ED7 /* HistogramEqualizationRed_GLES.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCBEC0F01CCD49B800B70ED7 /* HistogramEqualizationRed_GLES.fsh */; };
+		BCBEC0F61CCD49B800B70ED7 /* HistogramEqualizationRGB_GLES.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BCBEC0F11CCD49B800B70ED7 /* HistogramEqualizationRGB_GLES.fsh */; };
 		BCD03F0F1CA23D6300271751 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD03F0E1CA23D6300271751 /* Camera.swift */; };
 		BCD1B1301C66A262001F2BDC /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1B1251C66A262001F2BDC /* GPUImage.framework */; };
 		BCD1B1351C66A262001F2BDC /* GPUImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */; };
@@ -210,6 +216,12 @@
 		BCBEC0D51CCD407500B70ED7 /* HistogramGreenSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramGreenSampling.vsh; path = Source/Operations/Shaders/HistogramGreenSampling.vsh; sourceTree = "<group>"; };
 		BCBEC0D61CCD407500B70ED7 /* HistogramLuminanceSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramLuminanceSampling.vsh; path = Source/Operations/Shaders/HistogramLuminanceSampling.vsh; sourceTree = "<group>"; };
 		BCBEC0D71CCD407500B70ED7 /* HistogramRedSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramRedSampling.vsh; path = Source/Operations/Shaders/HistogramRedSampling.vsh; sourceTree = "<group>"; };
+		BCBEC0EB1CCD499D00B70ED7 /* HistogramEqualization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramEqualization.swift; path = Source/Operations/HistogramEqualization.swift; sourceTree = "<group>"; };
+		BCBEC0ED1CCD49B800B70ED7 /* HistogramEqualizationBlue_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationBlue_GLES.fsh; path = Source/Operations/Shaders/HistogramEqualizationBlue_GLES.fsh; sourceTree = "<group>"; };
+		BCBEC0EE1CCD49B800B70ED7 /* HistogramEqualizationGreen_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationGreen_GLES.fsh; path = Source/Operations/Shaders/HistogramEqualizationGreen_GLES.fsh; sourceTree = "<group>"; };
+		BCBEC0EF1CCD49B800B70ED7 /* HistogramEqualizationLuminance_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationLuminance_GLES.fsh; path = Source/Operations/Shaders/HistogramEqualizationLuminance_GLES.fsh; sourceTree = "<group>"; };
+		BCBEC0F01CCD49B800B70ED7 /* HistogramEqualizationRed_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationRed_GLES.fsh; path = Source/Operations/Shaders/HistogramEqualizationRed_GLES.fsh; sourceTree = "<group>"; };
+		BCBEC0F11CCD49B800B70ED7 /* HistogramEqualizationRGB_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationRGB_GLES.fsh; path = Source/Operations/Shaders/HistogramEqualizationRGB_GLES.fsh; sourceTree = "<group>"; };
 		BCD03F0E1CA23D6300271751 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Camera.swift; path = Source/iOS/Camera.swift; sourceTree = "<group>"; };
 		BCD1B1251C66A262001F2BDC /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD1B12F1C66A262001F2BDC /* GPUImageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -767,6 +779,12 @@
 				BCFB06B71CBF287C009B2333 /* HistogramDisplay.swift */,
 				BCFB06E01CBF29F4009B2333 /* HistogramDisplay.vsh */,
 				BCFB06DF1CBF29F4009B2333 /* HistogramDisplay_GLES.fsh */,
+				BCBEC0EB1CCD499D00B70ED7 /* HistogramEqualization.swift */,
+				BCBEC0ED1CCD49B800B70ED7 /* HistogramEqualizationBlue_GLES.fsh */,
+				BCBEC0EE1CCD49B800B70ED7 /* HistogramEqualizationGreen_GLES.fsh */,
+				BCBEC0EF1CCD49B800B70ED7 /* HistogramEqualizationLuminance_GLES.fsh */,
+				BCBEC0F01CCD49B800B70ED7 /* HistogramEqualizationRed_GLES.fsh */,
+				BCBEC0F11CCD49B800B70ED7 /* HistogramEqualizationRGB_GLES.fsh */,
 				BCFB06931CBF284A009B2333 /* GaussianBlur.swift */,
 				BCFB069F1CBF284A009B2333 /* SingleComponentGaussianBlur.swift */,
 				BCFB06B91CBF2895009B2333 /* BoxBlur.swift */,
@@ -974,6 +992,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCBEC0F21CCD49B800B70ED7 /* HistogramEqualizationBlue_GLES.fsh in Resources */,
+				BCBEC0F31CCD49B800B70ED7 /* HistogramEqualizationGreen_GLES.fsh in Resources */,
+				BCBEC0F61CCD49B800B70ED7 /* HistogramEqualizationRGB_GLES.fsh in Resources */,
+				BCBEC0F41CCD49B800B70ED7 /* HistogramEqualizationLuminance_GLES.fsh in Resources */,
+				BCBEC0F51CCD49B800B70ED7 /* HistogramEqualizationRed_GLES.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1092,6 +1115,7 @@
 				BCD03F0F1CA23D6300271751 /* Camera.swift in Sources */,
 				BCFB05FD1CBF1FF8009B2333 /* DarkenBlend.swift in Sources */,
 				BC6A13AF1CBB52F000387779 /* SaturationAdjustment.swift in Sources */,
+				BCBEC0EC1CCD499D00B70ED7 /* HistogramEqualization.swift in Sources */,
 				BCFB07471CBF2BC1009B2333 /* SwirlDistortion.swift in Sources */,
 				BCFB060A1CBF1FF8009B2333 /* SoftLightBlend.swift in Sources */,
 				BCFB06091CBF1FF8009B2333 /* ScreenBlend.swift in Sources */,

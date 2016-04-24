@@ -15,6 +15,17 @@ let GL_FALSE = GLboolean(0)
 #endif
 #endif
 
+/* Unlike other filters, this one uses a grid of GL_POINTs to sample the incoming image in a grid. A custom vertex shader reads the color in the texture at its position
+ and outputs a bin position in the final histogram as the vertex position. That point is then written into the image of the histogram using translucent pixels.
+ The degree of translucency is controlled by the scalingFactor, which lets you adjust the dynamic range of the histogram. The histogram can only be generated for one
+ color channel or luminance value at a time.
+
+ This is based on this implementation: http://www.shaderwrangler.com/publications/histogram/histogram_cameraready.pdf
+
+ Or at least that's how it would work if iOS could read from textures in a vertex shader, which it can't. Therefore, I read the texture data down from the
+ incoming frame and process the texture colors as vertices.
+*/
+
 public enum HistogramType {
     case Red
     case Blue

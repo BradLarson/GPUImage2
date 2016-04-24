@@ -144,6 +144,7 @@
 		BCB825B61CC9C1F100339790 /* MovieOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825B51CC9C1F100339790 /* MovieOutput.swift */; };
 		BCB825BB1CC9C96B00339790 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BA1CC9C96B00339790 /* Timestamp.swift */; };
 		BCBEC0C61CCD2E6200B70ED7 /* Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */; };
+		BCBEC0E01CCD492D00B70ED7 /* HistogramEqualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0DF1CCD492D00B70ED7 /* HistogramEqualization.swift */; };
 		BCD1B14A1C66AE00001F2BDC /* SerialDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */; };
 		BCD1B14C1C66B225001F2BDC /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B14B1C66B225001F2BDC /* Pipeline.swift */; };
 		BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */; };
@@ -410,6 +411,12 @@
 		BCBEC0C91CCD2E8900B70ED7 /* HistogramGreenSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramGreenSampling.vsh; path = Source/Operations/Shaders/HistogramGreenSampling.vsh; sourceTree = "<group>"; };
 		BCBEC0CA1CCD2E8900B70ED7 /* HistogramLuminanceSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramLuminanceSampling.vsh; path = Source/Operations/Shaders/HistogramLuminanceSampling.vsh; sourceTree = "<group>"; };
 		BCBEC0CB1CCD2E8900B70ED7 /* HistogramRedSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramRedSampling.vsh; path = Source/Operations/Shaders/HistogramRedSampling.vsh; sourceTree = "<group>"; };
+		BCBEC0DF1CCD492D00B70ED7 /* HistogramEqualization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistogramEqualization.swift; path = Source/Operations/HistogramEqualization.swift; sourceTree = "<group>"; };
+		BCBEC0E11CCD496B00B70ED7 /* HistogramEqualizationBlue_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationBlue_GL.fsh; path = Source/Operations/Shaders/HistogramEqualizationBlue_GL.fsh; sourceTree = "<group>"; };
+		BCBEC0E21CCD496B00B70ED7 /* HistogramEqualizationGreen_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationGreen_GL.fsh; path = Source/Operations/Shaders/HistogramEqualizationGreen_GL.fsh; sourceTree = "<group>"; };
+		BCBEC0E31CCD496B00B70ED7 /* HistogramEqualizationLuminance_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationLuminance_GL.fsh; path = Source/Operations/Shaders/HistogramEqualizationLuminance_GL.fsh; sourceTree = "<group>"; };
+		BCBEC0E41CCD496B00B70ED7 /* HistogramEqualizationRed_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationRed_GL.fsh; path = Source/Operations/Shaders/HistogramEqualizationRed_GL.fsh; sourceTree = "<group>"; };
+		BCBEC0E51CCD496B00B70ED7 /* HistogramEqualizationRGB_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramEqualizationRGB_GL.fsh; path = Source/Operations/Shaders/HistogramEqualizationRGB_GL.fsh; sourceTree = "<group>"; };
 		BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SerialDispatch.swift; path = Source/SerialDispatch.swift; sourceTree = "<group>"; };
 		BCD1B14B1C66B225001F2BDC /* Pipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pipeline.swift; path = Source/Pipeline.swift; sourceTree = "<group>"; };
 		BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AverageLuminanceExtractor.swift; path = Source/Operations/AverageLuminanceExtractor.swift; sourceTree = "<group>"; };
@@ -652,6 +659,12 @@
 				BC4EE1651CB34B3700AD8A65 /* HistogramDisplay.swift */,
 				BC4EE1681CB34B8900AD8A65 /* HistogramDisplay.vsh */,
 				BC4EE1671CB34B8900AD8A65 /* HistogramDisplay_GL.fsh */,
+				BCBEC0DF1CCD492D00B70ED7 /* HistogramEqualization.swift */,
+				BCBEC0E11CCD496B00B70ED7 /* HistogramEqualizationBlue_GL.fsh */,
+				BCBEC0E21CCD496B00B70ED7 /* HistogramEqualizationGreen_GL.fsh */,
+				BCBEC0E31CCD496B00B70ED7 /* HistogramEqualizationLuminance_GL.fsh */,
+				BCBEC0E41CCD496B00B70ED7 /* HistogramEqualizationRed_GL.fsh */,
+				BCBEC0E51CCD496B00B70ED7 /* HistogramEqualizationRGB_GL.fsh */,
 				BC4EE1731CB3711600AD8A65 /* GaussianBlur.swift */,
 				BCFF46E11CBADB3E00A0C521 /* SingleComponentGaussianBlur.swift */,
 				BC8B7A8E1CB5A84C00ACF7AA /* BoxBlur.swift */,
@@ -1111,6 +1124,7 @@
 				BC77295C1CB30CD2004C9E0B /* TextureSamplingOperation.swift in Sources */,
 				BC1E13291C9F6282008F844F /* PictureInput.swift in Sources */,
 				BC7FD10E1CB0783500037949 /* ExclusionBlend.swift in Sources */,
+				BCBEC0E01CCD492D00B70ED7 /* HistogramEqualization.swift in Sources */,
 				BC7FD0F91CB063B700037949 /* Color.swift in Sources */,
 				BCFF46DF1CBAB66F00A0C521 /* CannyEdgeDetection.swift in Sources */,
 				BCFF46BC1CB8AB1B00A0C521 /* TiltShift.swift in Sources */,

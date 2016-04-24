@@ -311,6 +311,14 @@ let filterOperations: Array<FilterOperationInterface> = [
             return blendFilter
         })
     ),
+    FilterOperation (
+        filter:{HistogramEqualization(type:.RGB)},
+        listName:"Histogram equalization",
+        titleName:"Histogram Equalization",
+        sliderConfiguration:.Disabled,
+        sliderUpdateCallback:nil,
+        filterOperationType:.SingleInput
+    ),
     FilterOperation(
         filter:{AverageColorExtractor()},
         listName:"Average color",

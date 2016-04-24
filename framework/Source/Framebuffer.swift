@@ -93,7 +93,7 @@ public class Framebuffer {
         if (!textureOverride) {
             var mutableTexture = texture
             glDeleteTextures(1, &mutableTexture)
-            print("Delete texture")
+            print("Delete texture at size: \(size)")
         }
         
         if let framebuffer = framebuffer {
