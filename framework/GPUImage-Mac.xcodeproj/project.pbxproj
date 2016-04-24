@@ -143,6 +143,7 @@
 		BCB279EC1C8D11630013E213 /* Framebuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279EB1C8D11630013E213 /* Framebuffer.swift */; };
 		BCB825B61CC9C1F100339790 /* MovieOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825B51CC9C1F100339790 /* MovieOutput.swift */; };
 		BCB825BB1CC9C96B00339790 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BA1CC9C96B00339790 /* Timestamp.swift */; };
+		BCBEC0C61CCD2E6200B70ED7 /* Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */; };
 		BCD1B14A1C66AE00001F2BDC /* SerialDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */; };
 		BCD1B14C1C66B225001F2BDC /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B14B1C66B225001F2BDC /* Pipeline.swift */; };
 		BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */; };
@@ -403,6 +404,12 @@
 		BCB279EB1C8D11630013E213 /* Framebuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Framebuffer.swift; path = Source/Framebuffer.swift; sourceTree = "<group>"; };
 		BCB825B51CC9C1F100339790 /* MovieOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieOutput.swift; path = Source/Mac/MovieOutput.swift; sourceTree = "<group>"; };
 		BCB825BA1CC9C96B00339790 /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Timestamp.swift; path = Source/Timestamp.swift; sourceTree = "<group>"; };
+		BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Histogram.swift; path = Source/Operations/Histogram.swift; sourceTree = "<group>"; };
+		BCBEC0C71CCD2E8900B70ED7 /* HistogramAccumulation_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramAccumulation_GL.fsh; path = Source/Operations/Shaders/HistogramAccumulation_GL.fsh; sourceTree = "<group>"; };
+		BCBEC0C81CCD2E8900B70ED7 /* HistogramBlueSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramBlueSampling.vsh; path = Source/Operations/Shaders/HistogramBlueSampling.vsh; sourceTree = "<group>"; };
+		BCBEC0C91CCD2E8900B70ED7 /* HistogramGreenSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramGreenSampling.vsh; path = Source/Operations/Shaders/HistogramGreenSampling.vsh; sourceTree = "<group>"; };
+		BCBEC0CA1CCD2E8900B70ED7 /* HistogramLuminanceSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramLuminanceSampling.vsh; path = Source/Operations/Shaders/HistogramLuminanceSampling.vsh; sourceTree = "<group>"; };
+		BCBEC0CB1CCD2E8900B70ED7 /* HistogramRedSampling.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramRedSampling.vsh; path = Source/Operations/Shaders/HistogramRedSampling.vsh; sourceTree = "<group>"; };
 		BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SerialDispatch.swift; path = Source/SerialDispatch.swift; sourceTree = "<group>"; };
 		BCD1B14B1C66B225001F2BDC /* Pipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pipeline.swift; path = Source/Pipeline.swift; sourceTree = "<group>"; };
 		BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AverageLuminanceExtractor.swift; path = Source/Operations/AverageLuminanceExtractor.swift; sourceTree = "<group>"; };
@@ -636,6 +643,12 @@
 				BC4EE1571CB345AE00AD8A65 /* PrewittEdgeDetection_GL.fsh */,
 				BC4EE15D1CB3481F00AD8A65 /* ThresholdSobelEdgeDetection.swift */,
 				BC4EE15F1CB3487400AD8A65 /* ThresholdEdgeDetection_GL.fsh */,
+				BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */,
+				BCBEC0CB1CCD2E8900B70ED7 /* HistogramRedSampling.vsh */,
+				BCBEC0C91CCD2E8900B70ED7 /* HistogramGreenSampling.vsh */,
+				BCBEC0C81CCD2E8900B70ED7 /* HistogramBlueSampling.vsh */,
+				BCBEC0CA1CCD2E8900B70ED7 /* HistogramLuminanceSampling.vsh */,
+				BCBEC0C71CCD2E8900B70ED7 /* HistogramAccumulation_GL.fsh */,
 				BC4EE1651CB34B3700AD8A65 /* HistogramDisplay.swift */,
 				BC4EE1681CB34B8900AD8A65 /* HistogramDisplay.vsh */,
 				BC4EE1671CB34B8900AD8A65 /* HistogramDisplay_GL.fsh */,
@@ -1031,6 +1044,7 @@
 				BC7FD09A1CA62ED100037949 /* ExposureAdjustment.swift in Sources */,
 				BC5B866F1CC07145006CDE75 /* PictureOutput.swift in Sources */,
 				BC7FD1121CB0789600037949 /* HueBlend.swift in Sources */,
+				BCBEC0C61CCD2E6200B70ED7 /* Histogram.swift in Sources */,
 				BCFF46E21CBADB3E00A0C521 /* SingleComponentGaussianBlur.swift in Sources */,
 				BC7FD0F71CB0620E00037949 /* ChromaKeyBlend.swift in Sources */,
 				BC7FD0861CA62E1100037949 /* BrightnessAdjustment.swift in Sources */,

@@ -291,7 +291,26 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback:nil,
         filterOperationType:.SingleInput
     ),
-    // TODO: Histogram
+    FilterOperation(
+        filter:{Histogram(type:.RGB)},
+        listName:"Histogram",
+        titleName:"Histogram",
+        sliderConfiguration:.Enabled(minimumValue:4.0, maximumValue:32.0, initialValue:16.0),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.downsamplingFactor = UInt(round(sliderValue))
+        },
+        filterOperationType:.Custom(filterSetupFunction: {(camera, filter, outputView) in
+            let castFilter = filter as! Histogram
+            let histogramGraph = HistogramDisplay()
+            histogramGraph.overriddenOutputSize = Size(width:256.0, height:330.0)
+            let blendFilter = AlphaBlend()
+            blendFilter.mix = 0.75
+            camera --> blendFilter
+            camera --> castFilter --> histogramGraph --> blendFilter --> outputView
+            
+            return blendFilter
+        })
+    ),
     FilterOperation(
         filter:{AverageColorExtractor()},
         listName:"Average color",
