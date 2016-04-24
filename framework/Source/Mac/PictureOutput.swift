@@ -36,9 +36,8 @@ public class PictureOutput: ImageConsumer {
             }
         }
     }
-    
+
     // TODO: Replace with texture caches and a safer capture routine
-    // TODO: Verify that I don't need a dataProvider callback to handle the bitmap memory here
     func cgImageFromFramebuffer(framebuffer:Framebuffer) -> CGImage {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
@@ -47,12 +46,14 @@ public class PictureOutput: ImageConsumer {
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
         framebuffer.unlock()
         
-        var data = [UInt8](count:Int(framebuffer.size.width * framebuffer.size.height * 4), repeatedValue:0)
-        glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
+        let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
+        let data = UnsafeMutablePointer<UInt8>.alloc(imageByteSize)
+        glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
         renderFramebuffer.unlock()
-        let dataProvider = CGDataProviderCreateWithData(nil, data, Int(framebuffer.size.width * framebuffer.size.height * 4), nil)
+        let dataProvider = CGDataProviderCreateWithData(nil, data, imageByteSize, dataProviderReleaseCallback)
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         return CGImageCreate(Int(framebuffer.size.width), Int(framebuffer.size.height), 8, 32, 4 * Int(framebuffer.size.width), defaultRGBColorSpace, .ByteOrderDefault /*| CGImageAlphaInfo.Last*/, dataProvider, nil, false, .RenderingIntentDefault)!
+
     }
     
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
@@ -93,6 +94,27 @@ public extension ImageSource {
     }
 }
 
-//func dataProviderReleaseCallback(pointer:UnsafeMutablePointer<Void>, context:UnsafePointer<Void>, size:Int) {
-//    pointer.dealloc(size)
-//}
+public extension NSImage {
+    public func filterWithOperation<T:ImageProcessingOperation>(operation:T) -> NSImage {
+        return filterWithPipeline{input, output in
+            input --> operation --> output
+        }
+    }
+
+    public func filterWithPipeline(pipeline:(input:PictureInput, output:PictureOutput) -> ()) -> NSImage {
+        let picture = PictureInput(image:self)
+        var outputImage:NSImage?
+        let pictureOutput = PictureOutput()
+        pictureOutput.onlyCaptureNextFrame = true
+        pictureOutput.imageAvailableCallback = {image in
+            outputImage = image
+        }
+        pipeline(input:picture, output:pictureOutput)
+        picture.processImage(synchronously:true)
+        return outputImage!
+    }
+}
+
+func dataProviderReleaseCallback(pointer:UnsafeMutablePointer<Void>, context:UnsafePointer<Void>, size:Int) {
+    pointer.dealloc(size)
+}

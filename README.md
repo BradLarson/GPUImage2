@@ -109,8 +109,80 @@ The --> operator chains an image source to an image consumer, and many of these 
 
 Functionality not completed.
 
+### Capturing an image from video ###
+
+(Not currently available on Linux.)
+
+To capture a still image from live video, you need to set a callback to be performed on the next frame of video that is processed. The easiest way to do this is to use the convenience extension to capture, encode, and save a file to disk:
+
+```swift
+filter.saveNextFrameToURL(url, format:.PNG)
+```
+
+Under the hood, this creates a PictureOutput instance, attaches it as a target to your filter, sets the PictureOutput's encodedImageFormat to PNG files, and sets the encodedImageAvailableCallback to a closure that takes in the data for the filtered image and saves it to a URL.
+
+You can set this up manually to get the encoded image data (as NSData):
+
+```swift
+let pictureOutput = PictureOutput()
+pictureOutput.encodedImageFormat = .JPEG
+pictureOutput.encodedImageAvailableCallback = {imageData in
+    // Do something with the NSData
+}
+filter --> pictureOutput
+```
+
+You can also get the filtered image in a platform-native format (NSImage, UIImage) by setting the imageAvailableCallback:
+
+```swift
+let pictureOutput = PictureOutput()
+pictureOutput.encodedImageFormat = .JPEG
+pictureOutput.imageAvailableCallback = {image in
+    // Do something with the image
+}
+filter --> pictureOutput
+```
+
 ### Processing a still image ###
 
+(Not currently available on Linux.)
+
+There are a few different ways to approach filtering an image. The easiest are the convenience extensions to UIImage or NSImage that let you filter that image and return a UIImage or NSImage:
+
+```swift
+let testImage = UIImage(named:"WID-small.jpg")!
+let toonFilter = SmoothToonFilter()
+let filteredImage = testImage.filterWithOperation(toonFilter)
+```
+
+for a more complex pipeline:
+
+```swift
+let testImage = UIImage(named:"WID-small.jpg")!
+let toonFilter = SmoothToonFilter()
+let luminanceFilter = Luminance()
+let filteredImage = testImage.filterWithPipeline{input, output in
+    input --> toonFilter --> luminanceFilter --> output
+}
+```
+
+One caution: if you want to display an image to the screen or repeatedly filter an image, don't use these methods. Going to and from Core Graphics adds a lot of overhead. Instead, I recommend manually setting up a pipeline and directing it to a RenderView for display in order to keep everything on the GPU.
+
+Both of these convenience methods wrap several operations. To feed a picture into a filter pipeline, you instantiate a PictureInput. To capture a picture from the pipeline, you use a PictureOutput. To manually set up processing of an image, you can use something like the following:
+
+```swift
+let toonFilter = SmoothToonFilter()
+let testImage = UIImage(named:"WID-small.jpg")!
+let pictureInput = PictureInput(image:testImage)
+let pictureOutput = PictureOutput()
+pictureOutput.imageAvailableCallback = {image in
+    // Do something with image
+}
+pictureInput --> toonFilter --> pictureOutput
+pictureInput.processImage(synchronously:true)
+```
+
+In the above, the imageAvailableCallback will be triggered right at the processImage() line. If you want the image processing to be done asynchronously, leave out the synchronously argument in the above.
 
 ### Filtering and re-encoding a movie ###
 

@@ -125,13 +125,15 @@ public class PictureInput: ImageSource {
         self.init(image:image.CGImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
     }
 
-//    convenience init(url:NSURL, smoothlyScaleOutput:Bool = false) {
-//        
-//    }
-
-    public func processImage() {
-        for (target, index) in targets {
-            target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:index)
+    public func processImage(synchronously synchronously:Bool = false) {
+        if synchronously {
+            sharedImageProcessingContext.runOperationSynchronously{
+                self.updateTargetsWithFramebuffer(self.imageFramebuffer)
+            }
+        } else {
+            sharedImageProcessingContext.runOperationAsynchronously{
+                self.updateTargetsWithFramebuffer(self.imageFramebuffer)
+            }
         }
     }
 }

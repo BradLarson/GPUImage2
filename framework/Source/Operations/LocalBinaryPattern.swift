@@ -1,4 +1,4 @@
-/** This is based on "Accelerating image recognition on mobile devices using GPGPU" by Miguel Bordallo Lopez, Henri Nykanen, Jari Hannuksela, Olli Silven and Markku Vehvilainen
+/* This is based on "Accelerating image recognition on mobile devices using GPGPU" by Miguel Bordallo Lopez, Henri Nykanen, Jari Hannuksela, Olli Silven and Markku Vehvilainen
  http://www.ee.oulu.fi/~jhannuks/publications/SPIE2011a.pdf
 
  Right pixel is the most significant bit, traveling clockwise to get to the upper right, which is the least significant

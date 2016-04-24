@@ -12,7 +12,7 @@
 #endif
 #endif
 
-/** Harris corner detector
+/* Harris corner detector
  
  First pass: reduce to luminance and take the derivative of the luminance texture (GPUImageXYDerivativeFilter)
  
