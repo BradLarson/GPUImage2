@@ -18,14 +18,12 @@ public class PictureInput: ImageSource {
         var shouldRedrawUsingCoreGraphics = false
         
         // For now, deal with images larger than the maximum texture size by resizing to be within that limit
-        // TODO: Fix this
-//        CGSize scaledImageSizeToFitOnGPU = [GPUImageContext sizeThatFitsWithinATextureForSize:pixelSizeOfImage];
-//        if (!CGSizeEqualToSize(scaledImageSizeToFitOnGPU, pixelSizeOfImage))
-//        {
-//            pixelSizeOfImage = scaledImageSizeToFitOnGPU;
-//            pixelSizeToUseForTexture = pixelSizeOfImage;
-//            shouldRedrawUsingCoreGraphics = YES;
-//        }
+        let scaledImageSizeToFitOnGPU = GLSize(sharedImageProcessingContext.sizeThatFitsWithinATextureForSize(Size(width:Float(widthOfImage), height:Float(heightOfImage))))
+        if ((scaledImageSizeToFitOnGPU.width != widthOfImage) && (scaledImageSizeToFitOnGPU.height != heightOfImage)) {
+            widthToUseForTexture = scaledImageSizeToFitOnGPU.width
+            heightToUseForTexture = scaledImageSizeToFitOnGPU.height
+            shouldRedrawUsingCoreGraphics = true
+        }
         
         if (smoothlyScaleOutput) {
             // In order to use mipmaps, you need to provide power-of-two textures, so convert to the next largest power of two and stretch to fill
@@ -129,10 +127,12 @@ public class PictureInput: ImageSource {
     public func processImage(synchronously synchronously:Bool = false) {
         if synchronously {
             sharedImageProcessingContext.runOperationSynchronously{
+                sharedImageProcessingContext.makeCurrentContext()
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
             }
         } else {
             sharedImageProcessingContext.runOperationAsynchronously{
+                sharedImageProcessingContext.makeCurrentContext()
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
             }
         }

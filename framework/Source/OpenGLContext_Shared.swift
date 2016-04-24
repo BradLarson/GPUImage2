@@ -1,4 +1,19 @@
 
+#if os(Linux)
+#if GLES
+    import COpenGLES.gles2
+    #else
+    import COpenGL
+#endif
+#else
+#if GLES
+    import OpenGLES
+    #else
+    import OpenGL.GL3
+#endif
+#endif
+
+
 let sharedImageProcessingContext = OpenGLContext()
 
 extension OpenGLContext {
@@ -12,5 +27,44 @@ extension OpenGLContext {
             shaderCache[lookupKeyForShaderProgram] = program
             return program
         }
+    }
+    
+    func openGLDeviceSettingForOption(option:Int32) -> GLint {
+        return self.runOperationSynchronously{() -> GLint in
+            self.makeCurrentContext()
+            var openGLValue:GLint = 0
+            glGetIntegerv(GLenum(option), &openGLValue)
+            return openGLValue
+        }
+    }
+ 
+    func deviceSupportsExtension(openGLExtension:String) -> Bool {
+        return self.extensionString.containsString(openGLExtension)
+    }
+    
+    // http://www.khronos.org/registry/gles/extensions/EXT/EXT_texture_rg.txt
+    
+    func deviceSupportsRedTextures() -> Bool {
+        return deviceSupportsExtension("GL_EXT_texture_rg")
+    }
+
+    func deviceSupportsFramebufferReads() -> Bool {
+        return deviceSupportsExtension("GL_EXT_shader_framebuffer_fetch")
+    }
+    
+    func sizeThatFitsWithinATextureForSize(size:Size) -> Size {
+        let maxTextureSize = Float(self.maximumTextureSizeForThisDevice)
+        if ( (size.width < maxTextureSize) && (size.height < maxTextureSize) ) {
+            return size
+        }
+        
+        let adjustedSize:Size
+        if (size.width > size.height) {
+            adjustedSize = Size(width:maxTextureSize, height:(maxTextureSize / size.width) * size.height)
+        } else {
+            adjustedSize = Size(width:(maxTextureSize / size.height) * size.width, height:maxTextureSize)
+        }
+        
+        return adjustedSize
     }
 }

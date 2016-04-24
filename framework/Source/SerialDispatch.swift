@@ -84,5 +84,13 @@ extension SerialDispatch {
         }
         return returnedValue
     }
+
+    func runOperationSynchronously<T>(operation:() -> T) -> T {
+        var returnedValue: T!
+        runOperationSynchronously {
+            returnedValue = operation()
+        }
+        return returnedValue
+    }
 }
 #endif

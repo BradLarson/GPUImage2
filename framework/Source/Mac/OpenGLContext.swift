@@ -3,7 +3,7 @@ import Cocoa
 
 // TODO: Figure out way to allow for multiple contexts for different GPUs
 
-class OpenGLContext: SerialDispatch {
+public class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
@@ -57,5 +57,30 @@ class OpenGLContext: SerialDispatch {
     
     func presentBufferForDisplay() {
         self.context.flushBuffer()
-    }    
+    }
+    
+    // MARK: -
+    // MARK: Device capabilities
+
+    public var maximumTextureSizeForThisDevice:GLint {get { return _maximumTextureSizeForThisDevice } }
+    private lazy var _maximumTextureSizeForThisDevice:GLint = {
+        return self.openGLDeviceSettingForOption(GL_MAX_TEXTURE_SIZE)
+    }()
+    
+    public var maximumTextureUnitsForThisDevice:GLint {get { return _maximumTextureUnitsForThisDevice } }
+    private lazy var _maximumTextureUnitsForThisDevice:GLint = {
+        return self.openGLDeviceSettingForOption(GL_MAX_TEXTURE_IMAGE_UNITS)
+    }()
+    
+    public var maximumVaryingVectorsForThisDevice:GLint {get { return _maximumVaryingVectorsForThisDevice } }
+    private lazy var _maximumVaryingVectorsForThisDevice:GLint = {
+        return self.openGLDeviceSettingForOption(GL_MAX_VARYING_VECTORS)
+    }()
+
+    lazy var extensionString:String = {
+        return self.runOperationSynchronously{
+            self.makeCurrentContext()
+            return String.fromCString(UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))!
+        }
+    }()
 }
