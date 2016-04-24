@@ -78,31 +78,27 @@ public class RenderView:UIView, ImageConsumer {
     }
     
     func destroyDisplayFramebuffer() {
-        sharedImageProcessingContext.makeCurrentContext()
-
-        if let displayFramebuffer = displayFramebuffer {
-            var temporaryFramebuffer = displayFramebuffer
-            glDeleteFramebuffers(1, &temporaryFramebuffer)
-            self.displayFramebuffer = nil
-        }
-
-        if let displayRenderbuffer = displayRenderbuffer {
-            var temporaryRenderbuffer = displayRenderbuffer
-            glDeleteRenderbuffers(1, &temporaryRenderbuffer)
-            self.displayRenderbuffer = nil
+        sharedImageProcessingContext.runOperationSynchronously{
+            if let displayFramebuffer = self.displayFramebuffer {
+                var temporaryFramebuffer = displayFramebuffer
+                glDeleteFramebuffers(1, &temporaryFramebuffer)
+                self.displayFramebuffer = nil
+            }
+            
+            if let displayRenderbuffer = self.displayRenderbuffer {
+                var temporaryRenderbuffer = displayRenderbuffer
+                glDeleteRenderbuffers(1, &temporaryRenderbuffer)
+                self.displayRenderbuffer = nil
+            }
         }
     }
     
     func activateDisplayFramebuffer() {
-        sharedImageProcessingContext.makeCurrentContext()
-
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), displayFramebuffer!)
         glViewport(0, 0, backingSize.width, backingSize.height)
     }
     
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
-        sharedImageProcessingContext.makeCurrentContext()
-
         if (displayFramebuffer == nil) {
             self.createDisplayFramebuffer()
         }

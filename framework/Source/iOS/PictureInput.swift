@@ -89,25 +89,26 @@ public class PictureInput: ImageSource {
             imageData = UnsafeMutablePointer<GLubyte>(CFDataGetBytePtr(dataFromImageDataProvider))
         }
         
-        sharedImageProcessingContext.makeCurrentContext()
-        do {
-            // TODO: Alter orientation based on metadata from photo
-            imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(width:widthToUseForTexture, height:heightToUseForTexture), textureOnly:true)
-        } catch {
-            fatalError("ERROR: Unable to initialize framebuffer of size (\(widthToUseForTexture), \(heightToUseForTexture)) with error: \(error)")
-        }
-        
-        glBindTexture(GLenum(GL_TEXTURE_2D), imageFramebuffer.texture)
-        if (smoothlyScaleOutput) {
-            glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR_MIPMAP_LINEAR)
-        }
-
-        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, widthToUseForTexture, heightToUseForTexture, 0, GLenum(format), GLenum(GL_UNSIGNED_BYTE), imageData)
+        sharedImageProcessingContext.runOperationSynchronously{
+            do {
+                // TODO: Alter orientation based on metadata from photo
+                self.imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(width:widthToUseForTexture, height:heightToUseForTexture), textureOnly:true)
+            } catch {
+                fatalError("ERROR: Unable to initialize framebuffer of size (\(widthToUseForTexture), \(heightToUseForTexture)) with error: \(error)")
+            }
             
-        if (smoothlyScaleOutput) {
-            glGenerateMipmap(GLenum(GL_TEXTURE_2D))
+            glBindTexture(GLenum(GL_TEXTURE_2D), self.imageFramebuffer.texture)
+            if (smoothlyScaleOutput) {
+                glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR_MIPMAP_LINEAR)
+            }
+            
+            glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, widthToUseForTexture, heightToUseForTexture, 0, GLenum(format), GLenum(GL_UNSIGNED_BYTE), imageData)
+            
+            if (smoothlyScaleOutput) {
+                glGenerateMipmap(GLenum(GL_TEXTURE_2D))
+            }
+            glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         }
-        glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         
         if (shouldRedrawUsingCoreGraphics) {
             imageData.dealloc(Int(widthToUseForTexture * heightToUseForTexture) * 4)

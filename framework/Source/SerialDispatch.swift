@@ -48,11 +48,15 @@ func runOnMainQueue(mainThreadOperation:() -> ()) {
 protocol SerialDispatch {
     var serialDispatchQueue:dispatch_queue_t { get }
     var dispatchQueueKey:UnsafePointer<Void> { get }
+    func makeCurrentContext()
 }
 
 extension SerialDispatch {
     func runOperationAsynchronously(operation:() -> ()) {
-        dispatch_async(self.serialDispatchQueue, operation)
+        dispatch_async(self.serialDispatchQueue) {
+            self.makeCurrentContext()
+            operation()
+        }
     }
     
     func runOperationSynchronously(operation:() -> ()) {
@@ -61,7 +65,10 @@ extension SerialDispatch {
         if (dispatch_get_specific(self.dispatchQueueKey) == context) {
             operation()
         } else {
-            dispatch_sync(self.serialDispatchQueue, operation)
+            dispatch_sync(self.serialDispatchQueue) {
+                self.makeCurrentContext()
+                operation()
+            }
         }
     }
     

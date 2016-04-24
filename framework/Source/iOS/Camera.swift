@@ -150,7 +150,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
 
         CVPixelBufferLockBaseAddress(cameraFrame, 0)
         sharedImageProcessingContext.runOperationAsynchronously{
-            sharedImageProcessingContext.makeCurrentContext()
             let cameraFramebuffer:Framebuffer
             
             if self.captureAsYUV {
@@ -199,7 +198,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 }
                 convertYUVToRGB(shader:self.yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
             } else {
-                sharedImageProcessingContext.makeCurrentContext()
                 cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.location.imageOrientation(), size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
                 glBindTexture(GLenum(GL_TEXTURE_2D), cameraFramebuffer.texture)
                 glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(cameraFrame))

@@ -22,10 +22,11 @@ extension OpenGLContext {
         if let shaderFromCache = shaderCache[lookupKeyForShaderProgram] {
             return shaderFromCache
         } else {
-            sharedImageProcessingContext.makeCurrentContext()
-            let program = try ShaderProgram(vertexShader:vertexShader, fragmentShader:fragmentShader)
-            shaderCache[lookupKeyForShaderProgram] = program
-            return program
+            return try sharedImageProcessingContext.runOperationSynchronously{
+                let program = try ShaderProgram(vertexShader:vertexShader, fragmentShader:fragmentShader)
+                self.shaderCache[lookupKeyForShaderProgram] = program
+                return program
+            }
         }
     }
     

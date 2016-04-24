@@ -59,7 +59,6 @@ public class BasicOperation: ImageProcessingOperation {
     }
     
     public init(vertexShader:String? = nil, fragmentShader:String, numberOfInputs:UInt = 1, operationName:String = __FILE__) {
-        sharedImageProcessingContext.makeCurrentContext()
         let compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(vertexShader ?? defaultVertexShaderForInputs(numberOfInputs), fragmentShader:fragmentShader)}
         self.maximumInputs = numberOfInputs
         self.shader = compiledShader
@@ -67,7 +66,6 @@ public class BasicOperation: ImageProcessingOperation {
     }
 
     public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = __FILE__) throws {
-        sharedImageProcessingContext.makeCurrentContext()
         let compiledShader:ShaderProgram
         // TODO: Replace this with caching for the shader programs
         if let vertexShaderFile = vertexShaderFile {

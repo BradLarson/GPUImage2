@@ -31,7 +31,7 @@ void main()
     v = max(0.0, v);
     
     float mag = length(vec2(h, v)) * edgeStrength;
-    mag = step(threshold, mag);
+    mag = 1.0 - step(threshold, mag);
     
     gl_FragColor = vec4(vec3(mag), 1.0);
 }

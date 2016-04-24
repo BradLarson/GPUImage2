@@ -12,7 +12,10 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     var supportsFullYUVRange:Bool = false
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
-    
+    let frameRenderingSemaphore = dispatch_semaphore_create(1)
+    let cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)
+    let audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)
+
     public var runBenchmark:Bool = false
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
@@ -71,66 +74,69 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         captureSession.commitConfiguration()
 
         super.init()
+        
+        videoOutput.setSampleBufferDelegate(self, queue:cameraProcessingQueue)
     }
     
     public func captureOutput(captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, fromConnection connection:AVCaptureConnection!) {
-        sharedImageProcessingContext.makeCurrentContext()
+        guard (dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_NOW) == 0) else { return }
         let startTime = CFAbsoluteTimeGetCurrent()
 
         let cameraFrame = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let bufferWidth = CVPixelBufferGetWidth(cameraFrame)
         let bufferHeight = CVPixelBufferGetHeight(cameraFrame)
         let currentTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-
-        let cameraFramebuffer:Framebuffer
         
         CVPixelBufferLockBaseAddress(cameraFrame, 0)
-        if (captureAsYUV) {
-            let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
-            luminanceFramebuffer.lock()
-            glActiveTexture(GLenum(GL_TEXTURE0))
-            glBindTexture(GLenum(GL_TEXTURE_2D), luminanceFramebuffer.texture)
-            glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(cameraFrame, 0))
+        sharedImageProcessingContext.runOperationAsynchronously{
+            let cameraFramebuffer:Framebuffer
 
-            let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
-            chrominanceFramebuffer.lock()
-            glActiveTexture(GLenum(GL_TEXTURE1))
-            glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer.texture)
-            glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(cameraFrame, 1))
+            if (self.captureAsYUV) {
+                let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+                luminanceFramebuffer.lock()
+                glActiveTexture(GLenum(GL_TEXTURE0))
+                glBindTexture(GLenum(GL_TEXTURE_2D), luminanceFramebuffer.texture)
+                glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(cameraFrame, 0))
 
-            cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
-            
-            let conversionMatrix:Matrix3x3
-            if (supportsFullYUVRange) {
-                conversionMatrix = colorConversionMatrix601FullRangeDefault
+                let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+                chrominanceFramebuffer.lock()
+                glActiveTexture(GLenum(GL_TEXTURE1))
+                glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer.texture)
+                glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(cameraFrame, 1))
+
+                cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
+                
+                let conversionMatrix:Matrix3x3
+                if (self.supportsFullYUVRange) {
+                    conversionMatrix = colorConversionMatrix601FullRangeDefault
+                } else {
+                    conversionMatrix = colorConversionMatrix601Default
+                }
+                convertYUVToRGB(shader:self.yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
             } else {
-                conversionMatrix = colorConversionMatrix601Default
+                cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+                glActiveTexture(GLenum(GL_TEXTURE0))
+                glBindTexture(GLenum(GL_TEXTURE_2D), cameraFramebuffer.texture)
+                glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(cameraFrame))
             }
-            convertYUVToRGB(shader:yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
-        } else {
-            cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.orientation, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
-            glActiveTexture(GLenum(GL_TEXTURE0))
-            glBindTexture(GLenum(GL_TEXTURE_2D), cameraFramebuffer.texture)
-            glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(cameraFrame))
-        }
-        CVPixelBufferUnlockBaseAddress(cameraFrame, 0)
-        
-        cameraFramebuffer.timingStyle = .VideoFrame(timestamp:Timestamp(currentTime))
-        updateTargetsWithFramebuffer(cameraFramebuffer)
-        
-        if runBenchmark {
-            let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
-            numberOfFramesCaptured += 1
-            totalFrameTimeDuringCapture += currentFrameTime
-            print("Average frame time : \(1000.0 * totalFrameTimeDuringCapture / Double(numberOfFramesCaptured)) ms")
-            print("Current frame time : \(1000.0 * currentFrameTime) ms")
+            CVPixelBufferUnlockBaseAddress(cameraFrame, 0)
+            
+            cameraFramebuffer.timingStyle = .VideoFrame(timestamp:Timestamp(currentTime))
+            self.updateTargetsWithFramebuffer(cameraFramebuffer)
+            
+            if self.runBenchmark {
+                let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
+                self.numberOfFramesCaptured += 1
+                self.totalFrameTimeDuringCapture += currentFrameTime
+                print("Average frame time : \(1000.0 * self.totalFrameTimeDuringCapture / Double(self.numberOfFramesCaptured)) ms")
+                print("Current frame time : \(1000.0 * currentFrameTime) ms")
+            }
+            
+            dispatch_semaphore_signal(self.frameRenderingSemaphore)
         }
     }
 
     public func startCapture() {
-        // Moved this from init() in a first attempt at avoiding some issues
-        videoOutput.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
-
         if (!captureSession.running) {
             captureSession.startRunning()
         }
