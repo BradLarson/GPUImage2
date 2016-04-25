@@ -13,6 +13,7 @@
 #endif
 #endif
 
+import Foundation
 
 let sharedImageProcessingContext = OpenGLContext()
 
@@ -40,7 +41,11 @@ extension OpenGLContext {
     }
  
     func deviceSupportsExtension(openGLExtension:String) -> Bool {
+#if os(Linux)
+        return false
+#else
         return self.extensionString.containsString(openGLExtension)
+#endif
     }
     
     // http://www.khronos.org/registry/gles/extensions/EXT/EXT_texture_rg.txt

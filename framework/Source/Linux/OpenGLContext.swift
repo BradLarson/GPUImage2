@@ -1,6 +1,6 @@
 import COpenGL
 
-public class OpenGLContext {
+public class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
