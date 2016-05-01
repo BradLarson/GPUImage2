@@ -1,5 +1,5 @@
-uniform lowp vec3 circleColor;
-uniform lowp vec3 backgroundColor;
+uniform lowp vec4 circleColor;
+uniform lowp vec4 backgroundColor;
 uniform highp vec2 center;
 uniform highp float radius;
 
@@ -10,5 +10,5 @@ void main()
     highp float distanceFromCenter = distance(center, currentPosition);
     highp float checkForPresenceWithinCircle = step(distanceFromCenter, radius);
 
-    gl_FragColor = vec4(mix(backgroundColor, circleColor, checkForPresenceWithinCircle), checkForPresenceWithinCircle);
+    gl_FragColor = mix(backgroundColor, circleColor, checkForPresenceWithinCircle);
 }

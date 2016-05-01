@@ -25,6 +25,7 @@ enum ShaderType {
 }
 
 public class ShaderProgram {
+    public var colorUniformsUseFourComponents = false
     let program:GLuint
     var vertexShader:GLuint! // At some point, the Swift compiler will be able to deal with the early throw and we can convert these to lets
     var fragmentShader:GLuint!
@@ -148,6 +149,14 @@ public class ShaderProgram {
         }
     }
 
+    public func setValue(value:Color, forUniform:String) {
+        if colorUniformsUseFourComponents {
+            self.setValue(value.toGLArrayWithAlpha(), forUniform:forUniform)
+        } else {
+            self.setValue(value.toGLArray(), forUniform:forUniform)
+        }
+    }
+    
     public func setValue(value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             print("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
@@ -159,6 +168,8 @@ public class ShaderProgram {
                 glUniform2fv(uniformAddress, 1, value)
             } else if (value.count == 3) {
                 glUniform3fv(uniformAddress, 1, value)
+            } else if (value.count == 4) {
+                glUniform4fv(uniformAddress, 1, value)
             } else {
                 fatalError("Tried to set a float array uniform outside of the range of values")
             }

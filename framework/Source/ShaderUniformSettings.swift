@@ -55,7 +55,7 @@ public struct ShaderUniformSettings {
             switch value {
                 case let value as Float: shader.setValue(GLfloat(value), forUniform:uniform)
                 case let value as Int: shader.setValue(GLint(value), forUniform:uniform)
-                case let value as Color: shader.setValue(value.toGLArray(), forUniform:uniform)
+                case let value as Color: shader.setValue(value, forUniform:uniform)
                 case let value as Position: shader.setValue(value.toGLArray(), forUniform:uniform)
                 case let value as Size: shader.setValue(value.toGLArray(), forUniform:uniform)
                 case let value as Matrix4x4: shader.setMatrix(value.toRowMajorGLArray(), forUniform:uniform)
@@ -68,7 +68,11 @@ public struct ShaderUniformSettings {
 
 extension Color {
     func toGLArray() -> [GLfloat] {
-        return [GLfloat(red), GLfloat(green), GLfloat(blue)] // TODO: See if I need a vec4 version of this, including alpha
+        return [GLfloat(red), GLfloat(green), GLfloat(blue)]
+    }
+
+    func toGLArrayWithAlpha() -> [GLfloat] {
+        return [GLfloat(red), GLfloat(green), GLfloat(blue), GLfloat(alpha)]
     }
 }
 

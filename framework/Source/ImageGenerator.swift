@@ -13,6 +13,11 @@ public class ImageGenerator: ImageSource {
         }
     }
     
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        imageFramebuffer.lock()
+        target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
+    }
+    
     func notifyTargets() {
         updateTargetsWithFramebuffer(imageFramebuffer)
     }

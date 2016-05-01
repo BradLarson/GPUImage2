@@ -20,12 +20,12 @@ public class BasicOperation: ImageProcessingOperation {
     public var mask:ImageSource? {
         didSet {
             if let mask = mask {
-                mask.addTarget(maskImageRelay)
                 maskImageRelay.newImageCallback = {[weak self] framebuffer in
                     self?.maskFramebuffer?.unlock()
                     framebuffer.lock()
                     self?.maskFramebuffer = framebuffer
                 }
+                mask.addTarget(maskImageRelay)
             } else {
                 maskFramebuffer?.unlock()
                 maskImageRelay.removeSourceAtIndex(0)
@@ -174,5 +174,12 @@ public class BasicOperation: ImageProcessingOperation {
             let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait)
             uniformSettings["aspectRatio"] = inputFramebuffer.aspectRatioForRotation(outputRotation)
         }
+    }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        guard let renderFramebuffer = renderFramebuffer where (!renderFramebuffer.timingStyle.isTransient()) else { return }
+        
+        renderFramebuffer.lock()
+        target.newFramebufferAvailable(renderFramebuffer, fromSourceIndex:atIndex)
     }
 }

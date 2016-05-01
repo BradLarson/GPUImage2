@@ -17,6 +17,7 @@ public class CircleGenerator: ImageGenerator {
     
     public override init(size:Size) {
         circleShader = crashOnShaderCompileFailure("CircleGenerator"){try sharedImageProcessingContext.programForVertexShader(CircleVertexShader, fragmentShader:CircleFragmentShader)}
+        circleShader.colorUniformsUseFourComponents = true
         super.init(size:size)
     }
 

@@ -3,6 +3,7 @@
 
 public protocol ImageSource {
     var targets:TargetContainer { get }
+    func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt)
 }
 
 public protocol ImageConsumer:AnyObject {
@@ -30,8 +31,10 @@ public extension ImageSource {
         if let targetIndex = atTargetIndex {
             target.setSource(self, atIndex:targetIndex)
             targets.append(target, indexAtTarget:targetIndex)
+            transmitPreviousImageToTarget(target, atIndex:targetIndex)
         } else if let indexAtTarget = target.addSource(self) {
             targets.append(target, indexAtTarget:indexAtTarget)
+            transmitPreviousImageToTarget(target, atIndex:indexAtTarget)
         } else {
             print("Warning: tried to add target beyond target's input capacity")
         }
@@ -155,6 +158,10 @@ public class ImageRelay: ImageProcessingOperation {
     init() {
     }
     
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        sources.sources[0]?.transmitPreviousImageToTarget(self, atIndex:0)
+    }
+
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let newImageCallback = newImageCallback {
             newImageCallback(framebuffer)

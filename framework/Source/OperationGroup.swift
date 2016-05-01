@@ -13,4 +13,8 @@ public class OperationGroup: ImageProcessingOperation {
     public func configureGroup(configurationOperation:(input:ImageRelay, output:ImageRelay) -> ()) {
         configurationOperation(input:inputImageRelay, output:outputImageRelay)
     }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        outputImageRelay.transmitPreviousImageToTarget(target, atIndex:atIndex)
+    }
 }

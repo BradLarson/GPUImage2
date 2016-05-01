@@ -22,4 +22,8 @@ public class ImageBuffer: ImageProcessingOperation {
             framebuffer.unlock()
         }
     }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        // Buffers most likely won't need this
+    }
 }

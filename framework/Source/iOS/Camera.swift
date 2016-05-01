@@ -230,4 +230,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             captureSession.stopRunning()
         }
     }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        // Not needed for camera inputs
+    }
 }

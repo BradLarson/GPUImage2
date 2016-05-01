@@ -28,4 +28,9 @@ public class TextureInput: ImageSource {
     public func processTexture() {
         updateTargetsWithFramebuffer(textureFramebuffer)
     }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        textureFramebuffer.lock()
+        target.newFramebufferAvailable(textureFramebuffer, fromSourceIndex:atIndex)
+    }
 }

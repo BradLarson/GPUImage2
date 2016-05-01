@@ -137,4 +137,9 @@ public class PictureInput: ImageSource {
             }
         }
     }
+    
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        imageFramebuffer.lock()
+        target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
+    }
 }
