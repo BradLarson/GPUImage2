@@ -8,7 +8,7 @@ public class MovieOutput: ImageConsumer {
     let assetWriterVideoInput:AVAssetWriterInput
     let assetWriterPixelBufferInput:AVAssetWriterInputPixelBufferAdaptor
     let size:Size
-    let colorSwisslingShader:ShaderProgram
+    let colorSwizzlingShader:ShaderProgram
     private var isRecording = false
     private var videoEncodingIsFinished = false
     private var startTime:CMTime?
@@ -16,7 +16,7 @@ public class MovieOutput: ImageConsumer {
     private var encodingLiveVideo:Bool
     
     public init(URL:NSURL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
-        self.colorSwisslingShader = crashOnShaderCompileFailure("MovieOutput"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:ColorSwizzlingFragmentShader)}
+        self.colorSwizzlingShader = crashOnShaderCompileFailure("MovieOutput"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:ColorSwizzlingFragmentShader)}
 
         self.size = size
         assetWriter = try AVAssetWriter(URL:URL, fileType:fileType)
@@ -126,7 +126,7 @@ public class MovieOutput: ImageConsumer {
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.Black)
-        renderQuadWithShader(colorSwisslingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
+        renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
 
         CVPixelBufferLockBaseAddress(pixelBuffer, 0)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))

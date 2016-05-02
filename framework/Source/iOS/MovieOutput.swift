@@ -8,15 +8,21 @@ public class MovieOutput: ImageConsumer {
     let assetWriterVideoInput:AVAssetWriterInput
     let assetWriterPixelBufferInput:AVAssetWriterInputPixelBufferAdaptor
     let size:Size
-    let colorSwisslingShader:ShaderProgram
+    let colorSwizzlingShader:ShaderProgram
     private var isRecording = false
     private var videoEncodingIsFinished = false
     private var startTime:CMTime?
     private var previousFrameTime = kCMTimeNegativeInfinity
     private var encodingLiveVideo:Bool
+    var pixelBuffer:CVPixelBuffer? = nil
+    var renderFramebuffer:Framebuffer!
     
     public init(URL:NSURL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
-        self.colorSwisslingShader = crashOnShaderCompileFailure("MovieOutput"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:ColorSwizzlingFragmentShader)}
+        if sharedImageProcessingContext.supportsTextureCaches() {
+            self.colorSwizzlingShader = sharedImageProcessingContext.passthroughShader
+        } else {
+            self.colorSwizzlingShader = crashOnShaderCompileFailure("MovieOutput"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:ColorSwizzlingFragmentShader)}
+        }
         
         self.size = size
         assetWriter = try AVAssetWriter(URL:URL, fileType:fileType)
@@ -51,6 +57,24 @@ public class MovieOutput: ImageConsumer {
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
+            
+            CVPixelBufferPoolCreatePixelBuffer(nil, self.assetWriterPixelBufferInput.pixelBufferPool!, &self.pixelBuffer)
+            
+            /* AVAssetWriter will use BT.601 conversion matrix for RGB to YCbCr conversion
+             * regardless of the kCVImageBufferYCbCrMatrixKey value.
+             * Tagging the resulting video file as BT.601, is the best option right now.
+             * Creating a proper BT.709 video is not possible at the moment.
+             */
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate)
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate)
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate)
+            
+            let bufferSize = GLSize(self.size)
+            var cachedTextureRef:CVOpenGLESTextureRef? = nil
+            let _ = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, self.pixelBuffer!, nil, GLenum(GL_TEXTURE_2D), GL_RGBA, bufferSize.width, bufferSize.height, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), 0, &cachedTextureRef)
+            let cachedTexture = CVOpenGLESTextureGetName(cachedTextureRef!)
+            
+            self.renderFramebuffer = try! Framebuffer(context:sharedImageProcessingContext, orientation:.Portrait, size:bufferSize, textureOnly:false, overriddenTexture:cachedTexture)
         }
     }
     
@@ -104,33 +128,40 @@ public class MovieOutput: ImageConsumer {
             return
         }
         
-        var pixelBufferFromPool:CVPixelBuffer? = nil
+        if !sharedImageProcessingContext.supportsTextureCaches() {
+            let pixelBufferStatus = CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput.pixelBufferPool!, &pixelBuffer)
+            guard ((pixelBuffer != nil) && (pixelBufferStatus == kCVReturnSuccess)) else { return }
+        }
         
-        let pixelBufferStatus = CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput.pixelBufferPool!, &pixelBufferFromPool)
-        guard let pixelBuffer = pixelBufferFromPool where (pixelBufferStatus == kCVReturnSuccess) else { return }
+        renderIntoPixelBuffer(pixelBuffer!, framebuffer:framebuffer)
         
-        
-        
-        renderIntoPixelBuffer(pixelBuffer, framebuffer:framebuffer)
-        
-        if (!assetWriterPixelBufferInput.appendPixelBuffer(pixelBuffer, withPresentationTime:frameTime)) {
+        if (!assetWriterPixelBufferInput.appendPixelBuffer(pixelBuffer!, withPresentationTime:frameTime)) {
             print("Problem appending pixel buffer at time: \(frameTime)")
         }
         
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferUnlockBaseAddress(pixelBuffer!, 0)
+        if !sharedImageProcessingContext.supportsTextureCaches() {
+            pixelBuffer = nil
+        }
     }
     
     func renderIntoPixelBuffer(pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
-        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
-        renderFramebuffer.lock()
+        if !sharedImageProcessingContext.supportsTextureCaches() {
+            renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+            renderFramebuffer.lock()
+        }
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.Black)
-        renderQuadWithShader(colorSwisslingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
-        
         CVPixelBufferLockBaseAddress(pixelBuffer, 0)
-        glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
-        renderFramebuffer.unlock()
+        renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
+        
+        if sharedImageProcessingContext.supportsTextureCaches() {
+            glFinish()
+        } else {
+            glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
+            renderFramebuffer.unlock()
+        }
     }
 }
 
