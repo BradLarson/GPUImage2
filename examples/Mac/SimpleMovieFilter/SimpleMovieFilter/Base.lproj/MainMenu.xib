@@ -677,17 +677,26 @@
                 <rect key="frame" x="0.0" y="0.0" width="680" height="544"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <openGLView fixedFrame="YES" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ovs-Dc-fQV" customClass="RenderView" customModule="GPUImage">
+                    <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ovs-Dc-fQV" customClass="RenderView" customModule="GPUImage">
                         <rect key="frame" x="20" y="44" width="640" height="480"/>
                     </openGLView>
-                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDh-cd-yrp">
+                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EDh-cd-yrp">
                         <rect key="frame" x="18" y="18" width="644" height="20"/>
-                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="2" tickMarkPosition="above" sliderType="linear" id="a2e-UK-BFo"/>
+                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.29999999999999999" tickMarkPosition="above" sliderType="linear" id="a2e-UK-BFo"/>
                         <connections>
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="filterValue" id="Nbi-z3-wAg"/>
                         </connections>
                     </slider>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="EDh-cd-yrp" secondAttribute="bottom" constant="20" symbolic="YES" id="6Iw-xi-jCr"/>
+                    <constraint firstItem="Ovs-Dc-fQV" firstAttribute="trailing" secondItem="EDh-cd-yrp" secondAttribute="trailing" id="ClM-Bn-8sz"/>
+                    <constraint firstItem="Ovs-Dc-fQV" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="CyZ-HL-PkH"/>
+                    <constraint firstItem="Ovs-Dc-fQV" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="S0R-xP-0d3"/>
+                    <constraint firstItem="EDh-cd-yrp" firstAttribute="top" secondItem="Ovs-Dc-fQV" secondAttribute="bottom" constant="8" symbolic="YES" id="U6A-io-wMe"/>
+                    <constraint firstItem="Ovs-Dc-fQV" firstAttribute="leading" secondItem="EDh-cd-yrp" secondAttribute="leading" id="Zyz-jd-omW"/>
+                    <constraint firstAttribute="trailing" secondItem="Ovs-Dc-fQV" secondAttribute="trailing" constant="20" symbolic="YES" id="cqI-cM-L4U"/>
+                </constraints>
             </view>
         </window>
     </objects>

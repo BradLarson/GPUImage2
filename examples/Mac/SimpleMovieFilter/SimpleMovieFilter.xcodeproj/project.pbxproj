@@ -12,6 +12,7 @@
 		BCC49F6A1CD5AF5200B63EEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCC49F691CD5AF5200B63EEB /* Assets.xcassets */; };
 		BCC49F761CD5AF7500B63EEB /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC49F711CD5AF6300B63EEB /* GPUImage.framework */; };
 		BCC49F781CD5AF8600B63EEB /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCC49F711CD5AF6300B63EEB /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BCC49F801CD6B86600B63EEB /* sample_iPod.m4v in Resources */ = {isa = PBXBuildFile; fileRef = BCC49F7F1CD6B86600B63EEB /* sample_iPod.m4v */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		BCC49F621CD5AF1D00B63EEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCC49F691CD5AF5200B63EEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../SharedAssets/Assets.xcassets; sourceTree = "<group>"; };
 		BCC49F6B1CD5AF6300B63EEB /* GPUImage-Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-Mac.xcodeproj"; path = "../../../../framework/GPUImage-Mac.xcodeproj"; sourceTree = "<group>"; };
+		BCC49F7F1CD6B86600B63EEB /* sample_iPod.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = sample_iPod.m4v; path = ../../../SharedAssets/sample_iPod.m4v; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		BCC49F681CD5AF2A00B63EEB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BCC49F7F1CD6B86600B63EEB /* sample_iPod.m4v */,
 				BCC49F621CD5AF1D00B63EEB /* Info.plist */,
 				BCC49F691CD5AF5200B63EEB /* Assets.xcassets */,
 			);
@@ -202,6 +205,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCC49F801CD6B86600B63EEB /* sample_iPod.m4v in Resources */,
 				BCC49F6A1CD5AF5200B63EEB /* Assets.xcassets in Resources */,
 				BCC49F611CD5AF1D00B63EEB /* MainMenu.xib in Resources */,
 			);
@@ -277,7 +281,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -316,7 +320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -365,6 +369,7 @@
 				BCC49F671CD5AF1D00B63EEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

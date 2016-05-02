@@ -2,9 +2,10 @@ import Foundation
 import AVFoundation
 
 public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
-    public let targets = TargetContainer()
     public var orientation:ImageOrientation
-    
+    public var runBenchmark:Bool = false
+
+    public let targets = TargetContainer()
     let captureSession:AVCaptureSession
     let inputCamera:AVCaptureDevice
     let videoInput:AVCaptureDeviceInput!
@@ -16,7 +17,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)
     let audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)
 
-    public var runBenchmark:Bool = false
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
 

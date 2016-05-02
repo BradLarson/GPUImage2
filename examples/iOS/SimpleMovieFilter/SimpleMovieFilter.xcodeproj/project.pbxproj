@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCC49F931CD6E1D800B63EEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */; };
+		BCC49F951CD6E1D800B63EEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC49F941CD6E1D800B63EEB /* ViewController.swift */; };
+		BCC49F981CD6E1D800B63EEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCC49F961CD6E1D800B63EEB /* Main.storyboard */; };
+		BCC49F9D1CD6E1D800B63EEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCC49F9B1CD6E1D800B63EEB /* LaunchScreen.storyboard */; };
+		BCC49FA61CD6E20000B63EEB /* sample_iPod.m4v in Resources */ = {isa = PBXBuildFile; fileRef = BCC49FA51CD6E20000B63EEB /* sample_iPod.m4v */; };
+		BCC49FB21CD6E21F00B63EEB /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC49FAD1CD6E21000B63EEB /* GPUImage.framework */; };
+		BCC49FB41CD6E22B00B63EEB /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCC49FAD1CD6E21000B63EEB /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCC49FAC1CD6E21000B63EEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+		BCC49FAE1CD6E21000B63EEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
+			remoteInfo = GPUImageTests;
+		};
+		BCC49FB01CD6E21A00B63EEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BCC49FB31CD6E22200B63EEB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BCC49FB41CD6E22B00B63EEB /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BCC49F8F1CD6E1D800B63EEB /* SimpleMovieFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMovieFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BCC49F941CD6E1D800B63EEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BCC49F971CD6E1D800B63EEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BCC49F9C1CD6E1D800B63EEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BCC49F9E1CD6E1D800B63EEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCC49FA51CD6E20000B63EEB /* sample_iPod.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = sample_iPod.m4v; path = ../../../SharedAssets/sample_iPod.m4v; sourceTree = "<group>"; };
+		BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-iOS.xcodeproj"; path = "../../../../framework/GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCC49F8C1CD6E1D800B63EEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC49FB21CD6E21F00B63EEB /* GPUImage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCC49F861CD6E1D800B63EEB = {
+			isa = PBXGroup;
+			children = (
+				BCC49F911CD6E1D800B63EEB /* Application */,
+				BCC49FA41CD6E1E300B63EEB /* Resources */,
+				BCC49F901CD6E1D800B63EEB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCC49F901CD6E1D800B63EEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCC49F8F1CD6E1D800B63EEB /* SimpleMovieFilter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCC49F911CD6E1D800B63EEB /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */,
+				BCC49F941CD6E1D800B63EEB /* ViewController.swift */,
+				BCC49F961CD6E1D800B63EEB /* Main.storyboard */,
+				BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */,
+			);
+			name = Application;
+			path = SimpleMovieFilter;
+			sourceTree = "<group>";
+		};
+		BCC49FA41CD6E1E300B63EEB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BCC49FA51CD6E20000B63EEB /* sample_iPod.m4v */,
+				BCC49F9B1CD6E1D800B63EEB /* LaunchScreen.storyboard */,
+				BCC49F9E1CD6E1D800B63EEB /* Info.plist */,
+			);
+			name = Resources;
+			path = SimpleMovieFilter;
+			sourceTree = "<group>";
+		};
+		BCC49FA81CD6E21000B63EEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCC49FAD1CD6E21000B63EEB /* GPUImage.framework */,
+				BCC49FAF1CD6E21000B63EEB /* GPUImageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCC49F8E1CD6E1D800B63EEB /* SimpleMovieFilter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCC49FA11CD6E1D800B63EEB /* Build configuration list for PBXNativeTarget "SimpleMovieFilter" */;
+			buildPhases = (
+				BCC49F8B1CD6E1D800B63EEB /* Sources */,
+				BCC49F8C1CD6E1D800B63EEB /* Frameworks */,
+				BCC49F8D1CD6E1D800B63EEB /* Resources */,
+				BCC49FB31CD6E22200B63EEB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCC49FB11CD6E21A00B63EEB /* PBXTargetDependency */,
+			);
+			name = SimpleMovieFilter;
+			productName = SimpleMovieFilter;
+			productReference = BCC49F8F1CD6E1D800B63EEB /* SimpleMovieFilter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCC49F871CD6E1D800B63EEB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Sunset Lake Software LLC";
+				TargetAttributes = {
+					BCC49F8E1CD6E1D800B63EEB = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = BCC49F8A1CD6E1D800B63EEB /* Build configuration list for PBXProject "SimpleMovieFilter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BCC49F861CD6E1D800B63EEB;
+			productRefGroup = BCC49F901CD6E1D800B63EEB /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BCC49FA81CD6E21000B63EEB /* Products */;
+					ProjectRef = BCC49FA71CD6E21000B63EEB /* GPUImage-iOS.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				BCC49F8E1CD6E1D800B63EEB /* SimpleMovieFilter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		BCC49FAD1CD6E21000B63EEB /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BCC49FAC1CD6E21000B63EEB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BCC49FAF1CD6E21000B63EEB /* GPUImageTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests.xctest;
+			remoteRef = BCC49FAE1CD6E21000B63EEB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCC49F8D1CD6E1D800B63EEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC49FA61CD6E20000B63EEB /* sample_iPod.m4v in Resources */,
+				BCC49F9D1CD6E1D800B63EEB /* LaunchScreen.storyboard in Resources */,
+				BCC49F981CD6E1D800B63EEB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCC49F8B1CD6E1D800B63EEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCC49F951CD6E1D800B63EEB /* ViewController.swift in Sources */,
+				BCC49F931CD6E1D800B63EEB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BCC49FB11CD6E21A00B63EEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = BCC49FB01CD6E21A00B63EEB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BCC49F961CD6E1D800B63EEB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC49F971CD6E1D800B63EEB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BCC49F9B1CD6E1D800B63EEB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCC49F9C1CD6E1D800B63EEB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BCC49F9F1CD6E1D800B63EEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCC49FA01CD6E1D800B63EEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCC49FA21CD6E1D800B63EEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleMovieFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleMovieFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BCC49FA31CD6E1D800B63EEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleMovieFilter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleMovieFilter;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCC49F8A1CD6E1D800B63EEB /* Build configuration list for PBXProject "SimpleMovieFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCC49F9F1CD6E1D800B63EEB /* Debug */,
+				BCC49FA01CD6E1D800B63EEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCC49FA11CD6E1D800B63EEB /* Build configuration list for PBXNativeTarget "SimpleMovieFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCC49FA21CD6E1D800B63EEB /* Debug */,
+				BCC49FA31CD6E1D800B63EEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCC49F871CD6E1D800B63EEB /* Project object */;
+}

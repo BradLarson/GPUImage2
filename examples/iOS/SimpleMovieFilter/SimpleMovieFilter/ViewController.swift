@@ -1,25 +1,19 @@
-import Cocoa
+import UIKit
 import GPUImage
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet weak var window: NSWindow!
+class ViewController: UIViewController {
+    
     @IBOutlet weak var renderView: RenderView!
     
     var movie:MovieInput!
     var filter:Pixellate!
     
-    dynamic var filterValue = 0.05 {
-        didSet {
-            filter.fractionalWidthOfAPixel = GLfloat(filterValue)
-        }
-    }
-    
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         let bundleURL = NSBundle.mainBundle().resourceURL!
         let movieURL = NSURL(string:"sample_iPod.m4v", relativeToURL:bundleURL)!
-
+        
         do {
             movie = try MovieInput(url:movieURL, playAtActualSpeed:true)
             filter = Pixellate()
@@ -29,6 +23,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } catch {
             print("Couldn't process movie with error: \(error)")
         }
+
+//            let documentsDir = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain:.UserDomainMask, appropriateForURL:nil, create:true)
+//            let fileURL = NSURL(string:"test.png", relativeToURL:documentsDir)!
+//            try pngImage.writeToURL(fileURL, options:.DataWritingAtomic)
     }
 }
 

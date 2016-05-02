@@ -8,35 +8,32 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SimpleImageFilter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SimpleMovieFilter" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="mTz-kJ-GVc">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CvO-9R-FOI" customClass="RenderView" customModule="GPUImage">
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZG-4E-PsH" customClass="RenderView" customModule="GPUImage">
                                 <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="CvO-9R-FOI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="9bT-1w-xBx"/>
-                            <constraint firstAttribute="trailing" secondItem="CvO-9R-FOI" secondAttribute="trailing" id="jGF-KI-3cK"/>
-                            <constraint firstItem="CvO-9R-FOI" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="m0U-Nn-Kkd"/>
-                            <constraint firstItem="CvO-9R-FOI" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="sZP-SE-REJ"/>
+                            <constraint firstAttribute="trailing" secondItem="TZG-4E-PsH" secondAttribute="trailing" id="eaB-aM-y2J"/>
+                            <constraint firstItem="TZG-4E-PsH" firstAttribute="leading" secondItem="mTz-kJ-GVc" secondAttribute="leading" id="j8T-4u-Tsw"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="renderView" destination="CvO-9R-FOI" id="1gU-D0-9CV"/>
+                        <outlet property="renderView" destination="TZG-4E-PsH" id="hs7-9N-6BV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="339" y="472"/>
         </scene>
     </scenes>
 </document>
