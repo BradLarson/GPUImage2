@@ -90,6 +90,9 @@ public class TargetContainer:SequenceType {
     var targets = [WeakImageConsumer]()
     var count:Int { get {return targets.count}}
 
+    public init() {
+    }
+    
     public func append(target:ImageConsumer, indexAtTarget:UInt) {
         // TODO: Don't allow the addition of a target more than once
         targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
