@@ -123,6 +123,9 @@ public class TargetContainer:SequenceType {
 public class SourceContainer {
     var sources:[UInt:ImageSource] = [:]
     
+    public init() {
+    }
+    
     public func append(source:ImageSource, maximumInputs:UInt) -> UInt? {
         var currentIndex:UInt = 0
         while currentIndex < maximumInputs {
