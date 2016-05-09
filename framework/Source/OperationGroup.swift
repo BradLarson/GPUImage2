@@ -6,6 +6,9 @@ public class OperationGroup: ImageProcessingOperation {
     public var targets:TargetContainer { get { return outputImageRelay.targets } }
     public let maximumInputs:UInt = 1
     
+    public init() {
+    }
+    
     public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
         inputImageRelay.newFramebufferAvailable(framebuffer, fromSourceIndex:fromSourceIndex)
     }
