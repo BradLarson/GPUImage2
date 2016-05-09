@@ -23,3 +23,5 @@ xcuserdata
 # Documentation
 documentation/*
 
+# Carthage
+Carthage/Build
