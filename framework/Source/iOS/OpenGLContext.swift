@@ -23,9 +23,9 @@ public class OpenGLContext: SerialDispatch {
     }()
     
     
-    let serialDispatchQueue:dispatch_queue_t = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.processingQueue", nil)
+    public let serialDispatchQueue:dispatch_queue_t = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.processingQueue", nil)
     var dispatchKey:Int = 1
-    let dispatchQueueKey:UnsafePointer<Void>
+    public let dispatchQueueKey:UnsafePointer<Void>
 
     // MARK: -
     // MARK: Initialization and teardown
@@ -49,7 +49,7 @@ public class OpenGLContext: SerialDispatch {
     // MARK: -
     // MARK: Rendering
     
-    func makeCurrentContext() {
+    public func makeCurrentContext() {
         if (EAGLContext.currentContext() != self.context)
         {
             EAGLContext.setCurrentContext(self.context)

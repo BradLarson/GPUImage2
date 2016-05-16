@@ -43,6 +43,8 @@ public enum FramebufferTimingStyle {
 }
 
 public class Framebuffer {
+    public var timingStyle:FramebufferTimingStyle = .StillImage
+
     let texture:GLuint
     let framebuffer:GLuint?
     let stencilBuffer:GLuint?
@@ -53,10 +55,9 @@ public class Framebuffer {
     let type:Int32
 
     let hash:String
-    var timingStyle:FramebufferTimingStyle = .StillImage
     let textureOverride:Bool
     
-    init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
+    public init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
         self.size = size
         self.orientation = orientation
         self.internalFormat = internalFormat

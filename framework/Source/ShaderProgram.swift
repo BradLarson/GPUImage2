@@ -52,24 +52,11 @@ public class ShaderProgram {
     }
 
     public convenience init(vertexShader:String, fragmentShaderFile:NSURL) throws {
-        // Note: this is a hack until Foundation's String initializers are fully functional
-        //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
-        guard (NSFileManager.defaultManager().fileExistsAtPath(fragmentShaderFile.path!)) else { throw ShaderCompileError(compileLog:"Fragment shader file missing")}
-        let fragmentShaderString = try NSString(contentsOfFile:fragmentShaderFile.path!, encoding:NSASCIIStringEncoding)
-        
-        try self.init(vertexShader:vertexShader, fragmentShader:String(fragmentShaderString))
+        try self.init(vertexShader:vertexShader, fragmentShader:try shaderFromFile(fragmentShaderFile))
     }
 
     public convenience init(vertexShaderFile:NSURL, fragmentShaderFile:NSURL) throws {
-        // Note: this is a hack until Foundation's String initializers are fully functional
-        //        let vertexShaderString = String(contentsOfURL:vertexShaderFile, encoding:NSASCIIStringEncoding)
-        //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
-        guard (NSFileManager.defaultManager().fileExistsAtPath(vertexShaderFile.path!)) else { throw ShaderCompileError(compileLog:"Vertex shader file missing")}
-        guard (NSFileManager.defaultManager().fileExistsAtPath(fragmentShaderFile.path!)) else { throw ShaderCompileError(compileLog:"Fragment shader file missing")}
-        let vertexShaderString = try NSString(contentsOfFile:vertexShaderFile.path!, encoding:NSASCIIStringEncoding)
-        let fragmentShaderString = try NSString(contentsOfFile:fragmentShaderFile.path!, encoding:NSASCIIStringEncoding)
-        
-        try self.init(vertexShader:String(vertexShaderString), fragmentShader:String(fragmentShaderString))
+        try self.init(vertexShader:try shaderFromFile(vertexShaderFile), fragmentShader:try shaderFromFile(fragmentShaderFile))
     }
     
     deinit {
@@ -218,7 +205,7 @@ public class ShaderProgram {
         initialized = true
     }
     
-    func use() {
+    public func use() {
         glUseProgram(program)
     }
 }
@@ -258,11 +245,20 @@ func compileShader(shaderString:String, type:ShaderType) throws -> GLuint {
     return shaderHandle
 }
 
-func crashOnShaderCompileFailure<T>(shaderName:String, _ operation:() throws -> T) -> T {
+public func crashOnShaderCompileFailure<T>(shaderName:String, _ operation:() throws -> T) -> T {
     do {
         return try operation()
     } catch {
         print("ERROR: \(shaderName) compilation failed with error: \(error)")
         fatalError("Aborting execution.")
     }
+}
+
+public func shaderFromFile(file:NSURL) throws -> String {
+    // Note: this is a hack until Foundation's String initializers are fully functional
+    //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
+    guard (NSFileManager.defaultManager().fileExistsAtPath(file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
+    let fragmentShaderString = try NSString(contentsOfFile:file.path!, encoding:NSASCIIStringEncoding)
+    
+    return String(fragmentShaderString)
 }

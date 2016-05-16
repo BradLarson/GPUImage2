@@ -22,16 +22,16 @@ struct InputTextureProperties {
     let texture:GLuint
 }
 
-struct GLSize {
-    let width:GLint
-    let height:GLint
+public struct GLSize {
+    public let width:GLint
+    public let height:GLint
     
-    init(width:GLint, height:GLint) {
+    public init(width:GLint, height:GLint) {
         self.width = width
         self.height = height
     }
     
-    init(_ size:Size) {
+    public init(_ size:Size) {
         self.width = size.glWidth()
         self.height = size.glHeight()
     }
@@ -44,8 +44,8 @@ extension Size {
     }
 }
 
-let standardImageVertices:[GLfloat] = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0]
-let verticallyInvertedImageVertices:[GLfloat] = [-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]
+public let standardImageVertices:[GLfloat] = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0]
+public let verticallyInvertedImageVertices:[GLfloat] = [-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]
 
 // "position" and "inputTextureCoordinate", "inputTextureCoordinate2" attribute naming follows the convention of the old GPUImage
 func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat], inputTextures:[InputTextureProperties]) {
@@ -77,7 +77,7 @@ func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSet
     }
 }
 
-func clearFramebufferWithColor(color:Color) {
+public func clearFramebufferWithColor(color:Color) {
     glClearColor(GLfloat(color.red), GLfloat(color.green), GLfloat(color.blue), GLfloat(color.alpha))
     glClear(GLenum(GL_COLOR_BUFFER_BIT))
 }

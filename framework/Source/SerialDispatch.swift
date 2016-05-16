@@ -45,21 +45,21 @@ func runOnMainQueue(mainThreadOperation:() -> ()) {
 // MARK: -
 // MARK: SerialDispatch extension
 
-protocol SerialDispatch {
+public protocol SerialDispatch {
     var serialDispatchQueue:dispatch_queue_t { get }
     var dispatchQueueKey:UnsafePointer<Void> { get }
     func makeCurrentContext()
 }
 
-extension SerialDispatch {
-    func runOperationAsynchronously(operation:() -> ()) {
+public extension SerialDispatch {
+    public func runOperationAsynchronously(operation:() -> ()) {
         dispatch_async(self.serialDispatchQueue) {
             self.makeCurrentContext()
             operation()
         }
     }
     
-    func runOperationSynchronously(operation:() -> ()) {
+    public func runOperationSynchronously(operation:() -> ()) {
         // TODO: Verify this works as intended
         let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
         if (dispatch_get_specific(self.dispatchQueueKey) == context) {
@@ -72,7 +72,7 @@ extension SerialDispatch {
         }
     }
     
-    func runOperationSynchronously(operation:() throws -> ()) throws {
+    public func runOperationSynchronously(operation:() throws -> ()) throws {
         var caughtError:ErrorType? = nil
         runOperationSynchronously {
             do {
@@ -84,7 +84,7 @@ extension SerialDispatch {
         if (caughtError != nil) {throw caughtError!}
     }
     
-    func runOperationSynchronously<T>(operation:() throws -> T) throws -> T {
+    public func runOperationSynchronously<T>(operation:() throws -> T) throws -> T {
         var returnedValue: T!
         try runOperationSynchronously {
             returnedValue = try operation()
@@ -92,7 +92,7 @@ extension SerialDispatch {
         return returnedValue
     }
 
-    func runOperationSynchronously<T>(operation:() -> T) -> T {
+    public func runOperationSynchronously<T>(operation:() -> T) -> T {
         var returnedValue: T!
         runOperationSynchronously {
             returnedValue = operation()

@@ -15,10 +15,10 @@
 
 import Foundation
 
-let sharedImageProcessingContext = OpenGLContext()
+public let sharedImageProcessingContext = OpenGLContext()
 
 extension OpenGLContext {
-    func programForVertexShader(vertexShader:String, fragmentShader:String) throws -> ShaderProgram {
+    public func programForVertexShader(vertexShader:String, fragmentShader:String) throws -> ShaderProgram {
         let lookupKeyForShaderProgram = "V: \(vertexShader) - F: \(fragmentShader)"
         if let shaderFromCache = shaderCache[lookupKeyForShaderProgram] {
             return shaderFromCache
@@ -30,8 +30,16 @@ extension OpenGLContext {
             }
         }
     }
+
+    public func programForVertexShader(vertexShader:String, fragmentShader:NSURL) throws -> ShaderProgram {
+        return try programForVertexShader(vertexShader, fragmentShader:try shaderFromFile(fragmentShader))
+    }
     
-    func openGLDeviceSettingForOption(option:Int32) -> GLint {
+    public func programForVertexShader(vertexShader:NSURL, fragmentShader:NSURL) throws -> ShaderProgram {
+        return try programForVertexShader(try shaderFromFile(vertexShader), fragmentShader:try shaderFromFile(fragmentShader))
+    }
+    
+    public func openGLDeviceSettingForOption(option:Int32) -> GLint {
         return self.runOperationSynchronously{() -> GLint in
             self.makeCurrentContext()
             var openGLValue:GLint = 0
@@ -40,7 +48,7 @@ extension OpenGLContext {
         }
     }
  
-    func deviceSupportsExtension(openGLExtension:String) -> Bool {
+    public func deviceSupportsExtension(openGLExtension:String) -> Bool {
 #if os(Linux)
         return false
 #else
@@ -50,15 +58,15 @@ extension OpenGLContext {
     
     // http://www.khronos.org/registry/gles/extensions/EXT/EXT_texture_rg.txt
     
-    func deviceSupportsRedTextures() -> Bool {
+    public func deviceSupportsRedTextures() -> Bool {
         return deviceSupportsExtension("GL_EXT_texture_rg")
     }
 
-    func deviceSupportsFramebufferReads() -> Bool {
+    public func deviceSupportsFramebufferReads() -> Bool {
         return deviceSupportsExtension("GL_EXT_shader_framebuffer_fetch")
     }
     
-    func sizeThatFitsWithinATextureForSize(size:Size) -> Size {
+    public func sizeThatFitsWithinATextureForSize(size:Size) -> Size {
         let maxTextureSize = Float(self.maximumTextureSizeForThisDevice)
         if ( (size.width < maxTextureSize) && (size.height < maxTextureSize) ) {
             return size

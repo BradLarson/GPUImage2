@@ -1,6 +1,6 @@
 import Foundation
 
-func defaultVertexShaderForInputs(inputCount:UInt) -> String {
+public func defaultVertexShaderForInputs(inputCount:UInt) -> String {
     switch inputCount {
         case 1: return OneInputVertexShader
         case 2: return TwoInputVertexShader
@@ -67,11 +67,10 @@ public class BasicOperation: ImageProcessingOperation {
 
     public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = __FILE__) throws {
         let compiledShader:ShaderProgram
-        // TODO: Replace this with caching for the shader programs
         if let vertexShaderFile = vertexShaderFile {
-            compiledShader = crashOnShaderCompileFailure(operationName){try ShaderProgram(vertexShaderFile:vertexShaderFile, fragmentShaderFile:fragmentShaderFile)}
+            compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(vertexShaderFile, fragmentShader:fragmentShaderFile)}
         } else {
-            compiledShader = crashOnShaderCompileFailure(operationName){try ShaderProgram(vertexShader:defaultVertexShaderForInputs(numberOfInputs), fragmentShaderFile:fragmentShaderFile)}
+            compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(numberOfInputs), fragmentShader:fragmentShaderFile)}
         }
         self.maximumInputs = numberOfInputs
         self.shader = compiledShader
