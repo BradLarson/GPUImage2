@@ -115,6 +115,7 @@ public extension UIImage {
     }
 }
 
-func dataProviderReleaseCallback(pointer:UnsafeMutablePointer<Void>, context:UnsafePointer<Void>, size:Int) {
-    pointer.dealloc(size)
+// Why are these flipped in the callback definition?
+func dataProviderReleaseCallback(context:UnsafeMutablePointer<Void>, data:UnsafePointer<Void>, size:Int) {
+    UnsafeMutablePointer<UInt8>(data).dealloc(size)
 }

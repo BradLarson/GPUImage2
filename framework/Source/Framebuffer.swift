@@ -54,7 +54,7 @@ public class Framebuffer {
     let format:Int32
     let type:Int32
 
-    let hash:String
+    let hash:Int
     let textureOverride:Bool
     
     public init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
@@ -179,8 +179,21 @@ public class Framebuffer {
     }
 }
 
-func hashForFramebufferWithProperties(orientation orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> String {
-    return "\(size.width), \(size.height) - \(orientation) - \(textureOnly) - \(minFilter), \(magFilter) - \(wrapS), \(wrapT) - \(internalFormat) - \(format) - \(type) - \(stencil)"
+func hashForFramebufferWithProperties(orientation orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int {
+    var result = 1
+    let prime = 31
+    let yesPrime = 1231
+    let noPrime = 1237
+    
+    // TODO: Complete the rest of this
+    result = prime * result + Int(size.width)
+    result = prime * result + Int(size.height)
+    result = prime * result + Int(internalFormat)
+    result = prime * result + Int(format)
+    result = prime * result + Int(type)
+    result = prime * result + (textureOnly ? yesPrime : noPrime)
+    result = prime * result + (stencil ? yesPrime : noPrime)
+    return result
 }
 
 // MARK: -
