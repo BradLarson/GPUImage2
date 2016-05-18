@@ -100,7 +100,7 @@ public class MovieOutput: ImageConsumer {
 
         // TODO: Run the following on an internal movie recording dispatch queue, context
         guard (assetWriterVideoInput.readyForMoreMediaData || (!encodingLiveVideo)) else {
-            print("Had to drop a frame at time \(frameTime)")
+            debugPrint("Had to drop a frame at time \(frameTime)")
             return
         }
         

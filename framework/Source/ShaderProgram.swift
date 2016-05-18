@@ -60,7 +60,7 @@ public class ShaderProgram {
     }
     
     deinit {
-        print("Shader deallocated")
+        debugPrint("Shader deallocated")
 
         if (vertexShader != nil) {
             glDeleteShader(vertexShader)
@@ -116,7 +116,7 @@ public class ShaderProgram {
     
     public func setValue(value:GLfloat, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
-            print("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
+            debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
         if (currentUniformFloatValues[forUniform] != value) {
@@ -127,7 +127,7 @@ public class ShaderProgram {
 
     public func setValue(value:GLint, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
-            print("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
+            debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
         if (currentUniformIntValues[forUniform] != value) {
@@ -146,7 +146,7 @@ public class ShaderProgram {
     
     public func setValue(value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
-            print("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
+            debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
         if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{
@@ -166,7 +166,7 @@ public class ShaderProgram {
 
     public func setMatrix(value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
-            print("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
+            debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
         if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{

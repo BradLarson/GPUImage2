@@ -48,7 +48,7 @@ public class MovieInput: ImageSource {
                 guard (self.asset.statusOfValueForKey("tracks", error:nil) == .Loaded) else { return }
 
                 guard self.assetReader.startReading() else {
-                    print("Couldn't start reading")
+                    debugPrint("Couldn't start reading")
                     return
                 }
                 

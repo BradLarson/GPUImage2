@@ -94,7 +94,7 @@ public class Framebuffer {
         if (!textureOverride) {
             var mutableTexture = texture
             glDeleteTextures(1, &mutableTexture)
-            print("Delete texture at size: \(size)")
+            debugPrint("Delete texture at size: \(size)")
         }
         
         if let framebuffer = framebuffer {
@@ -210,7 +210,7 @@ extension Rotation {
             case NoRotation: return [minX, minY, maxX, minY, minX, maxY, maxX, maxY]
             case RotateCounterclockwise: return [minX, maxY, minX, minY, maxX, maxY, maxX, minY]
             case RotateClockwise: return [maxX, minY, maxX, maxY, minX, minY, minX, maxY]
-            case Rotate180: return [maxX, maxY, minX, maxY, maxX, minY, maxX, minY]
+            case Rotate180: return [maxX, maxY, minX, maxY, maxX, minY, minX, minY]
             case FlipHorizontally: return [maxX, minY, minX, minY, maxX, maxY, minX, maxY]
             case FlipVertically: return [minX, maxY, maxX, maxY, minX, minY, maxX, minY]
             case RotateClockwiseAndFlipVertically: return [minX, minY, minX, maxY, maxX, minY, maxX, maxY]

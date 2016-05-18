@@ -115,4 +115,8 @@ public class V4LCamera:ImageSource {
             v4l2_munmap(buffer.start, buffer.length)
         }
     }
+
+    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+        // Not needed for camera inputs
+    }
 }

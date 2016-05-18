@@ -52,7 +52,7 @@ func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSet
     sharedImageProcessingContext.makeCurrentContext()
     shader.use()
     uniformSettings?.restoreShaderSettings(shader)
-    
+
     guard let positionAttribute = shader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
     glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, vertices)
 
