@@ -132,10 +132,17 @@ public class BasicOperation: ImageProcessingOperation {
         var remainingFramebuffers = [UInt:Framebuffer]()
         // If all inputs are still images, have this output behave as one
         renderFramebuffer.timingStyle = .StillImage
+        
+        var latestTimestamp:Timestamp?
         for (key, framebuffer) in inputFramebuffers {
-            if framebuffer.timingStyle.isTransient() {
-                // TODO: Provide some kind of timestamp synchronization here
-                renderFramebuffer.timingStyle = framebuffer.timingStyle
+            
+            // When there are multiple transient input sources, use the latest timestamp as the value to pass along
+            if let timestamp = framebuffer.timingStyle.timestamp {
+                if !(timestamp < (latestTimestamp ?? timestamp)) {
+                    latestTimestamp = timestamp
+                    renderFramebuffer.timingStyle = .VideoFrame(timestamp:timestamp)
+                }
+                
                 framebuffer.unlock()
             } else {
                 remainingFramebuffers[key] = framebuffer

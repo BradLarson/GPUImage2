@@ -83,6 +83,7 @@ public class MovieOutput: ImageConsumer {
         defer {
             framebuffer.unlock()
         }
+        
         guard isRecording else { return }
         // Ignore still images and other non-video updates (do I still need this?)
         guard let frameTime = framebuffer.timingStyle.timestamp?.asCMTime else { return }
