@@ -28,6 +28,7 @@ class FramebufferCache {
         if (framebufferCache[hash]?.count > 0) {
 //            print("Restoring previous framebuffer")
             framebuffer = framebufferCache[hash]!.removeLast()
+            framebuffer.orientation = orientation
         } else {
             do {
                 debugPrint("Generating new framebuffer at size: \(size)")

@@ -44,12 +44,12 @@ public enum FramebufferTimingStyle {
 
 public class Framebuffer {
     public var timingStyle:FramebufferTimingStyle = .StillImage
+    public var orientation:ImageOrientation
 
     let texture:GLuint
     let framebuffer:GLuint?
     let stencilBuffer:GLuint?
     let size:GLSize
-    let orientation:ImageOrientation
     let internalFormat:Int32
     let format:Int32
     let type:Int32
