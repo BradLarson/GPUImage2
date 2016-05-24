@@ -148,7 +148,7 @@ public class Framebuffer {
         return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
     }
     
-    func activateFramebufferForRendering() {
+    public func activateFramebufferForRendering() {
         guard let framebuffer = framebuffer else { fatalError("ERROR: Attempted to activate a framebuffer that has not been initialized") }
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), framebuffer)
         glViewport(0, 0, size.width, size.height)

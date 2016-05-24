@@ -101,7 +101,7 @@ extension Matrix4x4 {
     }
 }
 
-extension Matrix3x3 {
+public extension Matrix3x3 {
     func toRowMajorGLArray() -> [GLfloat] {
         return [m11, m12, m13,
                 m21, m22, m23,

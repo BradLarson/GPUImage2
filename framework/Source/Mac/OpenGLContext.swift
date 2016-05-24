@@ -4,7 +4,7 @@ import Cocoa
 // TODO: Figure out way to allow for multiple contexts for different GPUs
 
 public class OpenGLContext: SerialDispatch {
-    lazy var framebufferCache:FramebufferCache = {
+    public lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
     var shaderCache:[String:ShaderProgram] = [:]
