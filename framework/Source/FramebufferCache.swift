@@ -15,7 +15,7 @@
 // TODO: Add mechanism to purge framebuffers on low memory
 
 public class FramebufferCache {
-    var framebufferCache = [Int:[Framebuffer]]()
+    var framebufferCache = [Int64:[Framebuffer]]()
     let context:OpenGLContext
     
     init(context:OpenGLContext) {
