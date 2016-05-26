@@ -1,9 +1,12 @@
 import Foundation
 import AVFoundation
 
+let initialBenchmarkFramesToIgnore = 5
+
 public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
     public var orientation:ImageOrientation
     public var runBenchmark:Bool = false
+    public var logFPS:Bool = false
 
     public let targets = TargetContainer()
     let captureSession:AVCaptureSession
@@ -19,7 +22,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
 
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
-
+    var framesSinceLastCheck = 0
+    var lastCheckTime = CFAbsoluteTimeGetCurrent()
 
     public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, orientation:ImageOrientation = .Portrait, captureAsYUV:Bool = true) throws {
         self.inputCamera = cameraDevice ?? AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
@@ -125,18 +129,33 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             self.updateTargetsWithFramebuffer(cameraFramebuffer)
             
             if self.runBenchmark {
-                let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
                 self.numberOfFramesCaptured += 1
-                self.totalFrameTimeDuringCapture += currentFrameTime
-                print("Average frame time : \(1000.0 * self.totalFrameTimeDuringCapture / Double(self.numberOfFramesCaptured)) ms")
-                print("Current frame time : \(1000.0 * currentFrameTime) ms")
+                if (self.numberOfFramesCaptured > initialBenchmarkFramesToIgnore) {
+                    let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
+                    self.totalFrameTimeDuringCapture += currentFrameTime
+                    print("Average frame time : \(1000.0 * self.totalFrameTimeDuringCapture / Double(self.numberOfFramesCaptured - initialBenchmarkFramesToIgnore)) ms")
+                    print("Current frame time : \(1000.0 * currentFrameTime) ms")
+                }
             }
-            
+        
+            if self.logFPS {
+                if ((CFAbsoluteTimeGetCurrent() - self.lastCheckTime) > 1.0) {
+                    self.lastCheckTime = CFAbsoluteTimeGetCurrent()
+                    print("FPS: \(self.framesSinceLastCheck)")
+                    self.framesSinceLastCheck = 0
+                }
+                
+                self.framesSinceLastCheck += 1
+            }
+
             dispatch_semaphore_signal(self.frameRenderingSemaphore)
         }
     }
 
     public func startCapture() {
+        self.numberOfFramesCaptured = 0
+        self.totalFrameTimeDuringCapture = 0
+
         if (!captureSession.running) {
             captureSession.startRunning()
         }

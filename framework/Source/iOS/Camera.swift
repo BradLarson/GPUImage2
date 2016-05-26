@@ -36,6 +36,8 @@ struct CameraError: ErrorType {
     
 }
 
+let initialBenchmarkFramesToIgnore = 5
+
 public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
     public var location:PhysicalCameraLocation {
         didSet {
@@ -43,7 +45,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         }
     }
     public var runBenchmark:Bool = false
-
+    public var logFPS:Bool = false
     
     public let targets = TargetContainer()
     let captureSession:AVCaptureSession
@@ -57,9 +59,12 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)
     let audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)
 
+    let framesToIgnore = 5
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
-    
+    var framesSinceLastCheck = 0
+    var lastCheckTime = CFAbsoluteTimeGetCurrent()
+
     public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .BackFacing, captureAsYUV:Bool = true) throws {
         
         self.location = location
@@ -209,18 +214,33 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             self.updateTargetsWithFramebuffer(cameraFramebuffer)
             
             if self.runBenchmark {
-                let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
                 self.numberOfFramesCaptured += 1
-                self.totalFrameTimeDuringCapture += currentFrameTime
-                print("Average frame time : \(1000.0 * self.totalFrameTimeDuringCapture / Double(self.numberOfFramesCaptured)) ms")
-                print("Current frame time : \(1000.0 * currentFrameTime) ms")
+                if (self.numberOfFramesCaptured > initialBenchmarkFramesToIgnore) {
+                    let currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime)
+                    self.totalFrameTimeDuringCapture += currentFrameTime
+                    print("Average frame time : \(1000.0 * self.totalFrameTimeDuringCapture / Double(self.numberOfFramesCaptured - initialBenchmarkFramesToIgnore)) ms")
+                    print("Current frame time : \(1000.0 * currentFrameTime) ms")
+                }
             }
             
+            if self.logFPS {
+                if ((CFAbsoluteTimeGetCurrent() - self.lastCheckTime) > 1.0) {
+                    self.lastCheckTime = CFAbsoluteTimeGetCurrent()
+                    print("FPS: \(self.framesSinceLastCheck)")
+                    self.framesSinceLastCheck = 0
+                }
+                
+                self.framesSinceLastCheck += 1
+            }
+
             dispatch_semaphore_signal(self.frameRenderingSemaphore)
         }
     }
 
     public func startCapture() {
+        self.numberOfFramesCaptured = 0
+        self.totalFrameTimeDuringCapture = 0
+        
         if (!captureSession.running) {
             captureSession.startRunning()
         }
