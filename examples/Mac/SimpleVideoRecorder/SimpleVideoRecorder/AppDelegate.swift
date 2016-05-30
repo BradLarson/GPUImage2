@@ -39,6 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 do {
                     self.isRecording = true
                     movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:1280, height:720), liveVideo:true)
+//                    camera.audioEncodingTarget = movieOutput
                     filter --> movieOutput!
                     movieOutput!.startRecording()
                     (sender as! NSButton).title = "Stop"
@@ -52,6 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 dispatch_async(dispatch_get_main_queue()) {
                     (sender as! NSButton).title = "Record"
                 }
+//                self.camera.audioEncodingTarget = nil
                 self.movieOutput = nil
             }
         }

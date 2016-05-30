@@ -39,6 +39,7 @@ class ViewController: UIViewController {
                 }
                 
                 movieOutput = try MovieOutput(URL:fileURL, size:Size(width:480, height:640), liveVideo:true)
+                camera.audioEncodingTarget = movieOutput
                 filter --> movieOutput!
                 movieOutput!.startRecording()
                 (sender as! UIButton).titleLabel?.text = "Stop"
@@ -51,6 +52,7 @@ class ViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue()) {
                     (sender as! UIButton).titleLabel?.text = "Record"
                 }
+                self.camera.audioEncodingTarget = nil
                 self.movieOutput = nil
             }
         }

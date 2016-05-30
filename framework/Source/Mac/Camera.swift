@@ -3,16 +3,34 @@ import AVFoundation
 
 let initialBenchmarkFramesToIgnore = 5
 
-public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate {
+public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate {
     public var orientation:ImageOrientation
     public var runBenchmark:Bool = false
     public var logFPS:Bool = false
+    public var audioEncodingTarget:AudioEncodingTarget? {
+        didSet {
+            guard let audioEncodingTarget = audioEncodingTarget else {
+                self.removeAudioInputsAndOutputs()
+                return
+            }
+            do {
+                try self.addAudioInputsAndOutputs()
+                audioEncodingTarget.activateAudioTrack()
+            } catch {
+                fatalError("ERROR: Could not connect audio target with error: \(error)")
+            }
+        }
+    }
 
     public let targets = TargetContainer()
     let captureSession:AVCaptureSession
     let inputCamera:AVCaptureDevice
     let videoInput:AVCaptureDeviceInput!
     let videoOutput:AVCaptureVideoDataOutput!
+    var microphone:AVCaptureDevice?
+    var audioInput:AVCaptureDeviceInput?
+    var audioOutput:AVCaptureAudioDataOutput?
+
     var supportsFullYUVRange:Bool = false
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
@@ -83,6 +101,11 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     public func captureOutput(captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, fromConnection connection:AVCaptureConnection!) {
+        guard (captureOutput != audioOutput) else {
+            self.processAudioSampleBuffer(sampleBuffer)
+            return
+        }
+
         guard (dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_NOW) == 0) else { return }
         let startTime = CFAbsoluteTimeGetCurrent()
 
@@ -169,5 +192,43 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     
     public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
         // Not needed for camera inputs
+    }
+    
+    // MARK: -
+    // MARK: Audio processing
+    
+    func addAudioInputsAndOutputs() throws {
+        guard (audioOutput == nil) else { return }
+        
+        captureSession.beginConfiguration()
+        defer {
+            captureSession.commitConfiguration()
+        }
+        microphone = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+        audioInput = try AVCaptureDeviceInput(device:microphone)
+        if captureSession.canAddInput(audioInput) {
+            captureSession.addInput(audioInput)
+        }
+        audioOutput = AVCaptureAudioDataOutput()
+        if captureSession.canAddOutput(audioOutput) {
+            captureSession.addOutput(audioOutput)
+        }
+        audioOutput?.setSampleBufferDelegate(self, queue:audioProcessingQueue)
+    }
+    
+    func removeAudioInputsAndOutputs() {
+        guard (audioOutput != nil) else { return }
+        
+        captureSession.beginConfiguration()
+        captureSession.removeInput(audioInput!)
+        captureSession.removeOutput(audioOutput!)
+        audioInput = nil
+        audioOutput = nil
+        microphone = nil
+        captureSession.commitConfiguration()
+    }
+    
+    func processAudioSampleBuffer(sampleBuffer:CMSampleBuffer) {
+        self.audioEncodingTarget?.processAudioBuffer(sampleBuffer)
     }
 }

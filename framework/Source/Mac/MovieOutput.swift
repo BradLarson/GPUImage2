@@ -1,18 +1,26 @@
 import AVFoundation
 
-public class MovieOutput: ImageConsumer {
+public protocol AudioEncodingTarget {
+    func activateAudioTrack()
+    func processAudioBuffer(sampleBuffer:CMSampleBuffer)
+}
+
+public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     public let sources = SourceContainer()
     public let maximumInputs:UInt = 1
 
     let assetWriter:AVAssetWriter
     let assetWriterVideoInput:AVAssetWriterInput
+    var assetWriterAudioInput:AVAssetWriterInput?
     let assetWriterPixelBufferInput:AVAssetWriterInputPixelBufferAdaptor
     let size:Size
     let colorSwizzlingShader:ShaderProgram
     private var isRecording = false
     private var videoEncodingIsFinished = false
+    private var audioEncodingIsFinished = false
     private var startTime:CMTime?
     private var previousFrameTime = kCMTimeNegativeInfinity
+    private var previousAudioTime = kCMTimeNegativeInfinity
     private var encodingLiveVideo:Bool
     
     public init(URL:NSURL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
@@ -67,6 +75,10 @@ public class MovieOutput: ImageConsumer {
             if ((self.assetWriter.status == .Writing) && (!self.videoEncodingIsFinished)) {
                 self.videoEncodingIsFinished = true
                 self.assetWriterVideoInput.markAsFinished()
+            }
+            if ((self.assetWriter.status == .Writing) && (!self.audioEncodingIsFinished)) {
+                self.audioEncodingIsFinished = true
+                self.assetWriterAudioInput?.markAsFinished()
             }
 
             // Why can't I use ?? here for the callback?
@@ -132,6 +144,39 @@ public class MovieOutput: ImageConsumer {
         CVPixelBufferLockBaseAddress(pixelBuffer, 0)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
         renderFramebuffer.unlock()
+    }
+    // MARK: -
+    // MARK: Audio support
+    
+    public func activateAudioTrack() {
+        // TODO: Add ability to set custom output settings
+        assetWriterAudioInput = AVAssetWriterInput(mediaType:AVMediaTypeAudio, outputSettings:nil)
+        assetWriter.addInput(assetWriterAudioInput!)
+        assetWriterAudioInput?.expectsMediaDataInRealTime = encodingLiveVideo
+    }
+    
+    public func processAudioBuffer(sampleBuffer:CMSampleBuffer) {
+        guard let assetWriterAudioInput = assetWriterAudioInput else { return }
+        
+        sharedImageProcessingContext.runOperationSynchronously{
+            let currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
+            if (self.startTime == nil) {
+                if (self.assetWriter.status != .Writing) {
+                    self.assetWriter.startWriting()
+                }
+                
+                self.assetWriter.startSessionAtSourceTime(currentSampleTime)
+                self.startTime = currentSampleTime
+            }
+            
+            guard (assetWriterAudioInput.readyForMoreMediaData || (!self.encodingLiveVideo)) else {
+                return
+            }
+            
+            if (!assetWriterAudioInput.appendSampleBuffer(sampleBuffer)) {
+                print("Trouble appending audio sample buffer")
+            }
+        }
     }
 }
 
