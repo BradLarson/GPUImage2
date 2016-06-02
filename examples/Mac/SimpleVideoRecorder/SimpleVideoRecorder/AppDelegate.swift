@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             filter = SmoothToonFilter()
             
             camera --> filter --> renderView
+            camera.runBenchmark = true
             camera.startCapture()
         } catch {
             fatalError("Couldn't initialize pipeline, error: \(error)")
@@ -38,7 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if okayButton == NSModalResponseOK {
                 do {
                     self.isRecording = true
-                    movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:1280, height:720), liveVideo:true)
+//                    movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:1280, height:720), liveVideo:true)
+                    movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:640, height:480), liveVideo:true)
 //                    camera.audioEncodingTarget = movieOutput
                     filter --> movieOutput!
                     movieOutput!.startRecording()

@@ -160,7 +160,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     
     func renderIntoPixelBuffer(pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
         if !sharedImageProcessingContext.supportsTextureCaches() {
-            renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+            renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
             renderFramebuffer.lock()
         }
         
@@ -172,7 +172,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         if sharedImageProcessingContext.supportsTextureCaches() {
             glFinish()
         } else {
-            glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
+            glReadPixels(0, 0, renderFramebuffer.size.width, renderFramebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
             renderFramebuffer.unlock()
         }
     }

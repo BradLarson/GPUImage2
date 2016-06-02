@@ -14,7 +14,6 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     var assetWriterAudioInput:AVAssetWriterInput?
     let assetWriterPixelBufferInput:AVAssetWriterInputPixelBufferAdaptor
     let size:Size
-    let colorSwizzlingShader:ShaderProgram
     private var isRecording = false
     private var videoEncodingIsFinished = false
     private var audioEncodingIsFinished = false
@@ -24,8 +23,6 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     private var encodingLiveVideo:Bool
     
     public init(URL:NSURL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
-        self.colorSwizzlingShader = crashOnShaderCompileFailure("MovieOutput"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:ColorSwizzlingFragmentShader)}
-
         self.size = size
         assetWriter = try AVAssetWriter(URL:URL, fileType:fileType)
         // Set this to make sure that a functional movie is produced, even if the recording is cut off mid-stream. Only the last second should be lost in that case.
@@ -50,7 +47,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         let sourcePixelBufferAttributesDictionary:[String:AnyObject] = [kCVPixelBufferPixelFormatTypeKey as String:NSNumber(int:Int32(kCVPixelFormatType_32BGRA)),
                                                      kCVPixelBufferWidthKey as String:NSNumber(float:size.width),
                                                      kCVPixelBufferHeightKey as String:NSNumber(float:size.height)]
-
+        
         assetWriterPixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput:assetWriterVideoInput, sourcePixelBufferAttributes:sourcePixelBufferAttributesDictionary)
         assetWriter.addInput(assetWriterVideoInput)
     }
@@ -134,17 +131,19 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     }
     
     func renderIntoPixelBuffer(pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
-        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
         renderFramebuffer.lock()
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.Black)
-        renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
+
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
 
         CVPixelBufferLockBaseAddress(pixelBuffer, 0)
-        glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
+        glReadPixels(0, 0, renderFramebuffer.size.width, renderFramebuffer.size.height, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
         renderFramebuffer.unlock()
     }
+    
     // MARK: -
     // MARK: Audio support
     
