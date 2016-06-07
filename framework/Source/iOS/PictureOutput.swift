@@ -64,7 +64,7 @@ public class PictureOutput: ImageConsumer {
             imageCallback(image)
             
             if onlyCaptureNextFrame {
-                encodedImageAvailableCallback = nil
+                imageAvailableCallback = nil
             }
         }
         
