@@ -157,8 +157,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     deinit {
         sharedImageProcessingContext.runOperationSynchronously{
             self.stopCapture()
-            self.videoOutput.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
-            self.audioOutput?.setSampleBufferDelegate(self, queue:dispatch_get_main_queue())
+            self.videoOutput.setSampleBufferDelegate(nil, queue: nil)
+            self.audioOutput?.setSampleBufferDelegate(nil, queue: nil)
         }
     }
     
