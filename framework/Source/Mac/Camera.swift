@@ -100,6 +100,14 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         videoOutput.setSampleBufferDelegate(self, queue:cameraProcessingQueue)
     }
     
+    deinit {
+        sharedImageProcessingContext.runOperationSynchronously{
+            self.stopCapture()
+            self.videoOutput.setSampleBufferDelegate(nil, queue:nil)
+            self.audioOutput?.setSampleBufferDelegate(nil, queue:nil)
+        }
+    }
+
     public func captureOutput(captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, fromConnection connection:AVCaptureConnection!) {
         guard (captureOutput != audioOutput) else {
             self.processAudioSampleBuffer(sampleBuffer)
