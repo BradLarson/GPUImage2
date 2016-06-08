@@ -58,14 +58,14 @@ public class BasicOperation: ImageProcessingOperation {
         usesAspectRatio = shader.uniformIndex("aspectRatio") != nil
     }
     
-    public init(vertexShader:String? = nil, fragmentShader:String, numberOfInputs:UInt = 1, operationName:String = __FILE__) {
+    public init(vertexShader:String? = nil, fragmentShader:String, numberOfInputs:UInt = 1, operationName:String = #file) {
         let compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(vertexShader ?? defaultVertexShaderForInputs(numberOfInputs), fragmentShader:fragmentShader)}
         self.maximumInputs = numberOfInputs
         self.shader = compiledShader
         usesAspectRatio = shader.uniformIndex("aspectRatio") != nil
     }
 
-    public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = __FILE__) throws {
+    public init(vertexShaderFile:NSURL? = nil, fragmentShaderFile:NSURL, numberOfInputs:UInt = 1, operationName:String = #file) throws {
         let compiledShader:ShaderProgram
         if let vertexShaderFile = vertexShaderFile {
             compiledShader = crashOnShaderCompileFailure(operationName){try sharedImageProcessingContext.programForVertexShader(vertexShaderFile, fragmentShader:fragmentShaderFile)}
