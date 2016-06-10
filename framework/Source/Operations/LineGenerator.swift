@@ -13,8 +13,8 @@
 #endif
 
 public enum Line {
-    case Infinite(slope: Float, intercept: Float)
-    case Segment(p1: CGPoint, p2: CGPoint)
+    case Infinite(slope:Float, intercept:Float)
+    case Segment(p1:Position, p2:Position)
 
     func toGLEndpoints() -> [GLfloat] {
         switch self {

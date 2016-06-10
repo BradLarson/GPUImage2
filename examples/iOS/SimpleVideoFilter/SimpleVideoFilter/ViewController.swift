@@ -81,19 +81,19 @@ extension ViewController: CameraDelegate {
         let xform = CGAffineTransformScale(translate, CGFloat(2/fbSize.width), CGFloat(2/fbSize.height))
         let glRect = CGRectApplyAffineTransform(bounds, xform)
 
-        let x = glRect.origin.x
-        let y = glRect.origin.y
-        let width = glRect.size.width
-        let height = glRect.size.height
+        let x = Float(glRect.origin.x)
+        let y = Float(glRect.origin.y)
+        let width = Float(glRect.size.width)
+        let height = Float(glRect.size.height)
 
-        let tl = CGPoint(x: x, y: y)
-        let tr = CGPoint(x: x + width, y: y)
-        let bl = CGPoint(x: x, y: y + height)
-        let br = CGPoint(x: x + width, y: y + height)
+        let tl = Position(x, y)
+        let tr = Position(x + width, y)
+        let bl = Position(x, y + height)
+        let br = Position(x + width, y + height)
 
-        return [.Segment(p1: tl, p2: tr),   // top
-                .Segment(p1: tr, p2: br),   // right
-                .Segment(p1: br, p2: bl),   // bottom
-                .Segment(p1: bl, p2: tl)]   // left
+        return [.Segment(p1:tl, p2:tr),   // top
+                .Segment(p1:tr, p2:br),   // right
+                .Segment(p1:br, p2:bl),   // bottom
+                .Segment(p1:bl, p2:tl)]   // left
     }
 }
