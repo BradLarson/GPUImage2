@@ -12,7 +12,11 @@
 #endif
 #endif
 
-public struct Line {
+public protocol LineProtocol {
+    func toGLEndpoints() -> [GLfloat]
+}
+
+public struct Line: LineProtocol {
     public let slope:Float
     public let intercept:Float
     
@@ -21,7 +25,7 @@ public struct Line {
         self.intercept = intercept
     }
     
-    func toGLEndpoints() -> [GLfloat] {
+    public func toGLEndpoints() -> [GLfloat] {
         if (slope > 9000.0) {// Vertical line
             return [intercept, -1.0, intercept, 1.0]
         } else {
@@ -29,6 +33,21 @@ public struct Line {
         }
     }
 }
+
+public struct LineSegment: LineProtocol {
+    public let p1: CGPoint
+    public let p2: CGPoint
+
+    public init(p1:CGPoint, p2:CGPoint) {
+        self.p1 = p1
+        self.p2 = p2
+    }
+
+    public func toGLEndpoints() -> [GLfloat] {
+        return [p1.x, p1.y, p2.x, p2.y].map {GLfloat($0)}
+    }
+}
+
 
 public class LineGenerator: ImageGenerator {
     public var lineColor:Color = Color.Green { didSet { uniformSettings["lineColor"] = lineColor } }
@@ -50,7 +69,7 @@ public class LineGenerator: ImageGenerator {
         ({lineColor = Color.Red})()
     }
 
-    public func renderLines(lines:[Line]) {
+    public func renderLines(lines:[LineProtocol]) {
         imageFramebuffer.activateFramebufferForRendering()
         
         lineShader.use()
