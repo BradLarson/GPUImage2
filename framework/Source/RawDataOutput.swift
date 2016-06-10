@@ -45,11 +45,7 @@ public class RawDataOutput: ImageConsumer {
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
         renderFramebuffer.unlock()
 
-        if dataAvailableCallback != nil {
-            dataAvailableCallback?(data)
-        }
-        if downloadBytes != nil {
-            downloadBytes?(data, Size(framebuffer.size), pixelFormat, framebuffer.orientation)
-        }
+        dataAvailableCallback?(data)
+        downloadBytes?(data, Size(framebuffer.size), pixelFormat, framebuffer.orientation)
     }
 }
