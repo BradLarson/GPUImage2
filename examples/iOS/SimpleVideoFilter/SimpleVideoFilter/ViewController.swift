@@ -63,7 +63,7 @@ extension ViewController: CameraDelegate {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             let attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))!
             let img = CIImage(CVPixelBuffer: pixelBuffer, options: attachments as? [String: AnyObject])
-            var lines = [LineProtocol]()
+            var lines = [Line]()
             for feature in faceDetector.featuresInImage(img, options: [CIDetectorImageOrientation: 6]) {
                 if feature is CIFaceFeature {
                     lines = lines + faceLines(feature.bounds)
@@ -73,7 +73,7 @@ extension ViewController: CameraDelegate {
         }
     }
 
-    func faceLines(bounds: CGRect) -> [LineProtocol] {
+    func faceLines(bounds: CGRect) -> [Line] {
         // convert from CoreImage to GL coords
         let flip = CGAffineTransformMakeScale(1, -1)
         let rotate = CGAffineTransformRotate(flip, CGFloat(-M_PI_2))
@@ -91,9 +91,9 @@ extension ViewController: CameraDelegate {
         let bl = CGPoint(x: x, y: y + height)
         let br = CGPoint(x: x + width, y: y + height)
 
-        return [LineSegment(p1: tl, p2: tr),   // top
-                LineSegment(p1: tr, p2: br),   // right
-                LineSegment(p1: br, p2: bl),   // bottom
-                LineSegment(p1: bl, p2: tl)]   // left
+        return [.Segment(p1: tl, p2: tr),   // top
+                .Segment(p1: tr, p2: br),   // right
+                .Segment(p1: br, p2: bl),   // bottom
+                .Segment(p1: bl, p2: tl)]   // left
     }
 }

@@ -12,42 +12,23 @@
 #endif
 #endif
 
-public protocol LineProtocol {
-    func toGLEndpoints() -> [GLfloat]
-}
+public enum Line {
+    case Infinite(slope: Float, intercept: Float)
+    case Segment(p1: CGPoint, p2: CGPoint)
 
-public struct Line: LineProtocol {
-    public let slope:Float
-    public let intercept:Float
-    
-    public init (slope:Float, intercept:Float) {
-        self.slope = slope
-        self.intercept = intercept
-    }
-    
-    public func toGLEndpoints() -> [GLfloat] {
-        if (slope > 9000.0) {// Vertical line
-            return [intercept, -1.0, intercept, 1.0]
-        } else {
-            return [-1.0, GLfloat(slope * -1.0 + intercept), 1.0, GLfloat(slope * 1.0 + intercept)]
+    func toGLEndpoints() -> [GLfloat] {
+        switch self {
+        case .Infinite(let slope, let intercept):
+            if (slope > 9000.0) {// Vertical line
+                return [intercept, -1.0, intercept, 1.0]
+            } else {
+                return [-1.0, GLfloat(slope * -1.0 + intercept), 1.0, GLfloat(slope * 1.0 + intercept)]
+            }
+        case .Segment(let p1, let p2):
+            return [p1.x, p1.y, p2.x, p2.y].map {GLfloat($0)}
         }
     }
 }
-
-public struct LineSegment: LineProtocol {
-    public let p1: CGPoint
-    public let p2: CGPoint
-
-    public init(p1:CGPoint, p2:CGPoint) {
-        self.p1 = p1
-        self.p2 = p2
-    }
-
-    public func toGLEndpoints() -> [GLfloat] {
-        return [p1.x, p1.y, p2.x, p2.y].map {GLfloat($0)}
-    }
-}
-
 
 public class LineGenerator: ImageGenerator {
     public var lineColor:Color = Color.Green { didSet { uniformSettings["lineColor"] = lineColor } }
@@ -69,7 +50,7 @@ public class LineGenerator: ImageGenerator {
         ({lineColor = Color.Red})()
     }
 
-    public func renderLines(lines:[LineProtocol]) {
+    public func renderLines(lines:[Line]) {
         imageFramebuffer.activateFramebufferForRendering()
         
         lineShader.use()
