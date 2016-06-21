@@ -28,7 +28,7 @@ public class HarrisCornerDetector: OperationGroup {
     public var blurRadiusInPixels:Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
     public var sensitivity:Float = 5.0 { didSet { harrisCornerDetector.uniformSettings["sensitivity"] = sensitivity } }
     public var threshold:Float = 0.2 { didSet { nonMaximumSuppression.uniformSettings["threshold"] = threshold } }
-    public var cornersDetectedCallback:([Position] -> ())?
+    public var cornersDetectedCallback:(([Position]) -> ())?
 
     let xyDerivative = TextureSamplingOperation(fragmentShader:XYDerivativeFragmentShader)
     let gaussianBlur = GaussianBlur()
@@ -56,13 +56,13 @@ public class HarrisCornerDetector: OperationGroup {
     }
 }
 
-func extractCornersFromImage(framebuffer:Framebuffer) -> [Position] {
+func extractCornersFromImage(_ framebuffer:Framebuffer) -> [Position] {
     let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
 //    var rawImagePixels = [UInt8](count:imageByteSize, repeatedValue:0)
     
 //    let startTime = CFAbsoluteTimeGetCurrent()
 
-    let rawImagePixels = UnsafeMutablePointer<UInt8>.alloc(imageByteSize)
+    let rawImagePixels = UnsafeMutablePointer<UInt8>(allocatingCapacity: imageByteSize)
     // -Onone, [UInt8] array: 30 ms for 720p frame on Retina iMac
     // -O, [UInt8] array: 4 ms for 720p frame on Retina iMac
     // -Onone, UnsafeMutablePointer<UInt8>: 7 ms for 720p frame on Retina iMac
@@ -88,7 +88,7 @@ func extractCornersFromImage(framebuffer:Framebuffer) -> [Position] {
         currentByte += 4
     }
     
-    rawImagePixels.dealloc(imageByteSize)
+    rawImagePixels.deallocateCapacity(imageByteSize)
 
 //    print("Harris extraction frame time: \(CFAbsoluteTimeGetCurrent() - startTime)")
 

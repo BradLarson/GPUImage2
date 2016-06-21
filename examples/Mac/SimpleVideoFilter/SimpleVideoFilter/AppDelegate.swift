@@ -16,17 +16,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    @IBAction func capture(sender: AnyObject) {
+    @IBAction func capture(_ sender: AnyObject) {
         let imageSavingDialog = NSSavePanel()
         imageSavingDialog.allowedFileTypes = ["png"]
         let okayButton = imageSavingDialog.runModal()
         
         if okayButton == NSModalResponseOK {
-            filter.saveNextFrameToURL(imageSavingDialog.URL!, format:.PNG)
+            filter.saveNextFrameToURL(imageSavingDialog.url!, format:.png)
         }
     }
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         do {
             camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
             filter = Pixellate()
@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         camera.stopCapture()
     }
 }

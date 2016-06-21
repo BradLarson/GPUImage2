@@ -5,8 +5,8 @@ public class TextureSamplingOperation: BasicOperation {
         super.init(vertexShader:vertexShader, fragmentShader:fragmentShader, numberOfInputs:numberOfInputs)
     }
     
-    override func configureFramebufferSpecificUniforms(inputFramebuffer:Framebuffer) {
-        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait)
+    override func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
+        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
         let texelSize = overriddenTexelSize ?? inputFramebuffer.texelSizeForRotation(outputRotation)
         uniformSettings["texelWidth"] = texelSize.width
         uniformSettings["texelHeight"] = texelSize.height

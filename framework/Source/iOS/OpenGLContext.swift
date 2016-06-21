@@ -16,26 +16,23 @@ public class OpenGLContext: SerialDispatch {
         return crashOnShaderCompileFailure("OpenGLContext"){return try self.programForVertexShader(OneInputVertexShader, fragmentShader:PassthroughFragmentShader)}
     }()
 
-    lazy var coreVideoTextureCache:CVOpenGLESTextureCacheRef = {
-        var newTextureCache:CVOpenGLESTextureCacheRef? = nil
+    lazy var coreVideoTextureCache:CVOpenGLESTextureCache = {
+        var newTextureCache:CVOpenGLESTextureCache? = nil
         let err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, self.context, nil, &newTextureCache)
         return newTextureCache!
     }()
     
     
-    public let serialDispatchQueue:dispatch_queue_t = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.processingQueue", nil)
-    var dispatchKey:Int = 1
-    public let dispatchQueueKey:UnsafePointer<Void>
-
+    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
+    public let dispatchQueueKey = DispatchSpecificKey<Int>()
+    
     // MARK: -
     // MARK: Initialization and teardown
 
     init() {
-        let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
-        dispatchQueueKey = UnsafePointer<Void>(bitPattern:dispatchKey)
-        dispatch_queue_set_specific(serialDispatchQueue, dispatchQueueKey, context, nil)
+        serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:81)
         
-        guard let generatedContext = EAGLContext(API:.OpenGLES2, sharegroup:imageProcessingShareGroup) else {
+        guard let generatedContext = EAGLContext(api:.openGLES2, sharegroup:imageProcessingShareGroup) else {
             fatalError("Unable to create an OpenGL ES 2.0 context. The GPUImage framework requires OpenGL ES 2.0 support to work.")
         }
         
@@ -50,9 +47,9 @@ public class OpenGLContext: SerialDispatch {
     // MARK: Rendering
     
     public func makeCurrentContext() {
-        if (EAGLContext.currentContext() != self.context)
+        if (EAGLContext.current() != self.context)
         {
-            EAGLContext.setCurrentContext(self.context)
+            EAGLContext.setCurrent(self.context)
         }
     }
     
@@ -90,7 +87,7 @@ public class OpenGLContext: SerialDispatch {
     lazy var extensionString:String = {
         return self.runOperationSynchronously{
             self.makeCurrentContext()
-            return String.fromCString(UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))!
+            return String(cString:UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))
         }
     }()
 }

@@ -26,16 +26,16 @@ public class MovieInput: ImageSource {
         
         assetReader = try AVAssetReader(asset:self.asset)
         
-        let outputSettings:[String:AnyObject] = [(kCVPixelBufferPixelFormatTypeKey as String):NSNumber(int:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
-        let readerVideoTrackOutput = AVAssetReaderTrackOutput(track:self.asset.tracksWithMediaType(AVMediaTypeVideo)[0], outputSettings:outputSettings)
+        let outputSettings:[String:AnyObject] = [(kCVPixelBufferPixelFormatTypeKey as String):NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
+        let readerVideoTrackOutput = AVAssetReaderTrackOutput(track:self.asset.tracks(withMediaType: AVMediaTypeVideo)[0], outputSettings:outputSettings)
         readerVideoTrackOutput.alwaysCopiesSampleData = false
-        assetReader.addOutput(readerVideoTrackOutput)
+        assetReader.add(readerVideoTrackOutput)
         // TODO: Audio here
     }
 
-    public convenience init(url:NSURL, playAtActualSpeed:Bool = false, loop:Bool = false) throws {
-        let inputOptions = [AVURLAssetPreferPreciseDurationAndTimingKey:NSNumber(bool:true)]
-        let inputAsset = AVURLAsset(URL:url, options:inputOptions)
+    public convenience init(url:URL, playAtActualSpeed:Bool = false, loop:Bool = false) throws {
+        let inputOptions = [AVURLAssetPreferPreciseDurationAndTimingKey:NSNumber(value:true)]
+        let inputAsset = AVURLAsset(url:url, options:inputOptions)
         try self.init(asset:inputAsset, playAtActualSpeed:playAtActualSpeed, loop:loop)
     }
 
@@ -43,9 +43,9 @@ public class MovieInput: ImageSource {
     // MARK: Playback control
 
     public func start() {
-        asset.loadValuesAsynchronouslyForKeys(["tracks"], completionHandler: {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                guard (self.asset.statusOfValueForKey("tracks", error:nil) == .Loaded) else { return }
+        asset.loadValuesAsynchronously(forKeys:["tracks"], completionHandler:{
+            DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async(execute: {
+                guard (self.asset.statusOfValue(forKey: "tracks", error:nil) == .loaded) else { return }
 
                 guard self.assetReader.startReading() else {
                     print("Couldn't start reading")
@@ -60,11 +60,11 @@ public class MovieInput: ImageSource {
                     }
                 }
                 
-                while (self.assetReader.status == .Reading) {
+                while (self.assetReader.status == .reading) {
                     self.readNextVideoFrameFromOutput(readerVideoTrackOutput!)
                 }
                 
-                if (self.assetReader.status == .Completed) {
+                if (self.assetReader.status == .completed) {
                     self.assetReader.cancelReading()
                     
                     if (self.loop) {
@@ -89,8 +89,8 @@ public class MovieInput: ImageSource {
     // MARK: -
     // MARK: Internal processing functions
     
-    func readNextVideoFrameFromOutput(videoTrackOutput:AVAssetReaderOutput) {
-        if ((assetReader.status == .Reading) && !videoEncodingIsFinished) {
+    func readNextVideoFrameFromOutput(_ videoTrackOutput:AVAssetReaderOutput) {
+        if ((assetReader.status == .reading) && !videoEncodingIsFinished) {
             if let sampleBuffer = videoTrackOutput.copyNextSampleBuffer() {
                 if (playAtActualSpeed) {
                     // Do this outside of the video processing queue to not slow that down while waiting
@@ -130,7 +130,7 @@ public class MovieInput: ImageSource {
 
     }
     
-    func processMovieFrame(frame:CMSampleBuffer) {
+    func processMovieFrame(_ frame:CMSampleBuffer) {
         let currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(frame)
         let movieFrame = CMSampleBufferGetImageBuffer(frame)!
     
@@ -138,7 +138,7 @@ public class MovieInput: ImageSource {
         self.processMovieFrame(movieFrame, withSampleTime:currentSampleTime)
     }
     
-    func processMovieFrame(movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
+    func processMovieFrame(_ movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
         let bufferHeight = CVPixelBufferGetHeight(movieFrame)
         let bufferWidth = CVPixelBufferGetWidth(movieFrame)
         CVPixelBufferLockBaseAddress(movieFrame, 0)
@@ -157,24 +157,24 @@ public class MovieInput: ImageSource {
         
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
         luminanceFramebuffer.lock()
         glActiveTexture(GLenum(GL_TEXTURE0))
         glBindTexture(GLenum(GL_TEXTURE_2D), luminanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(movieFrame, 0))
         
-        let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+        let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
         chrominanceFramebuffer.lock()
         glActiveTexture(GLenum(GL_TEXTURE1))
         glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(movieFrame, 1))
         
-        let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
+        let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
         
         convertYUVToRGB(shader:self.yuvConversionShader, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:movieFramebuffer, colorConversionMatrix:conversionMatrix)
         CVPixelBufferUnlockBaseAddress(movieFrame, 0)
 
-        movieFramebuffer.timingStyle = .VideoFrame(timestamp:Timestamp(withSampleTime))
+        movieFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(withSampleTime))
         self.updateTargetsWithFramebuffer(movieFramebuffer)
         
         if self.runBenchmark {
@@ -186,7 +186,7 @@ public class MovieInput: ImageSource {
         }
     }
 
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
         // Not needed for movie inputs
     }
 }

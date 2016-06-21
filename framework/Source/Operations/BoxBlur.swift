@@ -22,7 +22,7 @@ public class BoxBlur: TwoStageOperation {
     }
 }
 
-func vertexShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
+func vertexShaderForOptimizedBoxBlurOfRadius(_ radius:UInt) -> String {
     guard (radius > 0) else { return OneInputVertexShader }
 
     let numberOfOptimizedOffsets = min(radius / 2 + (radius % 2), 7)
@@ -38,7 +38,7 @@ func vertexShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
     return shaderString
 }
 
-func fragmentShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
+func fragmentShaderForOptimizedBoxBlurOfRadius(_ radius:UInt) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
     
     let numberOfOptimizedOffsets = min(radius / 2 + (radius % 2), 7)

@@ -1,7 +1,7 @@
 import Foundation
 
 // This reimplements CMTime such that it can reach across to Linux
-public struct TimestampFlags: OptionSetType {
+public struct TimestampFlags: OptionSet {
     public let rawValue:UInt32
     public init(rawValue:UInt32) { self.rawValue = rawValue }
     

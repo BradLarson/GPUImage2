@@ -4,8 +4,8 @@ import UIKit
 // TODO: Deal with view resizing
 public class RenderView:UIView, ImageConsumer {
     public var backgroundRenderColor = Color.Black
-    public var fillMode = FillMode.PreserveAspectRatio
-    public var orientation:ImageOrientation = .Portrait
+    public var fillMode = FillMode.preserveAspectRatio
+    public var orientation:ImageOrientation = .portrait
     public var sizeInPixels:Size { get { return Size(width:Float(frame.size.width * contentScaleFactor), height:Float(frame.size.height * contentScaleFactor))}}
     
     public let sources = SourceContainer()
@@ -35,11 +35,11 @@ public class RenderView:UIView, ImageConsumer {
     }
     
     func commonInit() {
-        self.contentScaleFactor = UIScreen.mainScreen().scale
+        self.contentScaleFactor = UIScreen.main().scale
         
         let eaglLayer = self.layer as! CAEAGLLayer
-        eaglLayer.opaque = true
-        eaglLayer.drawableProperties = [NSNumber(bool:false): kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8: kEAGLDrawablePropertyColorFormat]
+        eaglLayer.isOpaque = true
+        eaglLayer.drawableProperties = [NSNumber(value:false): kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8: kEAGLDrawablePropertyColorFormat]
     }
     
     deinit {
@@ -57,7 +57,7 @@ public class RenderView:UIView, ImageConsumer {
         displayRenderbuffer = newDisplayRenderbuffer
         glBindRenderbuffer(GLenum(GL_RENDERBUFFER), displayRenderbuffer!)
 
-        sharedImageProcessingContext.context.renderbufferStorage(Int(GL_RENDERBUFFER), fromDrawable:self.layer as! CAEAGLLayer)
+        sharedImageProcessingContext.context.renderbufferStorage(Int(GL_RENDERBUFFER), from:self.layer as! CAEAGLLayer)
 
         var backingWidth:GLint = 0
         var backingHeight:GLint = 0
@@ -98,7 +98,7 @@ public class RenderView:UIView, ImageConsumer {
         glViewport(0, 0, backingSize.width, backingSize.height)
     }
     
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if (displayFramebuffer == nil) {
             self.createDisplayFramebuffer()
         }

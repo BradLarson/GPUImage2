@@ -8,7 +8,7 @@ public class ImageBuffer: ImageProcessingOperation {
     public let sources = SourceContainer()
     var bufferedFramebuffers = [Framebuffer]()
 
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         bufferedFramebuffers.append(framebuffer)
         if (bufferedFramebuffers.count > Int(bufferSize)) {
             let releasedFramebuffer = bufferedFramebuffers.removeFirst()
@@ -23,7 +23,7 @@ public class ImageBuffer: ImageProcessingOperation {
         }
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
         // Buffers most likely won't need this
     }
 }

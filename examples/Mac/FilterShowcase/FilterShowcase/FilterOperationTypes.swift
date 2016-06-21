@@ -2,16 +2,16 @@ import Foundation
 import GPUImage
 
 enum FilterSliderSetting {
-    case Disabled
-    case Enabled(minimumValue:Float, maximumValue:Float, initialValue:Float)
+    case disabled
+    case enabled(minimumValue:Float, maximumValue:Float, initialValue:Float)
 }
 
 typealias FilterSetupFunction = (camera:Camera, filter:ImageProcessingOperation, outputView:RenderView) -> ImageSource?
 
 enum FilterOperationType {
-    case SingleInput
-    case Blend
-    case Custom(filterSetupFunction:FilterSetupFunction)
+    case singleInput
+    case blend
+    case custom(filterSetupFunction:FilterSetupFunction)
 }
 
 protocol FilterOperationInterface {
@@ -22,8 +22,8 @@ protocol FilterOperationInterface {
     var sliderConfiguration: FilterSliderSetting  { get }
     var filterOperationType: FilterOperationType  { get }
 
-    func configureCustomFilter(secondInput:ImageSource?)
-    func updateBasedOnSliderValue(sliderValue:Float)
+    func configureCustomFilter(_ secondInput:ImageSource?)
+    func updateBasedOnSliderValue(_ sliderValue:Float)
 }
 
 class FilterOperation<FilterClass: ImageProcessingOperation>: FilterOperationInterface {
@@ -50,11 +50,11 @@ class FilterOperation<FilterClass: ImageProcessingOperation>: FilterOperationInt
         return internalFilter
     }
 
-    func configureCustomFilter(secondInput:ImageSource?) {
+    func configureCustomFilter(_ secondInput:ImageSource?) {
         self.secondInput = secondInput
     }
 
-    func updateBasedOnSliderValue(sliderValue:Float) {
+    func updateBasedOnSliderValue(_ sliderValue:Float) {
         sliderUpdateCallback?(filter:internalFilter, sliderValue:sliderValue)
     }
 }

@@ -18,23 +18,23 @@ extension SerialDispatch {
 
 #else
 
-func runAsynchronouslyOnMainQueue(mainThreadOperation:() -> ()) {
-    if (NSThread.isMainThread()) {
+func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
+    if (Thread.isMainThread()) {
         mainThreadOperation()
     } else {
-        dispatch_async(dispatch_get_main_queue(), mainThreadOperation)
+        DispatchQueue.main.async(execute: mainThreadOperation)
     }
 }
 
-func runOnMainQueue(mainThreadOperation:() -> ()) {
-    if (NSThread.isMainThread()) {
+func runOnMainQueue(_ mainThreadOperation:() -> ()) {
+    if (Thread.isMainThread()) {
         mainThreadOperation()
     } else {
-        dispatch_sync(dispatch_get_main_queue(), mainThreadOperation)
+        DispatchQueue.main.sync(execute: mainThreadOperation)
     }
 }
 
-@warn_unused_result func runOnMainQueue<T>(mainThreadOperation:() -> T) -> T {
+@warn_unused_result func runOnMainQueue<T>(_ mainThreadOperation:() -> T) -> T {
     var returnedValue: T!
     runOnMainQueue {
         returnedValue = mainThreadOperation()
@@ -46,34 +46,33 @@ func runOnMainQueue(mainThreadOperation:() -> ()) {
 // MARK: SerialDispatch extension
 
 public protocol SerialDispatch {
-    var serialDispatchQueue:dispatch_queue_t { get }
-    var dispatchQueueKey:UnsafePointer<Void> { get }
+    var serialDispatchQueue:DispatchQueue { get }
+    var dispatchQueueKey:DispatchSpecificKey<Int> { get }
     func makeCurrentContext()
 }
 
 public extension SerialDispatch {
-    public func runOperationAsynchronously(operation:() -> ()) {
-        dispatch_async(self.serialDispatchQueue) {
+    public func runOperationAsynchronously(_ operation:() -> ()) {
+        self.serialDispatchQueue.async {
             self.makeCurrentContext()
             operation()
         }
     }
     
-    public func runOperationSynchronously(operation:() -> ()) {
+    public func runOperationSynchronously(_ operation:() -> ()) {
         // TODO: Verify this works as intended
-        let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
-        if (dispatch_get_specific(self.dispatchQueueKey) == context) {
+        if (DispatchQueue.getSpecific(key:self.dispatchQueueKey) == 81) {
             operation()
         } else {
-            dispatch_sync(self.serialDispatchQueue) {
+            self.serialDispatchQueue.sync {
                 self.makeCurrentContext()
                 operation()
             }
         }
     }
     
-    public func runOperationSynchronously(operation:() throws -> ()) throws {
-        var caughtError:ErrorType? = nil
+    public func runOperationSynchronously(_ operation:() throws -> ()) throws {
+        var caughtError:ErrorProtocol? = nil
         runOperationSynchronously {
             do {
                 try operation()
@@ -84,7 +83,7 @@ public extension SerialDispatch {
         if (caughtError != nil) {throw caughtError!}
     }
     
-    public func runOperationSynchronously<T>(operation:() throws -> T) throws -> T {
+    public func runOperationSynchronously<T>(_ operation:() throws -> T) throws -> T {
         var returnedValue: T!
         try runOperationSynchronously {
             returnedValue = try operation()
@@ -92,7 +91,7 @@ public extension SerialDispatch {
         return returnedValue
     }
 
-    public func runOperationSynchronously<T>(operation:() -> T) -> T {
+    public func runOperationSynchronously<T>(_ operation:() -> T) -> T {
         var returnedValue: T!
         runOperationSynchronously {
             returnedValue = operation()

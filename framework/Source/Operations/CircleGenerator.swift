@@ -21,18 +21,18 @@ public class CircleGenerator: ImageGenerator {
         super.init(size:size)
     }
 
-    public func renderCircleOfRadius(radius:Float, center:Position, circleColor:Color = Color.White, backgroundColor:Color = Color.Black) {
+    public func renderCircleOfRadius(_ radius:Float, center:Position, circleColor:Color = Color.White, backgroundColor:Color = Color.Black) {
         let scaledRadius = radius * 2.0
         imageFramebuffer.activateFramebufferForRendering()
         var uniformSettings = ShaderUniformSettings()
         uniformSettings["circleColor"] = circleColor
         uniformSettings["backgroundColor"] = backgroundColor
         uniformSettings["radius"] = scaledRadius
-        uniformSettings["aspectRatio"] = imageFramebuffer.aspectRatioForRotation(.NoRotation)
+        uniformSettings["aspectRatio"] = imageFramebuffer.aspectRatioForRotation(.noRotation)
         
         let convertedCenterX = (Float(center.x) * 2.0) - 1.0
         let convertedCenterY = (Float(center.y) * 2.0) - 1.0
-        let scaledYRadius = scaledRadius / imageFramebuffer.aspectRatioForRotation(.NoRotation)
+        let scaledYRadius = scaledRadius / imageFramebuffer.aspectRatioForRotation(.noRotation)
 
         uniformSettings["center"] = Position(convertedCenterX, convertedCenterY)
         let circleVertices:[GLfloat] = [GLfloat(convertedCenterX - scaledRadius), GLfloat(convertedCenterY - scaledYRadius), GLfloat(convertedCenterX + scaledRadius), GLfloat(convertedCenterY - scaledYRadius), GLfloat(convertedCenterX - scaledRadius), GLfloat(convertedCenterY + scaledYRadius), GLfloat(convertedCenterX + scaledRadius), GLfloat(convertedCenterY + scaledYRadius)]

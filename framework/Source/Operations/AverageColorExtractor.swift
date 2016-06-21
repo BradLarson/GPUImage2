@@ -27,8 +27,8 @@ public class AverageColorExtractor: BasicOperation {
         releaseIncomingFramebuffers()
     }
     
-    func extractAverageColorFromFramebuffer(framebuffer:Framebuffer) {
-        var data = [UInt8](count:Int(framebuffer.size.width * framebuffer.size.height * 4), repeatedValue:0)
+    func extractAverageColorFromFramebuffer(_ framebuffer:Framebuffer) {
+        var data = [UInt8](repeating:0, count:Int(framebuffer.size.width * framebuffer.size.height * 4))
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
         renderFramebuffer = framebuffer
         framebuffer.resetRetainCount()
@@ -49,7 +49,7 @@ public class AverageColorExtractor: BasicOperation {
     }
 }
 
-func averageColorBySequentialReduction(inputFramebuffer inputFramebuffer:Framebuffer, shader:ShaderProgram, extractAverageOperation:(Framebuffer) -> ()) {
+func averageColorBySequentialReduction(inputFramebuffer:Framebuffer, shader:ShaderProgram, extractAverageOperation:(Framebuffer) -> ()) {
     var uniformSettings = ShaderUniformSettings()
     let inputSize = Size(inputFramebuffer.size)
     let numberOfReductionsInX = floor(log(Double(inputSize.width)) / log(4.0))

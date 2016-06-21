@@ -31,8 +31,8 @@ public class AverageLuminanceExtractor: BasicOperation {
         releaseIncomingFramebuffers()
     }
     
-    func extractAverageLuminanceFromFramebuffer(framebuffer:Framebuffer) {
-        var data = [UInt8](count:Int(framebuffer.size.width * framebuffer.size.height * 4), repeatedValue:0)
+    func extractAverageLuminanceFromFramebuffer(_ framebuffer:Framebuffer) {
+        var data = [UInt8](repeating:0, count:Int(framebuffer.size.width * framebuffer.size.height * 4))
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), &data)
         renderFramebuffer = framebuffer
         framebuffer.resetRetainCount()

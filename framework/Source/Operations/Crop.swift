@@ -11,7 +11,7 @@ public class Crop: BasicOperation {
 
     override func renderFrame() {
         let inputFramebuffer:Framebuffer = inputFramebuffers[0]!
-        let inputSize = inputFramebuffer.sizeForTargetOrientation(.Portrait)
+        let inputSize = inputFramebuffer.sizeForTargetOrientation(.portrait)
         
         let finalCropSize:GLSize
         let normalizedOffsetFromOrigin:Position
@@ -29,9 +29,9 @@ public class Crop: BasicOperation {
         }
         let normalizedCropSize = Size(width:Float(finalCropSize.width) / Float(inputSize.width), height:Float(finalCropSize.height) / Float(inputSize.height))
         
-        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:finalCropSize, stencil:false)
+        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:finalCropSize, stencil:false)
         
-        let textureProperties = InputTextureProperties(textureCoordinates:inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait).croppedTextureCoordinates(offsetFromOrigin:normalizedOffsetFromOrigin, cropSize:normalizedCropSize), texture:inputFramebuffer.texture)
+        let textureProperties = InputTextureProperties(textureCoordinates:inputFramebuffer.orientation.rotationNeededForOrientation(.portrait).croppedTextureCoordinates(offsetFromOrigin:normalizedOffsetFromOrigin, cropSize:normalizedCropSize), texture:inputFramebuffer.texture)
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)

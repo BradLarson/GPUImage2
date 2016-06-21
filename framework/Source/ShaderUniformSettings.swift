@@ -50,7 +50,7 @@ public struct ShaderUniformSettings {
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    func restoreShaderSettings(shader:ShaderProgram) {
+    func restoreShaderSettings(_ shader:ShaderProgram) {
         for (uniform, value) in uniformValues {
             switch value {
                 case let value as Float: shader.setValue(GLfloat(value), forUniform:uniform)

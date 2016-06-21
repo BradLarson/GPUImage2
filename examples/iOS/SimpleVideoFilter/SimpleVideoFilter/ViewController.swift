@@ -28,7 +28,7 @@ class ViewController: UIViewController {
             camera.delegate = self
             camera --> saturationFilter --> blendFilter --> renderView
             lineGenerator --> blendFilter
-            shouldDetectFaces = faceDetectSwitch.on
+            shouldDetectFaces = faceDetectSwitch.isOn
             camera.startCapture()
         } catch {
             fatalError("Could not initialize rendering pipeline: \(error)")
@@ -39,15 +39,15 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
     }
 
-    @IBAction func didSwitch(sender: UISwitch) {
-        shouldDetectFaces = sender.on
+    @IBAction func didSwitch(_ sender: UISwitch) {
+        shouldDetectFaces = sender.isOn
     }
 
-    @IBAction func capture(sender: AnyObject) {
+    @IBAction func capture(_ sender: AnyObject) {
         print("Capture")
         do {
-            let documentsDir = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain:.UserDomainMask, appropriateForURL:nil, create:true)
-            saturationFilter.saveNextFrameToURL(NSURL(string:"TestImage.png", relativeToURL:documentsDir)!, format:.PNG)
+            let documentsDir = try FileManager.default().urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+            saturationFilter.saveNextFrameToURL(URL(string:"TestImage.png", relativeTo:documentsDir)!, format:.png)
         } catch {
             print("Couldn't save image: \(error)")
         }
@@ -55,16 +55,16 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: CameraDelegate {
-    func didCaptureBuffer(sampleBuffer: CMSampleBuffer) {
+    func didCaptureBuffer(_ sampleBuffer: CMSampleBuffer) {
         guard shouldDetectFaces else {
             lineGenerator.renderLines([]) // clear
             return
         }
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             let attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))!
-            let img = CIImage(CVPixelBuffer: pixelBuffer, options: attachments as? [String: AnyObject])
+            let img = CIImage(cvPixelBuffer: pixelBuffer, options: attachments as? [String: AnyObject])
             var lines = [Line]()
-            for feature in faceDetector.featuresInImage(img, options: [CIDetectorImageOrientation: 6]) {
+            for feature in (faceDetector?.features(in: img, options: [CIDetectorImageOrientation: 6]))! {
                 if feature is CIFaceFeature {
                     lines = lines + faceLines(feature.bounds)
                 }
@@ -73,13 +73,13 @@ extension ViewController: CameraDelegate {
         }
     }
 
-    func faceLines(bounds: CGRect) -> [Line] {
+    func faceLines(_ bounds: CGRect) -> [Line] {
         // convert from CoreImage to GL coords
-        let flip = CGAffineTransformMakeScale(1, -1)
-        let rotate = CGAffineTransformRotate(flip, CGFloat(-M_PI_2))
-        let translate = CGAffineTransformTranslate(rotate, -1, -1)
-        let xform = CGAffineTransformScale(translate, CGFloat(2/fbSize.width), CGFloat(2/fbSize.height))
-        let glRect = CGRectApplyAffineTransform(bounds, xform)
+        let flip = CGAffineTransform(scaleX: 1, y: -1)
+        let rotate = flip.rotate(CGFloat(-M_PI_2))
+        let translate = rotate.translateBy(x: -1, y: -1)
+        let xform = translate.scaleBy(x: CGFloat(2/fbSize.width), y: CGFloat(2/fbSize.height))
+        let glRect = bounds.apply(transform: xform)
 
         let x = Float(glRect.origin.x)
         let y = Float(glRect.origin.y)
@@ -91,9 +91,9 @@ extension ViewController: CameraDelegate {
         let bl = Position(x, y + height)
         let br = Position(x + width, y + height)
 
-        return [.Segment(p1:tl, p2:tr),   // top
-                .Segment(p1:tr, p2:br),   // right
-                .Segment(p1:br, p2:bl),   // bottom
-                .Segment(p1:bl, p2:tl)]   // left
+        return [.segment(p1:tl, p2:tr),   // top
+                .segment(p1:tr, p2:br),   // right
+                .segment(p1:br, p2:bl),   // bottom
+                .segment(p1:bl, p2:tl)]   // left
     }
 }

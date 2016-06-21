@@ -13,17 +13,17 @@
 #endif
 
 public enum PixelFormat {
-    case BGRA
-    case RGBA
-    case RGB
-    case Luminance
+    case bgra
+    case rgba
+    case rgb
+    case luminance
     
     func toGL() -> Int32 {
         switch self {
-            case .BGRA: return GL_BGRA
-            case .RGBA: return GL_RGBA
-            case .RGB: return GL_RGB
-            case .Luminance: return GL_LUMINANCE
+            case .bgra: return GL_BGRA
+            case .rgba: return GL_RGBA
+            case .rgb: return GL_RGB
+            case .luminance: return GL_LUMINANCE
         }
     }
 }
@@ -36,7 +36,7 @@ public class RawDataInput: ImageSource {
         
     }
 
-    public func uploadBytes(bytes:[UInt8], size:Size, pixelFormat:PixelFormat, orientation:ImageOrientation = .Portrait) {
+    public func uploadBytes(_ bytes:[UInt8], size:Size, pixelFormat:PixelFormat, orientation:ImageOrientation = .portrait) {
         let dataFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:orientation, size:GLSize(size), textureOnly:true, internalFormat:pixelFormat.toGL(), format:pixelFormat.toGL())
 
         glActiveTexture(GLenum(GL_TEXTURE1))
@@ -46,7 +46,7 @@ public class RawDataInput: ImageSource {
         updateTargetsWithFramebuffer(dataFramebuffer)
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
         // TODO: Determine if this is necessary for the raw data uploads
     }
 }

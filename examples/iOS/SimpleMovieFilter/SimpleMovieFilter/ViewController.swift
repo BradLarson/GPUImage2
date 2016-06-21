@@ -11,8 +11,8 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let bundleURL = NSBundle.mainBundle().resourceURL!
-        let movieURL = NSURL(string:"sample_iPod.m4v", relativeToURL:bundleURL)!
+        let bundleURL = Bundle.main().resourceURL!
+        let movieURL = URL(string:"sample_iPod.m4v", relativeTo:bundleURL)!
         
         do {
             movie = try MovieInput(url:movieURL, playAtActualSpeed:true)

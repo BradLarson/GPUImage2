@@ -68,7 +68,7 @@ public struct Matrix3x3 {
                                                              0.0, 0.0, 0.0])
 }
 
-func orthographicMatrix(left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float, anchorTopLeft:Bool = false) -> Matrix4x4 {
+func orthographicMatrix(_ left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float, anchorTopLeft:Bool = false) -> Matrix4x4 {
     let r_l = right - left
     let t_b = top - bottom
     let f_n = far - near

@@ -13,7 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var movieOutput:MovieOutput?
     var isRecording = false
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         do {
             camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
             filter = SmoothToonFilter()
@@ -26,11 +26,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         camera.stopCapture()
     }
     
-    @IBAction func record(sender: AnyObject) {
+    @IBAction func record(_ sender: AnyObject) {
         if (!isRecording) {
             let movieSavingDialog = NSSavePanel()
             movieSavingDialog.allowedFileTypes = ["mp4"]
@@ -39,8 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if okayButton == NSModalResponseOK {
                 do {
                     self.isRecording = true
-//                    movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:1280, height:720), liveVideo:true)
-                    movieOutput = try MovieOutput(URL:movieSavingDialog.URL!, size:Size(width:640, height:480), liveVideo:true)
+//                    movieOutput = try MovieOutput(URL:movieSavingDialog.url!, size:Size(width:1280, height:720), liveVideo:true)
+                    movieOutput = try MovieOutput(URL:movieSavingDialog.url!, size:Size(width:640, height:480), liveVideo:true)
 //                    camera.audioEncodingTarget = movieOutput
                     filter --> movieOutput!
                     movieOutput!.startRecording()
@@ -52,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             movieOutput?.finishRecording{
                 self.isRecording = false
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     (sender as! NSButton).title = "Record"
                 }
 //                self.camera.audioEncodingTarget = nil

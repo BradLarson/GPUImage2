@@ -27,14 +27,14 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
     }
     
-    @IBAction func capture(sender: AnyObject) {
+    @IBAction func capture(_ sender: AnyObject) {
         if (!isRecording) {
             do {
                 self.isRecording = true
-                let documentsDir = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain:.UserDomainMask, appropriateForURL:nil, create:true)
-                let fileURL = NSURL(string:"test.mp4", relativeToURL:documentsDir)!
+                let documentsDir = try FileManager.default().urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+                let fileURL = URL(string:"test.mp4", relativeTo:documentsDir)!
                 do {
-                    try NSFileManager.defaultManager().removeItemAtURL(fileURL)
+                    try FileManager.default().removeItem(at:fileURL)
                 } catch {
                 }
                 
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
         } else {
             movieOutput?.finishRecording{
                 self.isRecording = false
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     (sender as! UIButton).titleLabel?.text = "Record"
                 }
                 self.camera.audioEncodingTarget = nil

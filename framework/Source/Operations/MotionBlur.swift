@@ -12,8 +12,8 @@ public class MotionBlur: BasicOperation {
         super.init(vertexShader:MotionBlurVertexShader, fragmentShader:MotionBlurFragmentShader, numberOfInputs:1)
     }
     
-    override func configureFramebufferSpecificUniforms(inputFramebuffer:Framebuffer) {
-        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait)
+    override func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
+        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
         let texelSize = inputFramebuffer.texelSizeForRotation(outputRotation)
         
         let aspectRatio = inputFramebuffer.aspectRatioForRotation(outputRotation)

@@ -17,7 +17,7 @@ public class SingleComponentGaussianBlur: TwoStageOperation {
     
 }
 
-func fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
     
     let standardWeights = standardGaussianWeightsForRadius(radius, sigma:sigma)

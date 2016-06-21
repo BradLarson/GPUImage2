@@ -15,17 +15,14 @@ public class OpenGLContext: SerialDispatch {
         return crashOnShaderCompileFailure("OpenGLContext"){return try self.programForVertexShader(OneInputVertexShader, fragmentShader:PassthroughFragmentShader)}
     }()
 
-    public let serialDispatchQueue:dispatch_queue_t = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.processingQueue", nil)
-    var dispatchKey:Int = 1
-    public let dispatchQueueKey:UnsafePointer<Void>
+    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label: "com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
+    public let dispatchQueueKey = DispatchSpecificKey<Int>()
 
     // MARK: -
     // MARK: Initialization and teardown
 
     init() {
-        let context = UnsafeMutablePointer<Void>(Unmanaged<dispatch_queue_t>.passUnretained(self.serialDispatchQueue).toOpaque())
-        dispatchQueueKey = UnsafePointer<Void>(bitPattern:dispatchKey)
-        dispatch_queue_set_specific(serialDispatchQueue, dispatchQueueKey, context, nil)
+        serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:81)
 
         let pixelFormatAttributes:[NSOpenGLPixelFormatAttribute] = [
             NSOpenGLPixelFormatAttribute(NSOpenGLPFADoubleBuffer),
@@ -37,7 +34,7 @@ public class OpenGLContext: SerialDispatch {
             fatalError("No appropriate pixel format found when creating OpenGL context.")
         }
         // TODO: Take into account the sharegroup
-        guard let generatedContext = NSOpenGLContext(format:pixelFormat, shareContext:nil) else {
+        guard let generatedContext = NSOpenGLContext(format:pixelFormat, share:nil) else {
             fatalError("Unable to create an OpenGL context. The GPUImage framework requires OpenGL support to work.")
         }
         
@@ -80,7 +77,7 @@ public class OpenGLContext: SerialDispatch {
     lazy var extensionString:String = {
         return self.runOperationSynchronously{
             self.makeCurrentContext()
-            return String.fromCString(UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))!
+            return String(cString:UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))
         }
     }()
 }

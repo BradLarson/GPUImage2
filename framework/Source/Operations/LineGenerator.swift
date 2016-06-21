@@ -13,18 +13,18 @@
 #endif
 
 public enum Line {
-    case Infinite(slope:Float, intercept:Float)
-    case Segment(p1:Position, p2:Position)
+    case infinite(slope:Float, intercept:Float)
+    case segment(p1:Position, p2:Position)
 
     func toGLEndpoints() -> [GLfloat] {
         switch self {
-        case .Infinite(let slope, let intercept):
+        case .infinite(let slope, let intercept):
             if (slope > 9000.0) {// Vertical line
                 return [intercept, -1.0, intercept, 1.0]
             } else {
                 return [-1.0, GLfloat(slope * -1.0 + intercept), 1.0, GLfloat(slope * 1.0 + intercept)]
             }
-        case .Segment(let p1, let p2):
+        case .segment(let p1, let p2):
             return [p1.x, p1.y, p2.x, p2.y].map {GLfloat($0)}
         }
     }
@@ -50,7 +50,7 @@ public class LineGenerator: ImageGenerator {
         ({lineColor = Color.Red})()
     }
 
-    public func renderLines(lines:[Line]) {
+    public func renderLines(_ lines:[Line]) {
         imageFramebuffer.activateFramebufferForRendering()
         
         lineShader.use()

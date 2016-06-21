@@ -22,13 +22,13 @@ public class TransformOperation: BasicOperation {
         ({transform = Matrix4x4.Identity})()
     }
     
-    override func internalRenderFunction(inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
+    override func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
         renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:normalizedImageVertices, inputTextures:textureProperties)
         releaseIncomingFramebuffers()
     }
 
-    override func configureFramebufferSpecificUniforms(inputFramebuffer:Framebuffer) {
-        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait)
+    override func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
+        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
         let aspectRatio = inputFramebuffer.aspectRatioForRotation(outputRotation)
         let orthoMatrix = orthographicMatrix(-1.0, right:1.0, bottom:-1.0 * aspectRatio, top:1.0 * aspectRatio, near:-1.0, far:1.0)
         normalizedImageVertices = normalizedImageVerticesForAspectRatio(aspectRatio)
@@ -37,6 +37,6 @@ public class TransformOperation: BasicOperation {
     }
 }
 
-func normalizedImageVerticesForAspectRatio(aspectRatio:Float) -> [GLfloat] {
+func normalizedImageVerticesForAspectRatio(_ aspectRatio:Float) -> [GLfloat] {
     return [-1.0, GLfloat(-aspectRatio), 1.0, GLfloat(-aspectRatio), -1.0,  GLfloat(aspectRatio), 1.0,  GLfloat(aspectRatio)]
 }

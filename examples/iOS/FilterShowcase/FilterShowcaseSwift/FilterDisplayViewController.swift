@@ -15,7 +15,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     required init(coder aDecoder: NSCoder)
     {
         do {
-            videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.BackFacing)
+            videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.backFacing)
             videoCamera!.runBenchmark = true
         } catch {
             videoCamera = nil
@@ -29,9 +29,9 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     
     func configureView() {
         guard let videoCamera = videoCamera else {
-            let errorAlertController = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: "Couldn't initialize camera", preferredStyle: .Alert)
-            errorAlertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Default, handler: nil))
-            self.presentViewController(errorAlertController, animated: true, completion: nil)
+            let errorAlertController = UIAlertController(title: NSLocalizedString("Error", comment: "Error"), message: "Couldn't initialize camera", preferredStyle: .alert)
+            errorAlertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .default, handler: nil))
+            self.present(errorAlertController, animated: true, completion: nil)
             return
         }
         if let currentFilterConfiguration = self.filterOperation {
@@ -40,16 +40,16 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
             // Configure the filter chain, ending with the view
             if let view = self.filterView {
                 switch currentFilterConfiguration.filterOperationType {
-                case .SingleInput:
+                case .singleInput:
                     videoCamera.addTarget(currentFilterConfiguration.filter)
                     currentFilterConfiguration.filter.addTarget(view)
-                case .Blend:
+                case .blend:
                     videoCamera.addTarget(currentFilterConfiguration.filter)
                     self.blendImage = PictureInput(imageName:blendImageName)
                     self.blendImage?.addTarget(currentFilterConfiguration.filter)
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)
-                case let .Custom(filterSetupFunction:setupFunction):
+                case let .custom(filterSetupFunction:setupFunction):
                     currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera, filter:currentFilterConfiguration.filter, outputView:view))
                 }
                 
@@ -59,14 +59,14 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
             // Hide or display the slider, based on whether the filter needs it
             if let slider = self.filterSlider {
                 switch currentFilterConfiguration.sliderConfiguration {
-                case .Disabled:
-                    slider.hidden = true
+                case .disabled:
+                    slider.isHidden = true
 //                case let .Enabled(minimumValue, initialValue, maximumValue, filterSliderCallback):
-                case let .Enabled(minimumValue, maximumValue, initialValue):
+                case let .enabled(minimumValue, maximumValue, initialValue):
                     slider.minimumValue = minimumValue
                     slider.maximumValue = maximumValue
                     slider.value = initialValue
-                    slider.hidden = false
+                    slider.isHidden = false
                     self.updateSliderValue()
                 }
             }
@@ -77,8 +77,8 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     @IBAction func updateSliderValue() {
         if let currentFilterConfiguration = self.filterOperation {
             switch (currentFilterConfiguration.sliderConfiguration) {
-                case .Enabled(_, _, _): currentFilterConfiguration.updateBasedOnSliderValue(Float(self.filterSlider!.value))
-                case .Disabled: break
+                case .enabled(_, _, _): currentFilterConfiguration.updateBasedOnSliderValue(Float(self.filterSlider!.value))
+                case .disabled: break
             }
         }
     }
@@ -88,7 +88,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
         self.configureView()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if let videoCamera = videoCamera {
             videoCamera.stopCapture()
             videoCamera.removeAllTargets()

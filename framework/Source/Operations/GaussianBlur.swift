@@ -27,7 +27,7 @@ public class GaussianBlur: TwoStageOperation {
 // MARK: -
 // MARK: Blur sizing calculations
 
-func sigmaAndDownsamplingForBlurRadius(radius:Float, limit:Float, override:Bool = false) -> (sigma:Float, downsamplingFactor:Float?) {
+func sigmaAndDownsamplingForBlurRadius(_ radius:Float, limit:Float, override:Bool = false) -> (sigma:Float, downsamplingFactor:Float?) {
     // For now, only do integral sigmas
     let startingRadius = Float(round(Double(radius)))
     guard ((startingRadius > limit) && (!override)) else { return (sigma:startingRadius, downsamplingFactor:nil) }
@@ -37,7 +37,7 @@ func sigmaAndDownsamplingForBlurRadius(radius:Float, limit:Float, override:Bool 
 
 
 // inputRadius for Core Image's CIGaussianBlur is really sigma in the Gaussian equation, so I'm using that for my blur radius, to be consistent
-func pixelRadiusForBlurSigma(sigma:Double) -> UInt {
+func pixelRadiusForBlurSigma(_ sigma:Double) -> UInt {
     // 7.0 is the limit for blur size for hardcoded varying offsets
     let minimumWeightToFindEdgeOfSamplingArea = 1.0 / 256.0
     
@@ -54,7 +54,7 @@ func pixelRadiusForBlurSigma(sigma:Double) -> UInt {
 // MARK: -
 // MARK: Standard Gaussian blur shaders
 
-func standardGaussianWeightsForRadius(blurRadius:UInt, sigma:Double) -> [Double] {
+func standardGaussianWeightsForRadius(_ blurRadius:UInt, sigma:Double) -> [Double] {
     var gaussianWeights = [Double]()
     var sumOfWeights = 0.0
     for gaussianWeightIndex in 0...blurRadius {
@@ -70,7 +70,7 @@ func standardGaussianWeightsForRadius(blurRadius:UInt, sigma:Double) -> [Double]
     return gaussianWeights.map{$0 / sumOfWeights}
 }
 
-func vertexShaderForStandardGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func vertexShaderForStandardGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return OneInputVertexShader }
     
     let numberOfBlurCoordinates = radius * 2 + 1
@@ -90,7 +90,7 @@ func vertexShaderForStandardGaussianBlurOfRadius(radius:UInt, sigma:Double) -> S
     return shaderString
 }
 
-func fragmentShaderForStandardGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func fragmentShaderForStandardGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
 
     let gaussianWeights = standardGaussianWeightsForRadius(radius, sigma:sigma)
@@ -117,7 +117,7 @@ func fragmentShaderForStandardGaussianBlurOfRadius(radius:UInt, sigma:Double) ->
 // MARK: -
 // MARK: Optimized Gaussian blur shaders
 
-func optimizedGaussianOffsetsForRadius(blurRadius:UInt, sigma:Double) -> [Double] {
+func optimizedGaussianOffsetsForRadius(_ blurRadius:UInt, sigma:Double) -> [Double] {
     let standardWeights = standardGaussianWeightsForRadius(blurRadius, sigma:sigma)
     let numberOfOptimizedOffsets = min(blurRadius / 2 + (blurRadius % 2), 7)
     
@@ -133,7 +133,7 @@ func optimizedGaussianOffsetsForRadius(blurRadius:UInt, sigma:Double) -> [Double
     return optimizedOffsets
 }
 
-func vertexShaderForOptimizedGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func vertexShaderForOptimizedGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return OneInputVertexShader }
 
     let optimizedOffsets = optimizedGaussianOffsetsForRadius(radius, sigma:sigma)
@@ -151,7 +151,7 @@ func vertexShaderForOptimizedGaussianBlurOfRadius(radius:UInt, sigma:Double) -> 
     return shaderString
 }
 
-func fragmentShaderForOptimizedGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func fragmentShaderForOptimizedGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
     
     let standardWeights = standardGaussianWeightsForRadius(radius, sigma:sigma)

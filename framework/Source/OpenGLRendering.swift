@@ -48,7 +48,7 @@ public let standardImageVertices:[GLfloat] = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 
 public let verticallyInvertedImageVertices:[GLfloat] = [-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]
 
 // "position" and "inputTextureCoordinate", "inputTextureCoordinate2" attribute naming follows the convention of the old GPUImage
-func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat], inputTextures:[InputTextureProperties]) {
+func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat], inputTextures:[InputTextureProperties]) {
     sharedImageProcessingContext.makeCurrentContext()
     shader.use()
     uniformSettings?.restoreShaderSettings(shader)
@@ -56,7 +56,7 @@ func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSet
     guard let positionAttribute = shader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
     glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, vertices)
 
-    for (index, inputTexture) in inputTextures.enumerate() {
+    for (index, inputTexture) in inputTextures.enumerated() {
         if let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) {
             glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, inputTexture.textureCoordinates)
         } else if (index == 0) {
@@ -71,19 +71,19 @@ func renderQuadWithShader(shader:ShaderProgram, uniformSettings:ShaderUniformSet
     
     glDrawArrays(GLenum(GL_TRIANGLE_STRIP), 0, 4)
     
-    for (index, _) in inputTextures.enumerate() {
+    for (index, _) in inputTextures.enumerated() {
         glActiveTexture(textureUnitForIndex(index))
         glBindTexture(GLenum(GL_TEXTURE_2D), 0)
     }
 }
 
-public func clearFramebufferWithColor(color:Color) {
+public func clearFramebufferWithColor(_ color:Color) {
     glClearColor(GLfloat(color.red), GLfloat(color.green), GLfloat(color.blue), GLfloat(color.alpha))
     glClear(GLenum(GL_COLOR_BUFFER_BIT))
 }
 
-func renderStencilMaskFromFramebuffer(framebuffer:Framebuffer) {
-    let inputTextureProperties = framebuffer.texturePropertiesForOutputRotation(.NoRotation)
+func renderStencilMaskFromFramebuffer(_ framebuffer:Framebuffer) {
+    let inputTextureProperties = framebuffer.texturePropertiesForOutputRotation(.noRotation)
     glEnable(GLenum(GL_STENCIL_TEST))
     glClearStencil(0)
     glClear (GLenum(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT))
@@ -114,7 +114,7 @@ func disableStencil() {
     glDisable(GLenum(GL_STENCIL_TEST))
 }
 
-func textureUnitForIndex(index:Int) -> GLenum {
+func textureUnitForIndex(_ index:Int) -> GLenum {
     switch index {
         case 0: return GLenum(GL_TEXTURE0)
         case 1: return GLenum(GL_TEXTURE1)
@@ -129,7 +129,7 @@ func textureUnitForIndex(index:Int) -> GLenum {
     }
 }
 
-func generateTexture(minFilter minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
+func generateTexture(minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
     var texture:GLuint = 0
     
     glActiveTexture(GLenum(GL_TEXTURE1))
@@ -145,7 +145,7 @@ func generateTexture(minFilter minFilter:Int32, magFilter:Int32, wrapS:Int32, wr
     return texture
 }
 
-func generateFramebufferForTexture(texture:GLuint, width:GLint, height:GLint, internalFormat:Int32, format:Int32, type:Int32, stencil:Bool) throws -> (GLuint, GLuint?) {
+func generateFramebufferForTexture(_ texture:GLuint, width:GLint, height:GLint, internalFormat:Int32, format:Int32, type:Int32, stencil:Bool) throws -> (GLuint, GLuint?) {
     var framebuffer:GLuint = 0
     glActiveTexture(GLenum(GL_TEXTURE1))
 
@@ -173,7 +173,7 @@ func generateFramebufferForTexture(texture:GLuint, width:GLint, height:GLint, in
     return (framebuffer, stencilBuffer)
 }
 
-func attachStencilBuffer(width width:GLint, height:GLint) throws -> GLuint {
+func attachStencilBuffer(width:GLint, height:GLint) throws -> GLuint {
     var stencilBuffer:GLuint = 0
     glGenRenderbuffers(1, &stencilBuffer);
     glBindRenderbuffer(GLenum(GL_RENDERBUFFER), stencilBuffer)
@@ -194,7 +194,7 @@ func attachStencilBuffer(width width:GLint, height:GLint) throws -> GLuint {
 }
 
 extension String {
-    func withNonZeroSuffix(suffix:Int) -> String {
+    func withNonZeroSuffix(_ suffix:Int) -> String {
         if suffix == 0 {
             return self
         } else {
@@ -202,7 +202,7 @@ extension String {
         }
     }
     
-    func withGLChar(operation:UnsafePointer<GLchar> -> ()) {
+    func withGLChar(_ operation:(UnsafePointer<GLchar>) -> ()) {
 #if os(Linux)
         // cStringUsingEncoding isn't yet defined in the Linux Foundation.
         // This approach is roughly 35X slower than the cStringUsingEncoding one.
@@ -216,7 +216,7 @@ extension String {
         
         bufferCString.dealloc(self.characters.count)
 #else
-        if let value = self.cStringUsingEncoding(NSUTF8StringEncoding) {
+        if let value = self.cString(using:String.Encoding.utf8) {
             operation(UnsafePointer<GLchar>(value))
         } else {
             fatalError("Could not convert this string to UTF8: \(self)")

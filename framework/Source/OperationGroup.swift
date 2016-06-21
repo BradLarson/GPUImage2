@@ -9,15 +9,15 @@ public class OperationGroup: ImageProcessingOperation {
     public init() {
     }
     
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         inputImageRelay.newFramebufferAvailable(framebuffer, fromSourceIndex:fromSourceIndex)
     }
 
-    public func configureGroup(configurationOperation:(input:ImageRelay, output:ImageRelay) -> ()) {
+    public func configureGroup(_ configurationOperation:(input:ImageRelay, output:ImageRelay) -> ()) {
         configurationOperation(input:inputImageRelay, output:outputImageRelay)
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
         outputImageRelay.transmitPreviousImageToTarget(target, atIndex:atIndex)
     }
 }

@@ -976,11 +976,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Sunset Lake Software LLC";
 				TargetAttributes = {
 					BC6E7CAA1C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					BC6E7CB41C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1322,6 +1323,7 @@
 				PRODUCT_NAME = GPUImage;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1341,6 +1343,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-Mac";
 				PRODUCT_NAME = GPUImage;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1363,6 +1367,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-MacTests";
 				PRODUCT_NAME = GPUImage;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};

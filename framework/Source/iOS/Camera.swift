@@ -2,40 +2,40 @@ import Foundation
 import AVFoundation
 
 public protocol CameraDelegate {
-    func didCaptureBuffer(sampleBuffer: CMSampleBuffer)
+    func didCaptureBuffer(_ sampleBuffer: CMSampleBuffer)
 }
 public enum PhysicalCameraLocation {
-    case BackFacing
-    case FrontFacing
+    case backFacing
+    case frontFacing
     
     // Documentation: "The front-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeLeft and the back-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeRight."
     func imageOrientation() -> ImageOrientation {
         switch self {
-            case .BackFacing: return .LandscapeRight
-            case .FrontFacing: return .LandscapeLeft
+            case .backFacing: return .landscapeRight
+            case .frontFacing: return .landscapeLeft
         }
     }
     
     func captureDevicePosition() -> AVCaptureDevicePosition {
         switch self {
-            case .BackFacing: return .Back
-            case .FrontFacing: return .Front
+            case .backFacing: return .back
+            case .frontFacing: return .front
         }
     }
     
     func device() -> AVCaptureDevice? {
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
-        for device in devices {
+        let devices = AVCaptureDevice.devices(withMediaType:AVMediaTypeVideo)
+        for device in devices! {
             if (device.position == self.captureDevicePosition()) {
                 return device as? AVCaptureDevice
             }
         }
         
-        return AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        return AVCaptureDevice.defaultDevice(withMediaType:AVMediaTypeVideo)
     }
 }
 
-struct CameraError: ErrorType {
+struct CameraError: ErrorProtocol {
 }
 
 let initialBenchmarkFramesToIgnore = 5
@@ -76,9 +76,9 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     var supportsFullYUVRange:Bool = false
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
-    let frameRenderingSemaphore = dispatch_semaphore_create(1)
-    let cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)
-    let audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)
+    let frameRenderingSemaphore = DispatchSemaphore(value:1)
+    let cameraProcessingQueue = DispatchQueue.global(attributes:DispatchQueue.GlobalAttributes.qosUserInitiated)
+    let audioProcessingQueue = DispatchQueue.global(attributes:DispatchQueue.GlobalAttributes.qosUtility)
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -86,7 +86,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     var framesSinceLastCheck = 0
     var lastCheckTime = CFAbsoluteTimeGetCurrent()
 
-    public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .BackFacing, captureAsYUV:Bool = true) throws {
+    public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .backFacing, captureAsYUV:Bool = true) throws {
         
         self.location = location
         self.captureAsYUV = captureAsYUV
@@ -129,22 +129,22 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         if captureAsYUV {
             supportsFullYUVRange = false
             let supportedPixelFormats = videoOutput.availableVideoCVPixelFormatTypes
-            for currentPixelFormat in supportedPixelFormats {
-                if ((currentPixelFormat as! NSNumber).intValue == Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)) {
+            for currentPixelFormat in supportedPixelFormats! {
+                if ((currentPixelFormat as! NSNumber).int32Value == Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)) {
                     supportsFullYUVRange = true
                 }
             }
             
             if (supportsFullYUVRange) {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionFullRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(int:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
             } else {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionVideoRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(int:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
             }
         } else {
             yuvConversionShader = nil
-            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(int:Int32(kCVPixelFormatType_32BGRA))]
+            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_32BGRA))]
         }
 
         if (captureSession.canAddOutput(videoOutput)) {
@@ -166,13 +166,13 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         }
     }
     
-    public func captureOutput(captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, fromConnection connection:AVCaptureConnection!) {
+    public func captureOutput(_ captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, from connection:AVCaptureConnection!) {
         guard (captureOutput != audioOutput) else {
             self.processAudioSampleBuffer(sampleBuffer)
             return
         }
 
-        guard (dispatch_semaphore_wait(frameRenderingSemaphore, DISPATCH_TIME_NOW) == 0) else { return }
+        guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.Success) else { return }
     
         let startTime = CFAbsoluteTimeGetCurrent()
         
@@ -190,7 +190,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 let luminanceFramebuffer:Framebuffer
                 let chrominanceFramebuffer:Framebuffer
                 if sharedImageProcessingContext.supportsTextureCaches() {
-                    var luminanceTextureRef:CVOpenGLESTextureRef? = nil
+                    var luminanceTextureRef:CVOpenGLESTexture? = nil
                     let _ = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, cameraFrame, nil, GLenum(GL_TEXTURE_2D), GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), 0, &luminanceTextureRef)
                     let luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef!)
                     glActiveTexture(GLenum(GL_TEXTURE4))
@@ -199,7 +199,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                     glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_CLAMP_TO_EDGE)
                     luminanceFramebuffer = try! Framebuffer(context:sharedImageProcessingContext, orientation:self.location.imageOrientation(), size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true, overriddenTexture:luminanceTexture)
                     
-                    var chrominanceTextureRef:CVOpenGLESTextureRef? = nil
+                    var chrominanceTextureRef:CVOpenGLESTexture? = nil
                     let _ = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, cameraFrame, nil, GLenum(GL_TEXTURE_2D), GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), 1, &chrominanceTextureRef)
                     let chrominanceTexture = CVOpenGLESTextureGetName(chrominanceTextureRef!)
                     glActiveTexture(GLenum(GL_TEXTURE5))
@@ -222,7 +222,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                     glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(cameraFrame, 1))
                 }
                 
-                cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:luminanceFramebuffer.sizeForTargetOrientation(.Portrait), textureOnly:false)
+                cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:luminanceFramebuffer.sizeForTargetOrientation(.portrait), textureOnly:false)
                 
                 let conversionMatrix:Matrix3x3
                 if (self.supportsFullYUVRange) {
@@ -238,7 +238,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             }
             CVPixelBufferUnlockBaseAddress(cameraFrame, 0)
             
-            cameraFramebuffer.timingStyle = .VideoFrame(timestamp:Timestamp(currentTime))
+            cameraFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(currentTime))
             self.updateTargetsWithFramebuffer(cameraFramebuffer)
             
             if self.runBenchmark {
@@ -261,7 +261,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 self.framesSinceLastCheck += 1
             }
 
-            dispatch_semaphore_signal(self.frameRenderingSemaphore)
+            self.frameRenderingSemaphore.signal()
         }
     }
 
@@ -269,18 +269,18 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         self.numberOfFramesCaptured = 0
         self.totalFrameTimeDuringCapture = 0
         
-        if (!captureSession.running) {
+        if (!captureSession.isRunning) {
             captureSession.startRunning()
         }
     }
     
     public func stopCapture() {
-        if (!captureSession.running) {
+        if (!captureSession.isRunning) {
             captureSession.stopRunning()
         }
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
         // Not needed for camera inputs
     }
     
@@ -294,7 +294,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         defer {
             captureSession.commitConfiguration()
         }
-        microphone = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+        microphone = AVCaptureDevice.defaultDevice(withMediaType:AVMediaTypeAudio)
         audioInput = try AVCaptureDeviceInput(device:microphone)
         if captureSession.canAddInput(audioInput) {
            captureSession.addInput(audioInput)
@@ -318,7 +318,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         captureSession.commitConfiguration()
     }
     
-    func processAudioSampleBuffer(sampleBuffer:CMSampleBuffer) {
+    func processAudioSampleBuffer(_ sampleBuffer:CMSampleBuffer) {
         self.audioEncodingTarget?.processAudioBuffer(sampleBuffer)
     }
 }
