@@ -20,7 +20,6 @@ public class PictureOutput: ImageConsumer {
     }
     
     deinit {
-        debugPrint("Deallocating picture")
     }
 
     public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {

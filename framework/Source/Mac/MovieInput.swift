@@ -44,7 +44,7 @@ public class MovieInput: ImageSource {
 
     public func start() {
         asset.loadValuesAsynchronously(forKeys: ["tracks"], completionHandler: {
-            DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.priorityDefault).async(execute: {
+            DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.priorityDefault).async {
                 guard (self.asset.statusOfValue(forKey:"tracks", error:nil) == .loaded) else { return }
 
                 guard self.assetReader.startReading() else {
@@ -73,7 +73,7 @@ public class MovieInput: ImageSource {
                         self.endProcessing()
                     }
                 }
-            })
+            }
         })
     }
     
