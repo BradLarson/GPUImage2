@@ -1343,7 +1343,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-Mac";
 				PRODUCT_NAME = GPUImage;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
