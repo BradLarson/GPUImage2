@@ -8,9 +8,11 @@ public class BoxBlur: TwoStageOperation {
     public var blurRadiusInPixels:Float {
         didSet {
             let (sigma, downsamplingFactor) = sigmaAndDownsamplingForBlurRadius(blurRadiusInPixels, limit:8.0, override:overrideDownsamplingOptimization)
-            self.downsamplingFactor = downsamplingFactor
-            let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
-            shader = crashOnShaderCompileFailure("BoxBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedBoxBlurOfRadius(pixelRadius), fragmentShader:fragmentShaderForOptimizedBoxBlurOfRadius(pixelRadius))}
+            sharedImageProcessingContext.runOperationAsynchronously {
+                self.downsamplingFactor = downsamplingFactor
+                let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
+                self.shader = crashOnShaderCompileFailure("BoxBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedBoxBlurOfRadius(pixelRadius), fragmentShader:fragmentShaderForOptimizedBoxBlurOfRadius(pixelRadius))}
+            }
         }
     }
     

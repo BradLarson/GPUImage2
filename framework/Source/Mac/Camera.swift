@@ -184,8 +184,10 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
 
     public func startCapture() {
-        self.numberOfFramesCaptured = 0
-        self.totalFrameTimeDuringCapture = 0
+        sharedImageProcessingContext.runOperationAsynchronously{
+            self.numberOfFramesCaptured = 0
+            self.totalFrameTimeDuringCapture = 0
+        }
 
         if (!captureSession.isRunning) {
             captureSession.startRunning()
