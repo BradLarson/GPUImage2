@@ -1,6 +1,9 @@
 import Foundation
 import AVFoundation
 
+public protocol CameraDelegate {
+    func didCaptureBuffer(sampleBuffer: CMSampleBuffer)
+}
 public enum PhysicalCameraLocation {
     case BackFacing
     case FrontFacing
@@ -61,6 +64,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     public let targets = TargetContainer()
+    public var delegate: CameraDelegate?
     let captureSession:AVCaptureSession
     let inputCamera:AVCaptureDevice!
     let videoInput:AVCaptureDeviceInput!
@@ -181,6 +185,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         sharedImageProcessingContext.runOperationAsynchronously{
             let cameraFramebuffer:Framebuffer
             
+            self.delegate?.didCaptureBuffer(sampleBuffer)
             if self.captureAsYUV {
                 let luminanceFramebuffer:Framebuffer
                 let chrominanceFramebuffer:Framebuffer

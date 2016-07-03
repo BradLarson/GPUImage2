@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTJ-MM-c4Z">
-                                        <rect key="frame" x="253" y="494" width="95" height="70"/>
+                                        <rect key="frame" x="505" y="494" width="95" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="iKd-sJ-ABw"/>
                                             <constraint firstAttribute="width" constant="95" id="rF1-FD-Rxo"/>
@@ -32,11 +32,28 @@
                                             <action selector="capture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BE1-gy-8jg"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detect Faces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nJ9-JV-UXc">
+                                        <rect key="frame" x="65" y="524" width="80" height="16"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UZf-tP-6yu">
+                                        <rect key="frame" x="8" y="515" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="didSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="0w2-0I-oBP"/>
+                                        </connections>
+                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="UZf-tP-6yu" secondAttribute="bottom" constant="26" id="QYe-Rb-9UI"/>
+                                    <constraint firstAttribute="bottom" secondItem="nJ9-JV-UXc" secondAttribute="bottom" constant="32" id="gaO-oh-agg"/>
+                                    <constraint firstItem="UZf-tP-6yu" firstAttribute="leading" secondItem="MIZ-bY-Kwk" secondAttribute="leading" constant="8" id="p9I-FX-whb"/>
+                                    <constraint firstItem="nJ9-JV-UXc" firstAttribute="leading" secondItem="UZf-tP-6yu" secondAttribute="trailing" constant="8" id="qeV-wy-tZf"/>
                                     <constraint firstItem="cTJ-MM-c4Z" firstAttribute="bottom" secondItem="MIZ-bY-Kwk" secondAttribute="bottomMargin" id="w5J-tE-eCN"/>
-                                    <constraint firstItem="cTJ-MM-c4Z" firstAttribute="centerX" secondItem="MIZ-bY-Kwk" secondAttribute="centerX" id="y7f-cV-kkm"/>
+                                    <constraint firstItem="cTJ-MM-c4Z" firstAttribute="trailing" secondItem="MIZ-bY-Kwk" secondAttribute="trailing" id="y7f-cV-kkm"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -49,6 +66,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="faceDetectSwitch" destination="UZf-tP-6yu" id="kac-wE-Nc7"/>
                         <outlet property="renderView" destination="MIZ-bY-Kwk" id="2Sj-7n-kNT"/>
                     </connections>
                 </viewController>

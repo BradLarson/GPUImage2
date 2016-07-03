@@ -4,6 +4,7 @@ import UIKit
 public class PictureInput: ImageSource {
     public let targets = TargetContainer()
     var imageFramebuffer:Framebuffer!
+    var hasProcessedImage:Bool = false
     
     public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .Portrait) {
         // TODO: Dispatch this whole thing asynchronously to move image loading off main thread
@@ -128,16 +129,20 @@ public class PictureInput: ImageSource {
         if synchronously {
             sharedImageProcessingContext.runOperationSynchronously{
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
+                self.hasProcessedImage = true
             }
         } else {
             sharedImageProcessingContext.runOperationAsynchronously{
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
+                self.hasProcessedImage = true
             }
         }
     }
     
     public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
-        imageFramebuffer.lock()
-        target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
+        if hasProcessedImage {
+            imageFramebuffer.lock()
+            target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
+        }
     }
 }
