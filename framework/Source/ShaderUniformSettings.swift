@@ -15,37 +15,37 @@
 public struct ShaderUniformSettings {
     private var uniformValues = [String:Any]()
 
-    subscript(index:String) -> Float? {
+    public subscript(index:String) -> Float? {
         get { return uniformValues[index] as? Float}
         set(newValue) { uniformValues[index] = newValue }
     }
     
-    subscript(index:String) -> Int? {
+    public subscript(index:String) -> Int? {
         get { return uniformValues[index] as? Int }
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    subscript(index:String) -> Color? {
+    public subscript(index:String) -> Color? {
         get { return uniformValues[index] as? Color }
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    subscript(index:String) -> Position? {
+    public subscript(index:String) -> Position? {
         get { return uniformValues[index] as? Position }
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    subscript(index:String) -> Size? {
+    public subscript(index:String) -> Size? {
         get { return uniformValues[index] as? Size}
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    subscript(index:String) -> Matrix4x4? {
+    public subscript(index:String) -> Matrix4x4? {
         get { return uniformValues[index] as? Matrix4x4 }
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    subscript(index:String) -> Matrix3x3? {
+    public subscript(index:String) -> Matrix3x3? {
         get { return uniformValues[index] as? Matrix3x3}
         set(newValue) { uniformValues[index] = newValue }
     }
