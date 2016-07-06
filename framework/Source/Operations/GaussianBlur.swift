@@ -46,7 +46,7 @@ func pixelRadiusForBlurSigma(_ sigma:Double) -> UInt {
     var calculatedSampleRadius:UInt = 0
     if (sigma >= 1.0) { // Avoid a divide-by-zero error here
         // Calculate the number of pixels to sample from by setting a bottom limit for the contribution of the outermost pixel
-        calculatedSampleRadius = UInt(floor(sqrt(-2.0 * pow(sigma, 2.0) * log(minimumWeightToFindEdgeOfSamplingArea * sqrt(2.0 * M_PI * pow(sigma, 2.0))) )))
+        calculatedSampleRadius = UInt(floor(sqrt(-2.0 * pow(sigma, 2.0) * log(minimumWeightToFindEdgeOfSamplingArea * sqrt(2.0 * .pi * pow(sigma, 2.0))) )))
         calculatedSampleRadius += calculatedSampleRadius % 2 // There's nothing to gain from handling odd radius sizes, due to the optimizations I use
     }
     
@@ -60,7 +60,7 @@ func standardGaussianWeightsForRadius(_ blurRadius:UInt, sigma:Double) -> [Doubl
     var gaussianWeights = [Double]()
     var sumOfWeights = 0.0
     for gaussianWeightIndex in 0...blurRadius {
-        let weight = (1.0 / sqrt(2.0 * M_PI * pow(sigma, 2.0))) * exp(-pow(Double(gaussianWeightIndex), 2.0) / (2.0 * pow(sigma, 2.0)))
+        let weight = (1.0 / sqrt(2.0 * .pi * pow(sigma, 2.0))) * exp(-pow(Double(gaussianWeightIndex), 2.0) / (2.0 * pow(sigma, 2.0)))
         gaussianWeights.append(weight)
         if (gaussianWeightIndex == 0) {
             sumOfWeights += weight
