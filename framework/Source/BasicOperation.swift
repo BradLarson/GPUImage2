@@ -34,6 +34,7 @@ public class BasicOperation: ImageProcessingOperation {
         }
     }
     public var activatePassthroughOnNextFrame:Bool = false
+    public var uniformSettings = ShaderUniformSettings()
 
     // MARK: -
     // MARK: Internal
@@ -44,7 +45,6 @@ public class BasicOperation: ImageProcessingOperation {
     var inputFramebuffers = [UInt:Framebuffer]()
     var renderFramebuffer:Framebuffer!
     var outputFramebuffer:Framebuffer { get { return renderFramebuffer } }
-    var uniformSettings = ShaderUniformSettings()
     let usesAspectRatio:Bool
     let maskImageRelay = ImageRelay()
     var maskFramebuffer:Framebuffer?
