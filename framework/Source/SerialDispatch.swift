@@ -35,7 +35,7 @@ public let lowProcessingQueuePriority:DispatchQueue.GlobalAttributes = {
 }()
 
 func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
-    if (Thread.isMainThread()) {
+    if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.async(execute: mainThreadOperation)
@@ -43,7 +43,7 @@ func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
 }
 
 func runOnMainQueue(_ mainThreadOperation:() -> ()) {
-    if (Thread.isMainThread()) {
+    if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.sync(execute: mainThreadOperation)

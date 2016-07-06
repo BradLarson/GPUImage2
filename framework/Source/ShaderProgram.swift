@@ -257,7 +257,7 @@ public func crashOnShaderCompileFailure<T>(_ shaderName:String, _ operation:() t
 public func shaderFromFile(_ file:URL) throws -> String {
     // Note: this is a hack until Foundation's String initializers are fully functional
     //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
-    guard (FileManager.default().fileExists(atPath: file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
+    guard (FileManager.default.fileExists(atPath: file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
     let fragmentShaderString = try NSString(contentsOfFile:file.path!, encoding:String.Encoding.ascii.rawValue)
     
     return String(fragmentShaderString)
