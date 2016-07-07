@@ -146,6 +146,7 @@
 		BCBEC0C61CCD2E6200B70ED7 /* Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */; };
 		BCBEC0E01CCD492D00B70ED7 /* HistogramEqualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0DF1CCD492D00B70ED7 /* HistogramEqualization.swift */; };
 		BCBEC0FA1CCD993900B70ED7 /* MovieInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0F91CCD993900B70ED7 /* MovieInput.swift */; };
+		BCCAED291D2ED9C700DE28D1 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BA1CC9C96B00339790 /* Timestamp.swift */; };
 		BCD1B14A1C66AE00001F2BDC /* SerialDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */; };
 		BCD1B14C1C66B225001F2BDC /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B14B1C66B225001F2BDC /* Pipeline.swift */; };
 		BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */; };
@@ -1192,6 +1193,7 @@
 				BC09239E1C92658200A2ADFA /* ShaderProgram_Tests.swift in Sources */,
 				BC7FD1941CB1D3E000037949 /* Size.swift in Sources */,
 				BC0923A51C92669900A2ADFA /* FramebufferCache.swift in Sources */,
+				BCCAED291D2ED9C700DE28D1 /* Timestamp.swift in Sources */,
 				BC6E7CC81C39AD9E006DF678 /* ShaderProgram.swift in Sources */,
 				BC7FD0FF1CB071DC00037949 /* Color.swift in Sources */,
 				BC4C85EF1C9F043400FD95D8 /* ConvertedShaders_GL.swift in Sources */,

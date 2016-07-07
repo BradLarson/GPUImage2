@@ -1,5 +1,6 @@
 // MARK: -
 // MARK: Basic types
+import Foundation
 
 public protocol ImageSource {
     var targets:TargetContainer { get }
@@ -89,37 +90,44 @@ class WeakImageConsumer {
 public class TargetContainer:Sequence {
     var targets = [WeakImageConsumer]()
     var count:Int { get {return targets.count}}
-
+    let dispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.targetContainerQueue", attributes: [])
+    
     public init() {
     }
     
     public func append(_ target:ImageConsumer, indexAtTarget:UInt) {
         // TODO: Don't allow the addition of a target more than once
-        targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
+        dispatchQueue.async{
+            self.targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
+        }
     }
     
     public func makeIterator() -> AnyIterator<(ImageConsumer, UInt)> {
         var index = 0
         
         return AnyIterator { () -> (ImageConsumer, UInt)? in
-            if (index >= self.targets.count) {
-                return nil
-            }
-            
-            while (self.targets[index].value == nil) {
-                self.targets.remove(at:index)
+            return self.dispatchQueue.sync{
                 if (index >= self.targets.count) {
                     return nil
                 }
+                
+                while (self.targets[index].value == nil) {
+                    self.targets.remove(at:index)
+                    if (index >= self.targets.count) {
+                        return nil
+                    }
+                }
+                
+                index += 1
+                return (self.targets[index - 1].value!, self.targets[index - 1].indexAtTarget)
             }
-            
-            index += 1
-            return (self.targets[index - 1].value!, self.targets[index - 1].indexAtTarget)
         }
     }
     
     public func removeAll() {
-        targets.removeAll()
+        dispatchQueue.async{
+            self.targets.removeAll()
+        }
     }
 }
 

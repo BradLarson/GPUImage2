@@ -74,9 +74,9 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
              * Tagging the resulting video file as BT.601, is the best option right now.
              * Creating a proper BT.709 video is not possible at the moment.
              */
-            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate)
-            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate)
-            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate)
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, .shouldPropagate)
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, .shouldPropagate)
+            CVBufferSetAttachment(self.pixelBuffer!, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, .shouldPropagate)
             
             let bufferSize = GLSize(self.size)
             var cachedTextureRef:CVOpenGLESTexture? = nil
@@ -152,7 +152,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             debugPrint("Problem appending pixel buffer at time: \(frameTime)")
         }
         
-        CVPixelBufferUnlockBaseAddress(pixelBuffer!, 0)
+        CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
         if !sharedImageProcessingContext.supportsTextureCaches() {
             pixelBuffer = nil
         }
@@ -166,7 +166,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.Black)
-        CVPixelBufferLockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
         renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         
         if sharedImageProcessingContext.supportsTextureCaches() {

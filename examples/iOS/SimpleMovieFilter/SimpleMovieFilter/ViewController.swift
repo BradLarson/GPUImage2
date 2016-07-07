@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let bundleURL = Bundle.main().resourceURL!
+        let bundleURL = Bundle.main.resourceURL!
         let movieURL = URL(string:"sample_iPod.m4v", relativeTo:bundleURL)!
         
         do {

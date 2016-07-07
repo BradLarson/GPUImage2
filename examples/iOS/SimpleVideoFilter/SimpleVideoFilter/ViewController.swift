@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     @IBAction func capture(_ sender: AnyObject) {
         print("Capture")
         do {
-            let documentsDir = try FileManager.default().urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+            let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
             saturationFilter.saveNextFrameToURL(URL(string:"TestImage.png", relativeTo:documentsDir)!, format:.png)
         } catch {
             print("Couldn't save image: \(error)")

@@ -31,10 +31,10 @@ class ViewController: UIViewController {
         if (!isRecording) {
             do {
                 self.isRecording = true
-                let documentsDir = try FileManager.default().urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+                let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
                 let fileURL = URL(string:"test.mp4", relativeTo:documentsDir)!
                 do {
-                    try FileManager.default().removeItem(at:fileURL)
+                    try FileManager.default.removeItem(at:fileURL)
                 } catch {
                 }
                 
@@ -42,7 +42,10 @@ class ViewController: UIViewController {
                 camera.audioEncodingTarget = movieOutput
                 filter --> movieOutput!
                 movieOutput!.startRecording()
-                (sender as! UIButton).titleLabel?.text = "Stop"
+                DispatchQueue.main.async {
+                    // Label not updating on the main thread, for some reason, so dispatching slightly after this
+                    (sender as! UIButton).titleLabel!.text = "Stop"
+                }
             } catch {
                 fatalError("Couldn't initialize movie, error: \(error)")
             }
@@ -50,7 +53,7 @@ class ViewController: UIViewController {
             movieOutput?.finishRecording{
                 self.isRecording = false
                 DispatchQueue.main.async {
-                    (sender as! UIButton).titleLabel?.text = "Record"
+                    (sender as! UIButton).titleLabel!.text = "Record"
                 }
                 self.camera.audioEncodingTarget = nil
                 self.movieOutput = nil

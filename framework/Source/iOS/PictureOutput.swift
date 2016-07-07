@@ -28,7 +28,7 @@ public class PictureOutput: ImageConsumer {
         self.url = url // Create an intentional short-term retain cycle to prevent deallocation before next frame is captured
         encodedImageAvailableCallback = {imageData in
             do {
-                try imageData.write(to: self.url, options:.dataWritingAtomic)
+                try imageData.write(to: self.url, options:.atomic)
             } catch {
                 // TODO: Handle this better
                 print("WARNING: Couldn't save image with error:\(error)")

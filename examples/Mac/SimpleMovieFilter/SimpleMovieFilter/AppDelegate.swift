@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let bundleURL = Bundle.main().resourceURL!
+        let bundleURL = Bundle.main.resourceURL!
         let movieURL = URL(string:"sample_iPod.m4v", relativeTo:bundleURL)!
 
         do {

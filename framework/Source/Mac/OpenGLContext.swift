@@ -1,4 +1,4 @@
-import OpenGL.GL3
+import OpenGL.GL
 import Cocoa
 
 // TODO: Figure out way to allow for multiple contexts for different GPUs

@@ -141,7 +141,7 @@ public class MovieInput: ImageSource {
     func processMovieFrame(_ movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
         let bufferHeight = CVPixelBufferGetHeight(movieFrame)
         let bufferWidth = CVPixelBufferGetWidth(movieFrame)
-        CVPixelBufferLockBaseAddress(movieFrame, 0)
+        CVPixelBufferLockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
 
         let conversionMatrix = colorConversionMatrix601FullRangeDefault
         // TODO: Get this color query working
@@ -172,7 +172,7 @@ public class MovieInput: ImageSource {
         let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
         
         convertYUVToRGB(shader:self.yuvConversionShader, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:movieFramebuffer, colorConversionMatrix:conversionMatrix)
-        CVPixelBufferUnlockBaseAddress(movieFrame, 0)
+        CVPixelBufferUnlockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
 
         movieFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(withSampleTime))
         self.updateTargetsWithFramebuffer(movieFramebuffer)

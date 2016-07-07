@@ -181,7 +181,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         let bufferHeight = CVPixelBufferGetHeight(cameraFrame)
         let currentTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
         
-        CVPixelBufferLockBaseAddress(cameraFrame, 0)
+        CVPixelBufferLockBaseAddress(cameraFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
         sharedImageProcessingContext.runOperationAsynchronously{
             let cameraFramebuffer:Framebuffer
             
@@ -236,7 +236,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 glBindTexture(GLenum(GL_TEXTURE_2D), cameraFramebuffer.texture)
                 glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(cameraFrame))
             }
-            CVPixelBufferUnlockBaseAddress(cameraFrame, 0)
+            CVPixelBufferUnlockBaseAddress(cameraFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
             
             cameraFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(currentTime))
             self.updateTargetsWithFramebuffer(cameraFramebuffer)
@@ -275,7 +275,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     public func stopCapture() {
-        if (!captureSession.isRunning) {
+        if (captureSession.isRunning) {
             captureSession.stopRunning()
         }
     }

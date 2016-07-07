@@ -50,7 +50,7 @@ func runOnMainQueue(_ mainThreadOperation:() -> ()) {
     }
 }
 
-@warn_unused_result func runOnMainQueue<T>(_ mainThreadOperation:() -> T) -> T {
+func runOnMainQueue<T>(_ mainThreadOperation:() -> T) -> T {
     var returnedValue: T!
     runOnMainQueue {
         returnedValue = mainThreadOperation()

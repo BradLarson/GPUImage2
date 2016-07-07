@@ -183,9 +183,11 @@ public class BasicOperation: ImageProcessingOperation {
     }
     
     public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
-        guard let renderFramebuffer = renderFramebuffer where (!renderFramebuffer.timingStyle.isTransient()) else { return }
-        
-        renderFramebuffer.lock()
-        target.newFramebufferAvailable(renderFramebuffer, fromSourceIndex:atIndex)
+        sharedImageProcessingContext.runOperationAsynchronously{
+            guard let renderFramebuffer = self.renderFramebuffer where (!renderFramebuffer.timingStyle.isTransient()) else { return }
+            
+            renderFramebuffer.lock()
+            target.newFramebufferAvailable(renderFramebuffer, fromSourceIndex:atIndex)
+        }
     }
 }

@@ -195,7 +195,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     public func stopCapture() {
-        if (!captureSession.isRunning) {
+        if (captureSession.isRunning) {
             captureSession.stopRunning()
         }
     }

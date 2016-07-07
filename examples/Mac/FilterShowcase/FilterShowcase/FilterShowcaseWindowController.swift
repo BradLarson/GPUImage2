@@ -32,6 +32,7 @@ class FilterShowcaseWindowController: NSWindowController {
         do {
             videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset1280x720)
             videoCamera.runBenchmark = true
+            videoCamera.startCapture()
         } catch {
             fatalError("Couldn't initialize camera with error: \(error)")
         }
@@ -43,7 +44,7 @@ class FilterShowcaseWindowController: NSWindowController {
         currentlySelectedRow = row
         
         // Clean up everything from the previous filter selection first
-        videoCamera.stopCapture()
+//        videoCamera.stopCapture()
         videoCamera.removeAllTargets()
         currentFilterOperation?.filter.removeAllTargets()
         currentFilterOperation?.secondInput?.removeAllTargets()
