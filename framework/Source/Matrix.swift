@@ -32,7 +32,7 @@ public struct Matrix4x4 {
         self.m44 = rowMajorValues[15]
     }
     
-    public static let Identity = Matrix4x4(rowMajorValues:[1.0, 0.0, 0.0, 0.0,
+    public static let identity = Matrix4x4(rowMajorValues:[1.0, 0.0, 0.0, 0.0,
                                                            0.0, 1.0, 0.0, 0.0,
                                                            0.0, 0.0, 1.0, 0.0,
                                                            0.0, 0.0, 0.0, 1.0])
@@ -59,11 +59,11 @@ public struct Matrix3x3 {
         self.m33 = rowMajorValues[8]
     }
     
-    public static let Identity = Matrix3x3(rowMajorValues:[1.0, 0.0, 0.0,
+    public static let identity = Matrix3x3(rowMajorValues:[1.0, 0.0, 0.0,
                                                            0.0, 1.0, 0.0,
                                                            0.0, 0.0, 1.0])
     
-    public static let CenterOnly = Matrix3x3(rowMajorValues:[0.0, 0.0, 0.0,
+    public static let centerOnly = Matrix3x3(rowMajorValues:[0.0, 0.0, 0.0,
                                                              0.0, 1.0, 0.0,
                                                              0.0, 0.0, 0.0])
 }

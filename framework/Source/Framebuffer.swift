@@ -124,7 +124,7 @@ public class Framebuffer {
         }
     }
 
-    func texelSizeForRotation(_ rotation:Rotation) -> Size {
+    func texelSize(for rotation:Rotation) -> Size {
         if rotation.flipsDimensions() {
             return Size(width:1.0 / Float(size.height), height:1.0 / Float(size.width))
         } else {
@@ -132,7 +132,7 @@ public class Framebuffer {
         }
     }
 
-    func initialStageTexelSizeForRotation(_ rotation:Rotation) -> Size {
+    func initialStageTexelSize(for rotation:Rotation) -> Size {
         if rotation.flipsDimensions() {
             return Size(width:1.0 / Float(size.height), height:0.0)
         } else {
@@ -174,7 +174,7 @@ public class Framebuffer {
                 print("WARNING: Tried to overrelease a framebuffer")
             }
             framebufferRetainCount = 0
-            cache?.returnFramebufferToCache(self)
+            cache?.returnToCache(self)
         }
     }
 }

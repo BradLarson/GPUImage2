@@ -38,7 +38,7 @@ func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
     if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
-        DispatchQueue.main.async(execute: mainThreadOperation)
+        DispatchQueue.main.async(execute:mainThreadOperation)
     }
 }
 
@@ -46,7 +46,7 @@ func runOnMainQueue(_ mainThreadOperation:() -> ()) {
     if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
-        DispatchQueue.main.sync(execute: mainThreadOperation)
+        DispatchQueue.main.sync(execute:mainThreadOperation)
     }
 }
 

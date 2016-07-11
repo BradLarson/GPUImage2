@@ -5,11 +5,11 @@ public struct TimestampFlags: OptionSet {
     public let rawValue:UInt32
     public init(rawValue:UInt32) { self.rawValue = rawValue }
     
-    public static let Valid = TimestampFlags(rawValue: 1 << 0)
-    public static let HasBeenRounded = TimestampFlags(rawValue: 1 << 1)
-    public static let PositiveInfinity = TimestampFlags(rawValue: 1 << 2)
-    public static let NegativeInfinity = TimestampFlags(rawValue: 1 << 3)
-    public static let Indefinite = TimestampFlags(rawValue: 1 << 4)
+    public static let valid = TimestampFlags(rawValue: 1 << 0)
+    public static let hasBeenRounded = TimestampFlags(rawValue: 1 << 1)
+    public static let positiveInfinity = TimestampFlags(rawValue: 1 << 2)
+    public static let negativeInfinity = TimestampFlags(rawValue: 1 << 3)
+    public static let indefinite = TimestampFlags(rawValue: 1 << 4)
 }
 
 public struct Timestamp: Comparable {

@@ -29,7 +29,7 @@ public class TextureInput: ImageSource {
         updateTargetsWithFramebuffer(textureFramebuffer)
     }
     
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         textureFramebuffer.lock()
         target.newFramebufferAvailable(textureFramebuffer, fromSourceIndex:atIndex)
     }

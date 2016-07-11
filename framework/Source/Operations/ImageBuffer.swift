@@ -23,7 +23,7 @@ public class ImageBuffer: ImageProcessingOperation {
         }
     }
     
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         // Buffers most likely won't need this
     }
 }

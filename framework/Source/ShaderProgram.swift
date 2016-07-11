@@ -20,8 +20,8 @@ struct ShaderCompileError:ErrorProtocol {
 }
 
 enum ShaderType {
-    case vertexShader
-    case fragmentShader
+    case vertex
+    case fragment
 }
 
 public class ShaderProgram {
@@ -29,7 +29,6 @@ public class ShaderProgram {
     let program:GLuint
     var vertexShader:GLuint! // At some point, the Swift compiler will be able to deal with the early throw and we can convert these to lets
     var fragmentShader:GLuint!
-    var initialized:Bool = false
     private var attributeAddresses = [String:GLuint]()
     private var uniformAddresses = [String:GLint]()
     private var currentUniformIntValues = [String:GLint]()
@@ -42,8 +41,8 @@ public class ShaderProgram {
     public init(vertexShader:String, fragmentShader:String) throws {
         program = glCreateProgram()
         
-        self.vertexShader = try compileShader(vertexShader, type:.vertexShader)
-        self.fragmentShader = try compileShader(fragmentShader, type:.fragmentShader)
+        self.vertexShader = try compileShader(vertexShader, type:.vertex)
+        self.fragmentShader = try compileShader(fragmentShader, type:.fragment)
         
         glAttachShader(program, self.vertexShader)
         glAttachShader(program, self.fragmentShader)
@@ -202,7 +201,6 @@ public class ShaderProgram {
             
             throw ShaderCompileError(compileLog:"Link error")
         }
-        initialized = true
     }
     
     public func use() {
@@ -213,8 +211,8 @@ public class ShaderProgram {
 func compileShader(_ shaderString:String, type:ShaderType) throws -> GLuint {
     let shaderHandle:GLuint
     switch type {
-        case .vertexShader: shaderHandle = glCreateShader(GLenum(GL_VERTEX_SHADER))
-        case .fragmentShader: shaderHandle = glCreateShader(GLenum(GL_FRAGMENT_SHADER))
+        case .vertex: shaderHandle = glCreateShader(GLenum(GL_VERTEX_SHADER))
+        case .fragment: shaderHandle = glCreateShader(GLenum(GL_FRAGMENT_SHADER))
     }
     
     shaderString.withGLChar{glString in
@@ -236,8 +234,8 @@ func compileShader(_ shaderString:String, type:ShaderType) throws -> GLuint {
             // let compileLogString = String(bytes:compileLog.map{UInt8($0)}, encoding:NSASCIIStringEncoding)
             
             switch type {
-                case .vertexShader: throw ShaderCompileError(compileLog:"Vertex shader compile error:")
-                case .fragmentShader: throw ShaderCompileError(compileLog:"Fragment shader compile error:")
+                case .vertex: throw ShaderCompileError(compileLog:"Vertex shader compile error:")
+                case .fragment: throw ShaderCompileError(compileLog:"Fragment shader compile error:")
             }
         }
     }

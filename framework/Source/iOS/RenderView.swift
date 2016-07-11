@@ -3,7 +3,7 @@ import UIKit
 // TODO: Add support for transparency
 // TODO: Deal with view resizing
 public class RenderView:UIView, ImageConsumer {
-    public var backgroundRenderColor = Color.Black
+    public var backgroundRenderColor = Color.black
     public var fillMode = FillMode.preserveAspectRatio
     public var orientation:ImageOrientation = .portrait
     public var sizeInPixels:Size { get { return Size(width:Float(frame.size.width * contentScaleFactor), height:Float(frame.size.height * contentScaleFactor))}}

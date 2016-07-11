@@ -12,7 +12,7 @@ public class LanczosResampling: BasicOperation {
         firstStageFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)
         
-        let texelSize = inputFramebuffer.initialStageTexelSizeForRotation(outputRotation)
+        let texelSize = inputFramebuffer.initialStageTexelSize(for:outputRotation)
         uniformSettings["texelWidth"] = texelSize.width
         uniformSettings["texelHeight"] = texelSize.height
         
@@ -20,7 +20,7 @@ public class LanczosResampling: BasicOperation {
         releaseIncomingFramebuffers()
 
         // Shrink the width component of the result
-        let secondStageTexelSize = firstStageFramebuffer.texelSizeForRotation(.noRotation)
+        let secondStageTexelSize = firstStageFramebuffer.texelSize(for:.noRotation)
         uniformSettings["texelWidth"] = secondStageTexelSize.width
         uniformSettings["texelHeight"] = 0.0
         

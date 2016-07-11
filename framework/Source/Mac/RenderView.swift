@@ -1,7 +1,7 @@
 import Cocoa
 
 public class RenderView:NSOpenGLView, ImageConsumer {
-    public var backgroundColor = Color.Black
+    public var backgroundColor = Color.black
     public var fillMode = FillMode.preserveAspectRatio
     public var sizeInPixels:Size { get { return Size(width:Float(self.frame.size.width), height:Float(self.frame.size.width)) } }
 

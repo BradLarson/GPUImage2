@@ -61,7 +61,7 @@ public class MovieInput: ImageSource {
                 }
                 
                 while (self.assetReader.status == .reading) {
-                    self.readNextVideoFrameFromOutput(readerVideoTrackOutput!)
+                    self.readNextVideoFrame(from:readerVideoTrackOutput!)
                 }
                 
                 if (self.assetReader.status == .completed) {
@@ -89,7 +89,7 @@ public class MovieInput: ImageSource {
     // MARK: -
     // MARK: Internal processing functions
     
-    func readNextVideoFrameFromOutput(_ videoTrackOutput:AVAssetReaderOutput) {
+    func readNextVideoFrame(from videoTrackOutput:AVAssetReaderOutput) {
         if ((assetReader.status == .reading) && !videoEncodingIsFinished) {
             if let sampleBuffer = videoTrackOutput.copyNextSampleBuffer() {
                 if (playAtActualSpeed) {
@@ -110,7 +110,7 @@ public class MovieInput: ImageSource {
                 }
 
                 sharedImageProcessingContext.runOperationSynchronously{
-                    self.processMovieFrame(sampleBuffer)
+                    self.process(movieFrame:sampleBuffer)
                     CMSampleBufferInvalidate(sampleBuffer)
                 }
             } else {
@@ -130,15 +130,15 @@ public class MovieInput: ImageSource {
 
     }
     
-    func processMovieFrame(_ frame:CMSampleBuffer) {
+    func process(movieFrame frame:CMSampleBuffer) {
         let currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(frame)
         let movieFrame = CMSampleBufferGetImageBuffer(frame)!
     
 //        processingFrameTime = currentSampleTime
-        self.processMovieFrame(movieFrame, withSampleTime:currentSampleTime)
+        self.process(movieFrame:movieFrame, withSampleTime:currentSampleTime)
     }
     
-    func processMovieFrame(_ movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
+    func process(movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
         let bufferHeight = CVPixelBufferGetHeight(movieFrame)
         let bufferWidth = CVPixelBufferGetWidth(movieFrame)
         CVPixelBufferLockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
@@ -186,7 +186,7 @@ public class MovieInput: ImageSource {
         }
     }
 
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         // Not needed for movie inputs
     }
 }

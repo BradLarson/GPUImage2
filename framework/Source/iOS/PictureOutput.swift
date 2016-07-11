@@ -41,7 +41,7 @@ public class PictureOutput: ImageConsumer {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.Red)
+        clearFramebufferWithColor(Color.red)
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         framebuffer.unlock()
         

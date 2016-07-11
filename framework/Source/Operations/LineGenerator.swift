@@ -31,7 +31,7 @@ public enum Line {
 }
 
 public class LineGenerator: ImageGenerator {
-    public var lineColor:Color = Color.Green { didSet { uniformSettings["lineColor"] = lineColor } }
+    public var lineColor:Color = Color.green { didSet { uniformSettings["lineColor"] = lineColor } }
     public var lineWidth:Float = 1.0 {
         didSet {
             lineShader.use()
@@ -47,7 +47,7 @@ public class LineGenerator: ImageGenerator {
         super.init(size:size)
         
         ({lineWidth = 1.0})()
-        ({lineColor = Color.Red})()
+        ({lineColor = Color.red})()
     }
 
     public func renderLines(_ lines:[Line]) {
@@ -56,7 +56,7 @@ public class LineGenerator: ImageGenerator {
         lineShader.use()
         uniformSettings.restoreShaderSettings(lineShader)
         
-        clearFramebufferWithColor(Color.Transparent)
+        clearFramebufferWithColor(Color.transparent)
         
         guard let positionAttribute = lineShader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
         

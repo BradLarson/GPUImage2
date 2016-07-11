@@ -68,11 +68,11 @@ public struct ShaderUniformSettings {
 
 extension Color {
     func toGLArray() -> [GLfloat] {
-        return [GLfloat(red), GLfloat(green), GLfloat(blue)]
+        return [GLfloat(redComponent), GLfloat(greenComponent), GLfloat(blueComponent)]
     }
 
     func toGLArrayWithAlpha() -> [GLfloat] {
-        return [GLfloat(red), GLfloat(green), GLfloat(blue), GLfloat(alpha)]
+        return [GLfloat(redComponent), GLfloat(greenComponent), GLfloat(blueComponent), GLfloat(alphaComponent)]
     }
 }
 

@@ -46,7 +46,7 @@ public class RawDataInput: ImageSource {
         updateTargetsWithFramebuffer(dataFramebuffer)
     }
     
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         // TODO: Determine if this is necessary for the raw data uploads
     }
 }

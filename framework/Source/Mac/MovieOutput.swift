@@ -135,7 +135,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         renderFramebuffer.lock()
         
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.Black)
+        clearFramebufferWithColor(Color.black)
 
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
 

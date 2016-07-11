@@ -14,7 +14,7 @@ class FakeOperation: ImageProcessingOperation {
     func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
     }
 
-    func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
     }
 }
 
@@ -29,7 +29,7 @@ class FakeRenderView: ImageConsumer {
 class FakeCamera: ImageSource {
     let targets = TargetContainer()
     
-    func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
     }
     
     func newCameraFrame() {

@@ -78,7 +78,7 @@ func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformS
 }
 
 public func clearFramebufferWithColor(_ color:Color) {
-    glClearColor(GLfloat(color.red), GLfloat(color.green), GLfloat(color.blue), GLfloat(color.alpha))
+    glClearColor(GLfloat(color.redComponent), GLfloat(color.greenComponent), GLfloat(color.blueComponent), GLfloat(color.alphaComponent))
     glClear(GLenum(GL_COLOR_BUFFER_BIT))
 }
 

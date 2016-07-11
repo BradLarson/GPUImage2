@@ -13,13 +13,13 @@
 #endif
 
 public class TransformOperation: BasicOperation {
-    public var transform:Matrix4x4 = Matrix4x4.Identity { didSet { uniformSettings["transformMatrix"] = transform } }
+    public var transform:Matrix4x4 = Matrix4x4.identity { didSet { uniformSettings["transformMatrix"] = transform } }
     var normalizedImageVertices:[GLfloat]!
     
     public init() {
         super.init(vertexShader:TransformVertexShader, fragmentShader:PassthroughFragmentShader, numberOfInputs:1)
         
-        ({transform = Matrix4x4.Identity})()
+        ({transform = Matrix4x4.identity})()
     }
     
     override func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {

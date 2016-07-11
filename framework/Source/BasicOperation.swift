@@ -15,7 +15,7 @@ public class BasicOperation: ImageProcessingOperation {
     public let maximumInputs:UInt
     public var overriddenOutputSize:Size?
     public var overriddenOutputRotation:Rotation?
-    public var backgroundColor = Color.Black
+    public var backgroundColor = Color.black
     public var drawUnmodifiedImageOutsideOfMask:Bool = true
     public var mask:ImageSource? {
         didSet {
@@ -182,7 +182,7 @@ public class BasicOperation: ImageProcessingOperation {
         }
     }
     
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         sharedImageProcessingContext.runOperationAsynchronously{
             guard let renderFramebuffer = self.renderFramebuffer where (!renderFramebuffer.timingStyle.isTransient()) else { return }
             

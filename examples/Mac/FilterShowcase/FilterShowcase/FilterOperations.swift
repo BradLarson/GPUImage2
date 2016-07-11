@@ -422,7 +422,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             let circleGenerator = CircleGenerator(size:Size(width:1280, height:720))
 #endif
             castFilter.mask = circleGenerator
-            circleGenerator.renderCircleOfRadius(0.25, center:Position.Center, circleColor:Color.White, backgroundColor:Color.Transparent)
+            circleGenerator.renderCircleOfRadius(0.25, center:Position.center, circleColor:Color.white, backgroundColor:Color.transparent)
             camera --> castFilter --> outputView
             return nil
         })

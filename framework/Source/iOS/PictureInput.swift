@@ -139,7 +139,7 @@ public class PictureInput: ImageSource {
         }
     }
     
-    public func transmitPreviousImageToTarget(_ target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         if hasProcessedImage {
             imageFramebuffer.lock()
             target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)

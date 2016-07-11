@@ -60,7 +60,7 @@ public class Histogram: BasicOperation {
         releaseIncomingFramebuffers()
         renderFramebuffer.activateFramebufferForRendering()
         
-        clearFramebufferWithColor(Color.Black)
+        clearFramebufferWithColor(Color.black)
 
         glBlendEquation(GLenum(GL_FUNC_ADD))
         glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))

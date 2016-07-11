@@ -27,7 +27,7 @@ public class RawDataOutput: ImageConsumer {
         renderFramebuffer.lock()
 
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.Black)
+        clearFramebufferWithColor(Color.black)
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         framebuffer.unlock()
         

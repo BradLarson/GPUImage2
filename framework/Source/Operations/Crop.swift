@@ -25,7 +25,7 @@ public class Crop: BasicOperation {
             normalizedOffsetFromOrigin = Position(Float(inputSize.width / 2 - finalCropSize.width / 2) / Float(inputSize.width), Float(inputSize.height / 2 - finalCropSize.height / 2) / Float(inputSize.height))
         } else {
             finalCropSize = inputSize
-            normalizedOffsetFromOrigin  = Position.Zero
+            normalizedOffsetFromOrigin  = Position.zero
         }
         let normalizedCropSize = Size(width:Float(finalCropSize.width) / Float(inputSize.width), height:Float(finalCropSize.height) / Float(inputSize.height))
         

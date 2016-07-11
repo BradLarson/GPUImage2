@@ -46,7 +46,7 @@ public class FramebufferCache {
         framebufferCache.removeAll()
     }
     
-    func returnFramebufferToCache(_ framebuffer:Framebuffer) {
+    func returnToCache(_ framebuffer:Framebuffer) {
 //        print("Returning to cache: \(framebuffer)")
         context.runOperationSynchronously{
             if (self.framebufferCache[framebuffer.hash] != nil) {

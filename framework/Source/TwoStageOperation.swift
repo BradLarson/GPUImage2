@@ -35,7 +35,7 @@ public class TwoStageOperation: BasicOperation {
         firstStageFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)
         
-        let texelSize = inputFramebuffer.initialStageTexelSizeForRotation(outputRotation)
+        let texelSize = inputFramebuffer.initialStageTexelSize(for:outputRotation)
         uniformSettings["texelWidth"] = texelSize.width * (downsamplingFactor ?? 1.0)
         uniformSettings["texelHeight"] = texelSize.height * (downsamplingFactor ?? 1.0)
         
@@ -46,7 +46,7 @@ public class TwoStageOperation: BasicOperation {
             releaseIncomingFramebuffers()
         }
         
-        let secondStageTexelSize = renderFramebuffer.texelSizeForRotation(.noRotation)
+        let secondStageTexelSize = renderFramebuffer.texelSize(for:.noRotation)
         uniformSettings["texelWidth"] = secondStageTexelSize.width * (downsamplingFactor ?? 1.0)
         uniformSettings["texelHeight"] = 0.0
         

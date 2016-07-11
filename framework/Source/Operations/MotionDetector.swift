@@ -10,7 +10,7 @@ public class MotionDetector: OperationGroup {
         super.init()
         
         averageColorExtractor.extractedColorCallback = {[weak self] color in
-            self?.motionDetectedCallback?(position:Position(color.red / color.alpha, color.green / color.alpha), strength:color.alpha)
+            self?.motionDetectedCallback?(position:Position(color.redComponent / color.alphaComponent, color.greenComponent / color.alphaComponent), strength:color.alphaComponent)
         }
         
         self.configureGroup{input, output in
