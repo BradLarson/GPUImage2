@@ -28,7 +28,9 @@ public class PictureOutput: ImageConsumer {
         self.url = url // Create an intentional short-term retain cycle to prevent deallocation before next frame is captured
         encodedImageAvailableCallback = {imageData in
             do {
+// FIXME: Xcode 8 beta 2
                 try imageData.write(to: self.url, options:.atomic)
+//                try imageData.write(to: self.url, options:NSData.WritingOptions.dataWritingAtomic)
             } catch {
                 // TODO: Handle this better
                 print("WARNING: Couldn't save image with error:\(error)")
@@ -41,8 +43,17 @@ public class PictureOutput: ImageConsumer {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.red)
+        clearFramebufferWithColor(Color.transparent)
+
+        // Need the blending here to enable non-1.0 alpha on output image
+        glBlendEquation(GLenum(GL_FUNC_ADD))
+        glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
+        glEnable(GLenum(GL_BLEND))
+        
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
+
+        glDisable(GLenum(GL_BLEND))
+        
         framebuffer.unlock()
         
         let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
@@ -51,8 +62,8 @@ public class PictureOutput: ImageConsumer {
         renderFramebuffer.unlock()
         guard let dataProvider = CGDataProvider(dataInfo: nil, data: data, size: imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not create CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
-        return CGImage(width: Int(framebuffer.size.width), height: Int(framebuffer.size.height), bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 4 * Int(framebuffer.size.width), space: defaultRGBColorSpace, bitmapInfo: CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)!
-
+        
+        return CGImage(width: Int(framebuffer.size.width), height: Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
     
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {

@@ -15,19 +15,19 @@ var allConvertedGLShaders = ""
 var allConvertedGLESShaders = ""
 
 for fileName in fileNames {  
-	let pathURL = NSURL(fileURLWithPath:fileName)
+	let pathURL = URL(fileURLWithPath:fileName)
 	guard let pathExtension = pathURL.pathExtension else {continue}
-	guard let baseName = pathURL.URLByDeletingPathExtension?.lastPathComponent else {continue}
+	guard let baseName = try! pathURL.deletingPathExtension().lastPathComponent else {continue}
 	
-	guard (NSFileManager.defaultManager().fileExistsAtPath(pathURL.path!)) else {
+	guard (FileManager.default.fileExists(atPath:pathURL.path!)) else {
 		print("Error: file \"\(fileName)\" could not be found.")
 		continue
 	}
 	
 	let shaderSuffix:String
-	if (pathExtension.lowercaseString == "vsh") {
+	if (pathExtension.lowercased() == "vsh") {
 		shaderSuffix = "VertexShader"
-	} else if (pathExtension.lowercaseString == "fsh") {
+	} else if (pathExtension.lowercased() == "fsh") {
 		shaderSuffix = "FragmentShader"
 	} else {
 		continue
@@ -36,10 +36,10 @@ for fileName in fileNames {
 	let convertedShaderName:String
 	let shaderPlatform:OpenGLPlatform
 	if baseName.hasSuffix("_GLES") {
-		convertedShaderName = "\(baseName.stringByReplacingOccurrencesOfString("_GLES", withString:""))\(shaderSuffix)"
+		convertedShaderName = "\(baseName.replacingOccurrences(of:"_GLES", with:""))\(shaderSuffix)"
 		shaderPlatform = .OpenGLES
 	} else if baseName.hasSuffix("_GL") {
-		convertedShaderName = "\(baseName.stringByReplacingOccurrencesOfString("_GL", withString:""))\(shaderSuffix)"
+		convertedShaderName = "\(baseName.replacingOccurrences(of:"_GL", with:""))\(shaderSuffix)"
 		shaderPlatform = .OpenGL
 	} else {
 		convertedShaderName = "\(baseName)\(shaderSuffix)"
@@ -47,9 +47,9 @@ for fileName in fileNames {
 	}
 	
 	var accumulatedString = "public let \(convertedShaderName) = \""
-	let fileContents = try String(contentsOfFile:fileName, encoding:NSASCIIStringEncoding)
+	let fileContents = try String(contentsOfFile:fileName, encoding:String.Encoding.ascii)
   	fileContents.enumerateLines {line, stop in
-		accumulatedString += "\(line.stringByReplacingOccurrencesOfString("\"", withString:"\\\""))\\n "
+		accumulatedString += "\(line.replacingOccurrences(of:"\"", with:"\\\""))\\n "
 	}
   	accumulatedString += "\"\n"
 	
@@ -62,6 +62,6 @@ for fileName in fileNames {
 	}
 }
 
-let scriptURL = NSURL(fileURLWithPath:Process.arguments.first!)
-try allConvertedGLShaders.writeToURL(scriptURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent("ConvertedShaders_GL.swift"), atomically:true, encoding:NSASCIIStringEncoding)
-try allConvertedGLESShaders.writeToURL(scriptURL.URLByDeletingLastPathComponent!.URLByAppendingPathComponent("ConvertedShaders_GLES.swift"), atomically:true, encoding:NSASCIIStringEncoding)
+let scriptURL = URL(fileURLWithPath:Process.arguments.first!)
+try allConvertedGLShaders.write(to:scriptURL.deletingLastPathComponent().appendingPathComponent("ConvertedShaders_GL.swift"), atomically:true, encoding:String.Encoding.ascii)
+try allConvertedGLESShaders.write(to:scriptURL.deletingLastPathComponent().appendingPathComponent("ConvertedShaders_GLES.swift"), atomically:true, encoding:String.Encoding.ascii)
