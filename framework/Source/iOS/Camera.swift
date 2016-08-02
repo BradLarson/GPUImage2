@@ -35,7 +35,7 @@ public enum PhysicalCameraLocation {
     }
 }
 
-struct CameraError: ErrorProtocol {
+struct CameraError: Error {
 }
 
 let initialBenchmarkFramesToIgnore = 5
@@ -77,8 +77,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global(attributes:DispatchQueue.GlobalAttributes.qosUserInitiated)
-    let audioProcessingQueue = DispatchQueue.global(attributes:DispatchQueue.GlobalAttributes.qosUtility)
+    let cameraProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
+    let audioProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -172,7 +172,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             return
         }
 
-        guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.Success) else { return }
+        guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.success) else { return }
     
         let startTime = CFAbsoluteTimeGetCurrent()
         

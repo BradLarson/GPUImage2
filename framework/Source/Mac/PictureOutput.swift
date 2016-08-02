@@ -57,7 +57,7 @@ public class PictureOutput: ImageConsumer {
         framebuffer.unlock()
         
         let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
-        let data = UnsafeMutablePointer<UInt8>(allocatingCapacity: imageByteSize)
+        let data = UnsafeMutablePointer<UInt8>.allocate(capacity:imageByteSize)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
         renderFramebuffer.unlock()
         guard let dataProvider = CGDataProvider(dataInfo: nil, data: data, size: imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not create CGDataProvider")}
@@ -127,5 +127,5 @@ public extension NSImage {
 
 // Why are these flipped in the callback definition?
 func dataProviderReleaseCallback(_ context:UnsafeMutablePointer<Void>?, data:UnsafePointer<Void>, size:Int) {
-    UnsafeMutablePointer<UInt8>(data).deallocateCapacity(size)
+    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
 }

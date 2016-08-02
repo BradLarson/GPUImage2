@@ -17,7 +17,7 @@ import Glibc
 import Foundation
 
 // TODO: Add a good lookup table to this to allow for detailed error messages
-struct FramebufferCreationError:ErrorProtocol {
+struct FramebufferCreationError:Error {
     let errorCode:GLenum
 }
 
@@ -202,14 +202,14 @@ func hashForFramebufferWithProperties(orientation:ImageOrientation, size:GLSize,
 extension Rotation {
     func textureCoordinates() -> [GLfloat] {
         switch self {
-            case noRotation: return [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
-            case rotateCounterclockwise: return [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
-            case rotateClockwise: return [1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-            case rotate180: return [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
-            case flipHorizontally: return [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-            case flipVertically: return [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
-            case rotateClockwiseAndFlipVertically: return [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
-            case rotateClockwiseAndFlipHorizontally: return [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+            case .noRotation: return [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+            case .rotateCounterclockwise: return [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+            case .rotateClockwise: return [1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+            case .rotate180: return [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+            case .flipHorizontally: return [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+            case .flipVertically: return [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+            case .rotateClockwiseAndFlipVertically: return [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+            case .rotateClockwiseAndFlipHorizontally: return [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
         }
     }
     
@@ -220,14 +220,14 @@ extension Rotation {
         let maxY = GLfloat(offsetFromOrigin.y) + GLfloat(cropSize.height)
 
         switch self {
-            case noRotation: return [minX, minY, maxX, minY, minX, maxY, maxX, maxY]
-            case rotateCounterclockwise: return [minX, maxY, minX, minY, maxX, maxY, maxX, minY]
-            case rotateClockwise: return [maxX, minY, maxX, maxY, minX, minY, minX, maxY]
-            case rotate180: return [maxX, maxY, minX, maxY, maxX, minY, minX, minY]
-            case flipHorizontally: return [maxX, minY, minX, minY, maxX, maxY, minX, maxY]
-            case flipVertically: return [minX, maxY, maxX, maxY, minX, minY, maxX, minY]
-            case rotateClockwiseAndFlipVertically: return [minX, minY, minX, maxY, maxX, minY, maxX, maxY]
-            case rotateClockwiseAndFlipHorizontally: return [maxX, maxY, maxX, minY, minX, maxY, minX, minY]
+            case .noRotation: return [minX, minY, maxX, minY, minX, maxY, maxX, maxY]
+            case .rotateCounterclockwise: return [minX, maxY, minX, minY, maxX, maxY, maxX, minY]
+            case .rotateClockwise: return [maxX, minY, maxX, maxY, minX, minY, minX, maxY]
+            case .rotate180: return [maxX, maxY, minX, maxY, maxX, minY, minX, minY]
+            case .flipHorizontally: return [maxX, minY, minX, minY, maxX, maxY, minX, maxY]
+            case .flipVertically: return [minX, maxY, maxX, maxY, minX, minY, maxX, minY]
+            case .rotateClockwiseAndFlipVertically: return [minX, minY, minX, maxY, maxX, minY, maxX, maxY]
+            case .rotateClockwiseAndFlipHorizontally: return [maxX, maxY, maxX, minY, minX, maxY, minX, minY]
         }
     }
 }

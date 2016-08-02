@@ -30,12 +30,14 @@ public class RenderView:UIView, ImageConsumer {
         self.commonInit()
     }
 
-    override public class func layerClass() -> AnyClass {
-        return CAEAGLLayer.self
+    override public class var layerClass:Swift.AnyClass {
+        get {
+            return CAEAGLLayer.self
+        }
     }
     
     func commonInit() {
-        self.contentScaleFactor = UIScreen.main().scale
+        self.contentScaleFactor = UIScreen.main.scale
         
         let eaglLayer = self.layer as! CAEAGLLayer
         eaglLayer.isOpaque = true

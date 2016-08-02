@@ -77,7 +77,7 @@ public class PictureInput: ImageSource {
         
         if (shouldRedrawUsingCoreGraphics) {
             // For resized or incompatible image: redraw
-            imageData = UnsafeMutablePointer<GLubyte>(allocatingCapacity: Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData = UnsafeMutablePointer<GLubyte>.allocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
 
             let genericRGBColorspace = CGColorSpaceCreateDeviceRGB()
             
@@ -112,7 +112,7 @@ public class PictureInput: ImageSource {
         glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         
         if (shouldRedrawUsingCoreGraphics) {
-            imageData.deallocateCapacity(Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData.deallocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
         }
     }
     

@@ -28,8 +28,8 @@ public enum FillMode {
         let yRatio:GLfloat
         let xRatio:GLfloat
         switch self {
-            case stretch: return vertices
-            case preserveAspectRatio:
+            case .stretch: return vertices
+            case .preserveAspectRatio:
                 if (aspectRatio > targetAspectRatio) {
                     yRatio = 1.0
 //                    xRatio = (GLfloat(toFitSize.height) / GLfloat(fromInputSize.height)) * (GLfloat(fromInputSize.width) / GLfloat(toFitSize.width))
@@ -38,7 +38,7 @@ public enum FillMode {
                     xRatio = 1.0
                     yRatio = (GLfloat(fromInputSize.height) / GLfloat(toFitSize.height)) * (GLfloat(toFitSize.width) / GLfloat(fromInputSize.width))
                 }
-            case preserveAspectRatioAndFill:
+            case .preserveAspectRatioAndFill:
                 if (aspectRatio > targetAspectRatio) {
                     xRatio = 1.0
                     yRatio = (GLfloat(fromInputSize.height) / GLfloat(toFitSize.height)) * (GLfloat(toFitSize.width) / GLfloat(fromInputSize.width))

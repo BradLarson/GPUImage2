@@ -15,7 +15,7 @@ public class Crop: BasicOperation {
         
         let finalCropSize:GLSize
         let normalizedOffsetFromOrigin:Position
-        if let cropSize = cropSizeInPixels, locationOfCrop = locationOfCropInPixels {
+        if let cropSize = cropSizeInPixels, let locationOfCrop = locationOfCropInPixels {
             let glCropSize = GLSize(cropSize)
             finalCropSize = GLSize(width:min(inputSize.width, glCropSize.width), height:min(inputSize.height, glCropSize.height))
             normalizedOffsetFromOrigin = Position(locationOfCrop.x / Float(inputSize.width), locationOfCrop.y / Float(inputSize.height))

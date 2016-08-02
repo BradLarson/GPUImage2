@@ -15,7 +15,7 @@
 import Foundation
 
 
-struct ShaderCompileError:ErrorProtocol {
+struct ShaderCompileError:Error {
     let compileLog:String
 }
 
@@ -148,7 +148,7 @@ public class ShaderProgram {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
-        if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{
+        if let previousValue = currentUniformFloatArrayValues[forUniform], previousValue == value{
         } else {
             if (value.count == 2) {
                 glUniform2fv(uniformAddress, 1, value)
@@ -168,7 +168,7 @@ public class ShaderProgram {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
-        if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{
+        if let previousValue = currentUniformFloatArrayValues[forUniform], previousValue == value{
         } else {
             if (value.count == 9) {
                 glUniformMatrix3fv(uniformAddress, 1, GLboolean(GL_FALSE), value)
@@ -256,10 +256,10 @@ public func shaderFromFile(_ file:URL) throws -> String {
     // Note: this is a hack until Foundation's String initializers are fully functional
     //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
 // FIXME: Xcode 8 beta 2
-    guard (FileManager.default.fileExists(atPath: file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
+    guard (FileManager.default.fileExists(atPath: file.path)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
 //    guard (FileManager.default().fileExists(atPath: file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
 
-    let fragmentShaderString = try NSString(contentsOfFile:file.path!, encoding:String.Encoding.ascii.rawValue)
+    let fragmentShaderString = try NSString(contentsOfFile:file.path, encoding:String.Encoding.ascii.rawValue)
     
     return String(fragmentShaderString)
 }

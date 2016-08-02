@@ -53,7 +53,7 @@ public class Histogram: BasicOperation {
     override func renderFrame() {
         let inputSize = sizeOfInitialStageBasedOnFramebuffer(inputFramebuffers[0]!)
         let inputByteSize = Int(inputSize.width * inputSize.height * 4)
-        let data = UnsafeMutablePointer<UInt8>(allocatingCapacity:inputByteSize)
+        let data = UnsafeMutablePointer<UInt8>.allocate(capacity:inputByteSize)
         glReadPixels(0, 0, inputSize.width, inputSize.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
 
         renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:256, height:3), stencil:mask != nil)
@@ -86,6 +86,6 @@ public class Histogram: BasicOperation {
         }
 
         glDisable(GLenum(GL_BLEND))
-        data.deallocateCapacity(inputByteSize)
+        data.deallocate(capacity:inputByteSize)
     }
 }

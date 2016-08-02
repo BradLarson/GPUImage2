@@ -117,7 +117,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         var pixelBufferFromPool:CVPixelBuffer? = nil
 
         let pixelBufferStatus = CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput.pixelBufferPool!, &pixelBufferFromPool)
-        guard let pixelBuffer = pixelBufferFromPool where (pixelBufferStatus == kCVReturnSuccess) else { return }
+        guard let pixelBuffer = pixelBufferFromPool, (pixelBufferStatus == kCVReturnSuccess) else { return }
 
         
         

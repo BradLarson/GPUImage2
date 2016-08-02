@@ -18,19 +18,20 @@ extension SerialDispatch {
 
 #else
 
-public let standardProcessingQueuePriority:DispatchQueue.GlobalAttributes = {
+public let standardProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
+    // DispatchQueue.QoSClass.default
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalAttributes.qosDefault
+        return DispatchQueue.GlobalQueuePriority.default
     } else {
-        return DispatchQueue.GlobalAttributes.priorityDefault
+        return DispatchQueue.GlobalQueuePriority.default
     }
 }()
     
-public let lowProcessingQueuePriority:DispatchQueue.GlobalAttributes = {
+public let lowProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalAttributes.qosBackground
+        return DispatchQueue.GlobalQueuePriority.low
     } else {
-        return DispatchQueue.GlobalAttributes.priorityLow
+        return DispatchQueue.GlobalQueuePriority.low
     }
 }()
 
@@ -92,7 +93,7 @@ public extension SerialDispatch {
     }
     
     public func runOperationSynchronously(_ operation:() throws -> ()) throws {
-        var caughtError:ErrorProtocol? = nil
+        var caughtError:Error? = nil
         runOperationSynchronously {
             do {
                 try operation()
