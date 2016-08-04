@@ -498,6 +498,63 @@ let filterOperations: Array<FilterOperationInterface> = [
         filterOperationType:.singleInput
     ),
     FilterOperation(
+        filter:{ParallelCoordinateLineTransform()},
+        listName:"Parallel Coordinate Tester",
+        titleName:"Parallel Coordinate Tester",
+        sliderConfiguration:.Enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            //            filter.threshold = sliderValue
+        },
+        filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
+            let castFilter = filter as! ParallelCoordinateLineTransform
+            // TODO: Get this more dynamically sized
+            let thresholdEdgeDetectionFilter = CannyEdgeDetection()
+            let parallelCoordsTransformFilter = ParallelCoordinateLineTransform()
+            let nonMaximumSuppression = TextureSamplingOperation(fragmentShader:ThresholdedNonMaximumSuppressionFragmentShader)
+            var threshold:Float = 0.2 { didSet { nonMaximumSuppression.uniformSettings["threshold"] = threshold } }
+            nonMaximumSuppression.uniformSettings["threshold"] = 0.2
+//            let directionalNonMaximumSuppression = TextureSamplingOperation(vertexShader:OneInputVertexShader, fragmentShader:DirectionalNonMaximumSuppressionFragmentShader)
+            
+//            camera --> thresholdEdgeDetectionFilter --> castFilter --> outputView
+            camera --> thresholdEdgeDetectionFilter --> castFilter --> outputView
+
+//            camera --> thresholdEdgeDetectionFilter --> castFilter --> nonMaximumSuppression --> outputView
+            return nil
+        })
+
+    ),
+    FilterOperation(
+        filter:{HoughTransformLineDetector()},
+        listName:"Hough Line detector",
+        titleName:"Hough Line Detector",
+        sliderConfiguration:.Enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.lineDetectionThreshold = sliderValue
+        },
+        filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
+            let castFilter = filter as! HoughTransformLineDetector
+            // TODO: Get this more dynamically sized
+            #if os(iOS)
+                let lineGenerator = LineGenerator(size:Size(width:480, height:640))
+            #else
+                let lineGenerator = LineGenerator(size:Size(width:1280, height:720))
+            #endif
+
+            castFilter.linesDetectedCallback = { lines in
+                lineGenerator.renderLines(lines)
+            }
+
+            camera --> castFilter
+
+            let blendFilter = AlphaBlend()
+            camera --> blendFilter --> outputView
+            lineGenerator --> blendFilter
+
+            return blendFilter
+        })
+    ),
+
+    FilterOperation(
         filter:{HarrisCornerDetector()},
         listName:"Harris corner detector",
         titleName:"Harris Corner Detector",
