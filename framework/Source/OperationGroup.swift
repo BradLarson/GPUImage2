@@ -13,8 +13,8 @@ public class OperationGroup: ImageProcessingOperation {
         inputImageRelay.newFramebufferAvailable(framebuffer, fromSourceIndex:fromSourceIndex)
     }
 
-    public func configureGroup(_ configurationOperation:(input:ImageRelay, output:ImageRelay) -> ()) {
-        configurationOperation(input:inputImageRelay, output:outputImageRelay)
+    public func configureGroup(_ configurationOperation:(_ input:ImageRelay, _ output:ImageRelay) -> ()) {
+        configurationOperation(inputImageRelay, outputImageRelay)
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {

@@ -85,6 +85,6 @@ extension OpenGLContext {
 
 @_semantics("sil.optimize.never") public func debugPrint(_ stringToPrint:String, file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
     #if DEBUG
-        print("\(stringToPrint) --> \((String(file) as NSString).lastPathComponent): \(function): \(line)")
+        print("\(stringToPrint) --> \((String(describing:file) as NSString).lastPathComponent): \(function): \(line)")
     #endif
 }

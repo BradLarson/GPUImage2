@@ -35,10 +35,10 @@ public let lowProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
     }
 }()
 
-func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
+func runAsynchronouslyOnMainQueue(_ mainThreadOperation:@escaping () -> ()) {
 // FIXME: Xcode 8 beta 2
-    if (Thread.isMainThread) {
-//    if (Thread.isMainThread()) {
+//    if (Thread.isMainThread) {
+    if (Thread.isMainThread()) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.async(execute:mainThreadOperation)
@@ -47,8 +47,8 @@ func runAsynchronouslyOnMainQueue(_ mainThreadOperation:() -> ()) {
 
 func runOnMainQueue(_ mainThreadOperation:() -> ()) {
 // FIXME: Xcode 8 beta 2
-    if (Thread.isMainThread) {
-//    if (Thread.isMainThread()) {
+//    if (Thread.isMainThread) {
+    if (Thread.isMainThread()) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.sync(execute:mainThreadOperation)
@@ -73,7 +73,7 @@ public protocol SerialDispatch {
 }
 
 public extension SerialDispatch {
-    public func runOperationAsynchronously(_ operation:() -> ()) {
+    public func runOperationAsynchronously(_ operation:@escaping () -> ()) {
         self.serialDispatchQueue.async {
             self.makeCurrentContext()
             operation()

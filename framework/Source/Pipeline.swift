@@ -17,8 +17,11 @@ public protocol ImageConsumer:AnyObject {
 public protocol ImageProcessingOperation: ImageConsumer, ImageSource {
 }
 
-infix operator --> { associativity left precedence 140 }
-
+infix operator --> : AdditionPrecedence
+//precedencegroup ProcessingOperationPrecedence {
+//    associativity: left
+////    higherThan: Multiplicative
+//}
 @discardableResult public func --><T:ImageConsumer>(source:ImageSource, destination:T) -> T {
     source.addTarget(destination)
     return destination
