@@ -94,6 +94,9 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         self.captureSession = AVCaptureSession()
         self.captureSession.beginConfiguration()
 
+        // Add the video frame output
+        videoOutput = AVCaptureVideoDataOutput()
+        videoOutput.alwaysDiscardsLateVideoFrames = false
         if let cameraDevice = cameraDevice {
             self.inputCamera = cameraDevice
         } else {
@@ -101,7 +104,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 self.inputCamera = device
             } else {
                 self.videoInput = nil
-                self.videoOutput = nil
                 self.yuvConversionShader = nil
                 self.inputCamera = nil
                 super.init()
@@ -113,7 +115,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             self.videoInput = try AVCaptureDeviceInput(device:inputCamera)
         } catch {
             self.videoInput = nil
-            self.videoOutput = nil
             self.yuvConversionShader = nil
             super.init()
             throw error
@@ -122,9 +123,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             captureSession.addInput(videoInput)
         }
         
-        // Add the video frame output
-        videoOutput = AVCaptureVideoDataOutput()
-        videoOutput.alwaysDiscardsLateVideoFrames = false
 
         if captureAsYUV {
             supportsFullYUVRange = false
