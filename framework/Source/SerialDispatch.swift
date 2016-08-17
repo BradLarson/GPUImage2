@@ -36,9 +36,7 @@ public let lowProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
 }()
 
 func runAsynchronouslyOnMainQueue(_ mainThreadOperation:@escaping () -> ()) {
-// FIXME: Xcode 8 beta 2
-//    if (Thread.isMainThread) {
-    if (Thread.isMainThread()) {
+    if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.async(execute:mainThreadOperation)
@@ -46,9 +44,7 @@ func runAsynchronouslyOnMainQueue(_ mainThreadOperation:@escaping () -> ()) {
 }
 
 func runOnMainQueue(_ mainThreadOperation:() -> ()) {
-// FIXME: Xcode 8 beta 2
-//    if (Thread.isMainThread) {
-    if (Thread.isMainThread()) {
+    if (Thread.isMainThread) {
         mainThreadOperation()
     } else {
         DispatchQueue.main.sync(execute:mainThreadOperation)

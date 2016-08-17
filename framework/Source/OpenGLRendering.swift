@@ -206,7 +206,7 @@ extension String {
 #if os(Linux)
         // cStringUsingEncoding isn't yet defined in the Linux Foundation.
         // This approach is roughly 35X slower than the cStringUsingEncoding one.
-        let bufferCString = UnsafeMutablePointer<UInt8>.alloc(self.characters.count+1)
+        let bufferCString = UnsafeMutablePointer<UInt8>.allocate(capacity:self.characters.count+1)
         for (index, characterValue) in self.utf8.enumerate() {
             bufferCString[index] = characterValue
         }
@@ -214,7 +214,7 @@ extension String {
         
         operation(UnsafePointer<GLchar>(bufferCString))
         
-        bufferCString.dealloc(self.characters.count)
+        bufferCString.deallocate(capacity:self.characters.count)
 #else
         if let value = self.cString(using:String.Encoding.utf8) {
             operation(UnsafePointer<GLchar>(value))
