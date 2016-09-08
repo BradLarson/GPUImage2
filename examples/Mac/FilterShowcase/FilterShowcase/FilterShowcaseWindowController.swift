@@ -61,7 +61,7 @@ class FilterShowcaseWindowController: NSWindowController {
                 currentFilterOperation!.filter.addTarget(filterView!)
                 self.blendImage.processImage()
             case let .custom(filterSetupFunction:setupFunction):
-                currentFilterOperation!.configureCustomFilter(setupFunction(camera:videoCamera!, filter:currentFilterOperation!.filter, outputView:filterView!))
+                currentFilterOperation!.configureCustomFilter(setupFunction(videoCamera!, currentFilterOperation!.filter, filterView!))
         }
         
         switch currentFilterOperation!.sliderConfiguration {
@@ -87,7 +87,7 @@ class FilterShowcaseWindowController: NSWindowController {
     
     func tableView(_ aTableView:NSTableView!, objectValueForTableColumn aTableColumn:NSTableColumn!, row rowIndex:Int) -> AnyObject! {
         let filterInList:FilterOperationInterface = filterOperations[rowIndex]
-        return filterInList.listName
+        return filterInList.listName as NSString
     }
     
     func tableViewSelectionDidChange(_ aNotification: Notification!) {

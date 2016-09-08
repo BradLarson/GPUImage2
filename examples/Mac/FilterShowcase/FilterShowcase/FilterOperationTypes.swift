@@ -6,7 +6,7 @@ enum FilterSliderSetting {
     case enabled(minimumValue:Float, maximumValue:Float, initialValue:Float)
 }
 
-typealias FilterSetupFunction = (camera:Camera, filter:ImageProcessingOperation, outputView:RenderView) -> ImageSource?
+typealias FilterSetupFunction = (Camera, ImageProcessingOperation, RenderView) -> ImageSource?
 
 enum FilterOperationType {
     case singleInput
@@ -36,8 +36,8 @@ class FilterOperation<FilterClass: ImageProcessingOperation>: FilterOperationInt
     let titleName:String
     let sliderConfiguration:FilterSliderSetting
     let filterOperationType:FilterOperationType
-    let sliderUpdateCallback: ((filter:FilterClass, sliderValue:Float) -> ())?
-    init(filter:() -> FilterClass, listName: String, titleName: String, sliderConfiguration: FilterSliderSetting, sliderUpdateCallback:((filter:FilterClass, sliderValue:Float) -> ())?, filterOperationType: FilterOperationType) {
+    let sliderUpdateCallback: ((FilterClass, Float) -> ())?
+    init(filter:@escaping () -> FilterClass, listName: String, titleName: String, sliderConfiguration: FilterSliderSetting, sliderUpdateCallback:((FilterClass, Float) -> ())?, filterOperationType: FilterOperationType) {
         self.listName = listName
         self.titleName = titleName
         self.sliderConfiguration = sliderConfiguration
@@ -55,6 +55,6 @@ class FilterOperation<FilterClass: ImageProcessingOperation>: FilterOperationInt
     }
 
     func updateBasedOnSliderValue(_ sliderValue:Float) {
-        sliderUpdateCallback?(filter:internalFilter, sliderValue:sliderValue)
+        sliderUpdateCallback?(internalFilter, sliderValue)
     }
 }
