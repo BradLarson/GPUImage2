@@ -22,8 +22,8 @@ BSD-style, with the full license available with the framework in License.txt.
 
 ## Technical requirements ##
 
-- Swift 2.2 (the January 6 snapshot is currently required for Linux, until I figure out how to work with Foundation in more recent snapshots)
-- Xcode 7.3 on Mac or iOS
+- Swift 3
+- Xcode 8.0 on Mac or iOS
 - iOS: 8.0 or higher (Swift is supported on 7.0, but not Mac-style frameworks)
 - OSX: 10.9 or higher
 - Linux: Wherever Swift code can be compiled. Currently, that's Ubuntu 14.04 or higher, along with the many other places it has been ported to. I've gotten this running on the latest Raspbian, for example. For camera input, Video4Linux needs to be installed.
