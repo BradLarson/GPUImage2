@@ -87,7 +87,7 @@ public class OpenGLContext: SerialDispatch {
     lazy var extensionString:String = {
         return self.runOperationSynchronously{
             self.makeCurrentContext()
-            return String(cString:UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))
+            return String(cString:unsafeBitCast(glGetString(GLenum(GL_EXTENSIONS)), to:UnsafePointer<CChar>.self))
         }
     }()
 }

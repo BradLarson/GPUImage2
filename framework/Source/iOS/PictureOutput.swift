@@ -101,7 +101,7 @@ public extension UIImage {
         }
     }
     
-    public func filterWithPipeline(_ pipeline:(input:PictureInput, output:PictureOutput) -> ()) -> UIImage {
+    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> UIImage {
         let picture = PictureInput(image:self)
         var outputImage:UIImage?
         let pictureOutput = PictureOutput()
@@ -109,13 +109,13 @@ public extension UIImage {
         pictureOutput.imageAvailableCallback = {image in
             outputImage = image
         }
-        pipeline(input:picture, output:pictureOutput)
+        pipeline(picture, pictureOutput)
         picture.processImage(synchronously:true)
         return outputImage!
     }
 }
 
 // Why are these flipped in the callback definition?
-func dataProviderReleaseCallback(_ context:UnsafeMutablePointer<Void>?, data:UnsafePointer<Void>, size:Int) {
-    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
+func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer?, data:UnsafeRawPointer, size:Int) {
+    data.deallocate(bytes:size, alignedTo:1)
 }
