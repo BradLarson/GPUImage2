@@ -26,7 +26,7 @@ public enum PhysicalCameraLocation {
     func device() -> AVCaptureDevice? {
         let devices = AVCaptureDevice.devices(withMediaType:AVMediaTypeVideo)
         for device in devices! {
-            if (device.position == self.captureDevicePosition()) {
+            if ((device as AnyObject).position == self.captureDevicePosition()) {
                 return device as? AVCaptureDevice
             }
         }
@@ -77,8 +77,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
-    let audioProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
+    let cameraProcessingQueue = DispatchQueue.global(qos: .default)
+    let audioProcessingQueue = DispatchQueue.global(qos: .default)
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -137,14 +137,14 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             
             if (supportsFullYUVRange) {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionFullRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
             } else {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionVideoRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
             }
         } else {
             yuvConversionShader = nil
-            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey:NSNumber(value:Int32(kCVPixelFormatType_32BGRA))]
+            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_32BGRA))]
         }
 
         if (captureSession.canAddOutput(videoOutput)) {

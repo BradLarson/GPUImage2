@@ -49,7 +49,7 @@ public class PictureOutput: ImageConsumer {
         let data = UnsafeMutablePointer<UInt8>.allocate(capacity: imageByteSize)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
         renderFramebuffer.unlock()
-        guard let dataProvider = CGDataProvider(dataInfo:nil, data:data, size:imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not allocate a CGDataProvider")}
+        guard let dataProvider = CGDataProvider(dataInfo:nil, data:data, size:imageByteSize, releaseData: dataProviderReleaseCallback as! CGDataProviderReleaseDataCallback) else {fatalError("Could not allocate a CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         return CGImage(width:Int(framebuffer.size.width), height:Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
@@ -101,7 +101,7 @@ public extension UIImage {
         }
     }
     
-    public func filterWithPipeline(_ pipeline:(input:PictureInput, output:PictureOutput) -> ()) -> UIImage {
+    public func filterWithPipeline(_ pipeline:(_ input:PictureInput, _ output:PictureOutput) -> ()) -> UIImage {
         let picture = PictureInput(image:self)
         var outputImage:UIImage?
         let pictureOutput = PictureOutput()
@@ -109,13 +109,13 @@ public extension UIImage {
         pictureOutput.imageAvailableCallback = {image in
             outputImage = image
         }
-        pipeline(input:picture, output:pictureOutput)
+        pipeline(picture, pictureOutput)
         picture.processImage(synchronously:true)
         return outputImage!
     }
 }
 
 // Why are these flipped in the callback definition?
-func dataProviderReleaseCallback(_ context:UnsafeMutablePointer<Void>?, data:UnsafePointer<Void>, size:Int) {
-    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
+func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer, data:UnsafeRawPointer, size:Int) {
+    data.deallocate(bytes: size, alignedTo: 0)
 }
