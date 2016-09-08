@@ -1,6 +1,6 @@
 public class MotionDetector: OperationGroup {
     public var lowPassStrength:Float = 1.0 { didSet {lowPassFilter.strength = lowPassStrength}}
-    public var motionDetectedCallback:((position:Position, strength:Float) -> ())?
+    public var motionDetectedCallback:((Position, Float) -> ())?
     
     let lowPassFilter = LowPassFilter()
     let motionComparison = BasicOperation(fragmentShader:MotionComparisonFragmentShader, numberOfInputs:2)
@@ -10,7 +10,7 @@ public class MotionDetector: OperationGroup {
         super.init()
         
         averageColorExtractor.extractedColorCallback = {[weak self] color in
-            self?.motionDetectedCallback?(position:Position(color.red / color.alpha, color.green / color.alpha), strength:color.alpha)
+            self?.motionDetectedCallback?(Position(color.redComponent / color.alphaComponent, color.greenComponent / color.alphaComponent), color.alphaComponent)
         }
         
         self.configureGroup{input, output in

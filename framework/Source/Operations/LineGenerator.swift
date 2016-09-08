@@ -13,25 +13,25 @@
 #endif
 
 public enum Line {
-    case Infinite(slope:Float, intercept:Float)
-    case Segment(p1:Position, p2:Position)
+    case infinite(slope:Float, intercept:Float)
+    case segment(p1:Position, p2:Position)
 
     func toGLEndpoints() -> [GLfloat] {
         switch self {
-        case .Infinite(let slope, let intercept):
+        case .infinite(let slope, let intercept):
             if (slope > 9000.0) {// Vertical line
                 return [intercept, -1.0, intercept, 1.0]
             } else {
                 return [-1.0, GLfloat(slope * -1.0 + intercept), 1.0, GLfloat(slope * 1.0 + intercept)]
             }
-        case .Segment(let p1, let p2):
+        case .segment(let p1, let p2):
             return [p1.x, p1.y, p2.x, p2.y].map {GLfloat($0)}
         }
     }
 }
 
 public class LineGenerator: ImageGenerator {
-    public var lineColor:Color = Color.Green { didSet { uniformSettings["lineColor"] = lineColor } }
+    public var lineColor:Color = Color.green { didSet { uniformSettings["lineColor"] = lineColor } }
     public var lineWidth:Float = 1.0 {
         didSet {
             lineShader.use()
@@ -47,16 +47,16 @@ public class LineGenerator: ImageGenerator {
         super.init(size:size)
         
         ({lineWidth = 1.0})()
-        ({lineColor = Color.Red})()
+        ({lineColor = Color.red})()
     }
 
-    public func renderLines(lines:[Line]) {
+    public func renderLines(_ lines:[Line]) {
         imageFramebuffer.activateFramebufferForRendering()
         
         lineShader.use()
         uniformSettings.restoreShaderSettings(lineShader)
         
-        clearFramebufferWithColor(Color.Transparent)
+        clearFramebufferWithColor(Color.transparent)
         
         guard let positionAttribute = lineShader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
         

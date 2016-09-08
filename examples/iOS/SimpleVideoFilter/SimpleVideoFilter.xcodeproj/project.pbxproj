@@ -159,6 +159,7 @@
 					BC9FAABC1CA1D3FC009F1261 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = J2U2U9GBML;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -353,6 +354,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoFilter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -367,6 +369,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoFilter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

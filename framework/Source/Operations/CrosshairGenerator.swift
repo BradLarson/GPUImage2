@@ -15,7 +15,7 @@
 public class CrosshairGenerator: ImageGenerator {
     
     public var crosshairWidth:Float = 5.0 { didSet { uniformSettings["crosshairWidth"] = crosshairWidth } }
-    public var crosshairColor:Color = Color.Green { didSet { uniformSettings["crosshairColor"] = crosshairColor } }
+    public var crosshairColor:Color = Color.green { didSet { uniformSettings["crosshairColor"] = crosshairColor } }
 
     let crosshairShader:ShaderProgram
     var uniformSettings = ShaderUniformSettings()
@@ -25,13 +25,13 @@ public class CrosshairGenerator: ImageGenerator {
         super.init(size:size)
         
         ({crosshairWidth = 5.0})()
-        ({crosshairColor = Color.Green})()
+        ({crosshairColor = Color.green})()
     }
     
 
-    public func renderCrosshairs(positions:[Position]) {
+    public func renderCrosshairs(_ positions:[Position]) {
         imageFramebuffer.activateFramebufferForRendering()
-        imageFramebuffer.timingStyle = .StillImage
+        imageFramebuffer.timingStyle = .stillImage
 #if GL
         glEnable(GLenum(GL_POINT_SPRITE))
         glEnable(GLenum(GL_VERTEX_PROGRAM_POINT_SIZE))
@@ -42,7 +42,7 @@ public class CrosshairGenerator: ImageGenerator {
         crosshairShader.use()
         uniformSettings.restoreShaderSettings(crosshairShader)
 
-        clearFramebufferWithColor(Color.Transparent)
+        clearFramebufferWithColor(Color.transparent)
         
         guard let positionAttribute = crosshairShader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
 

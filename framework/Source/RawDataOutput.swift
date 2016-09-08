@@ -13,7 +13,7 @@
 #endif
 
 public class RawDataOutput: ImageConsumer {
-    public var dataAvailableCallback:([UInt8] -> ())?
+    public var dataAvailableCallback:(([UInt8]) -> ())?
     
     public let sources = SourceContainer()
     public let maximumInputs:UInt = 1
@@ -22,16 +22,16 @@ public class RawDataOutput: ImageConsumer {
     }
 
     // TODO: Replace with texture caches
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
 
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.Black)
-        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
+        clearFramebufferWithColor(Color.black)
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         framebuffer.unlock()
         
-        var data = [UInt8](count:Int(framebuffer.size.width * framebuffer.size.height * 4), repeatedValue:0)
+        var data = [UInt8](repeating:0, count:Int(framebuffer.size.width * framebuffer.size.height * 4))
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
         renderFramebuffer.unlock()
 

@@ -7,10 +7,10 @@ class FilterListViewController: UITableViewController {
 
     // #pragma mark - Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let filterInList = filterOperations[indexPath.row]
+                let filterInList = filterOperations[(indexPath as NSIndexPath).row]
                 (segue.destinationViewController as! FilterDisplayViewController).filterOperation = filterInList
             }
         }
@@ -18,18 +18,18 @@ class FilterListViewController: UITableViewController {
 
     // #pragma mark - Table View
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filterOperations.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let filterInList:FilterOperationInterface = filterOperations[indexPath.row]
+        let filterInList:FilterOperationInterface = filterOperations[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = filterInList.listName
         return cell
     }

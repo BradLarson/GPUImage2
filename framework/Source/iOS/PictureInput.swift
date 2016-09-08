@@ -6,10 +6,10 @@ public class PictureInput: ImageSource {
     var imageFramebuffer:Framebuffer!
     var hasProcessedImage:Bool = false
     
-    public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .Portrait) {
+    public init(image:CGImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
         // TODO: Dispatch this whole thing asynchronously to move image loading off main thread
-        let widthOfImage = GLint(CGImageGetWidth(image))
-        let heightOfImage = GLint(CGImageGetHeight(image))
+        let widthOfImage = GLint(image.width)
+        let heightOfImage = GLint(image.height)
         
         // If passed an empty image reference, CGContextDrawImage will fail in future versions of the SDK.
         guard((widthOfImage > 0) && (heightOfImage > 0)) else { fatalError("Tried to pass in a zero-sized image") }
@@ -37,32 +37,32 @@ public class PictureInput: ImageSource {
         }
         
         var imageData:UnsafeMutablePointer<GLubyte>!
-        var dataFromImageDataProvider:CFDataRef!
+        var dataFromImageDataProvider:CFData!
         var format = GL_BGRA
         
         if (!shouldRedrawUsingCoreGraphics) {
             /* Check that the memory layout is compatible with GL, as we cannot use glPixelStore to
             * tell GL about the memory layout with GLES.
             */
-            if ((CGImageGetBytesPerRow(image) != CGImageGetWidth(image) * 4) || (CGImageGetBitsPerPixel(image) != 32) || (CGImageGetBitsPerComponent(image) != 8))
+            if ((image.bytesPerRow != image.width * 4) || (image.bitsPerPixel != 32) || (image.bitsPerComponent != 8))
             {
                 shouldRedrawUsingCoreGraphics = true
             } else {
                 /* Check that the bitmap pixel format is compatible with GL */
-                let bitmapInfo = CGImageGetBitmapInfo(image)
-                if (bitmapInfo.contains(.FloatComponents)) {
+                let bitmapInfo = image.bitmapInfo
+                if (bitmapInfo.contains(.floatComponents)) {
                     /* We don't support float components for use directly in GL */
                     shouldRedrawUsingCoreGraphics = true
                 } else {
-                    let alphaInfo = CGImageAlphaInfo(rawValue:bitmapInfo.rawValue & CGBitmapInfo.AlphaInfoMask.rawValue)
-                    if (bitmapInfo.contains(.ByteOrder32Little)) {
+                    let alphaInfo = CGImageAlphaInfo(rawValue:bitmapInfo.rawValue & CGBitmapInfo.alphaInfoMask.rawValue)
+                    if (bitmapInfo.contains(.byteOrder32Little)) {
                         /* Little endian, for alpha-first we can use this bitmap directly in GL */
-                        if ((alphaInfo != CGImageAlphaInfo.PremultipliedFirst) && (alphaInfo != CGImageAlphaInfo.First) && (alphaInfo != CGImageAlphaInfo.NoneSkipFirst)) {
+                        if ((alphaInfo != CGImageAlphaInfo.premultipliedFirst) && (alphaInfo != CGImageAlphaInfo.first) && (alphaInfo != CGImageAlphaInfo.noneSkipFirst)) {
                                 shouldRedrawUsingCoreGraphics = true
                         }
-                    } else if ((bitmapInfo.contains(.ByteOrderDefault)) || (bitmapInfo.contains(.ByteOrder32Big))) {
+                    } else if ((bitmapInfo.contains(CGBitmapInfo())) || (bitmapInfo.contains(.byteOrder32Big))) {
                         /* Big endian, for alpha-last we can use this bitmap directly in GL */
-                        if ((alphaInfo != CGImageAlphaInfo.PremultipliedLast) && (alphaInfo != CGImageAlphaInfo.Last) && (alphaInfo != CGImageAlphaInfo.NoneSkipLast)) {
+                        if ((alphaInfo != CGImageAlphaInfo.premultipliedLast) && (alphaInfo != CGImageAlphaInfo.last) && (alphaInfo != CGImageAlphaInfo.noneSkipLast)) {
                                 shouldRedrawUsingCoreGraphics = true
                         } else {
                             /* Can access directly using GL_RGBA pixel format */
@@ -77,17 +77,17 @@ public class PictureInput: ImageSource {
         
         if (shouldRedrawUsingCoreGraphics) {
             // For resized or incompatible image: redraw
-            imageData = UnsafeMutablePointer<GLubyte>.alloc(Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData = UnsafeMutablePointer<GLubyte>.allocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
 
             let genericRGBColorspace = CGColorSpaceCreateDeviceRGB()
             
-            let imageContext = CGBitmapContextCreate(imageData, Int(widthToUseForTexture), Int(heightToUseForTexture), 8, Int(widthToUseForTexture) * 4, genericRGBColorspace,  CGImageAlphaInfo.PremultipliedFirst.rawValue | CGBitmapInfo.ByteOrder32Little.rawValue)
+            let imageContext = CGContext(data: imageData, width: Int(widthToUseForTexture), height: Int(heightToUseForTexture), bitsPerComponent: 8, bytesPerRow: Int(widthToUseForTexture) * 4, space: genericRGBColorspace,  bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
             //        CGContextSetBlendMode(imageContext, kCGBlendModeCopy); // From Technical Q&A QA1708: http://developer.apple.com/library/ios/#qa/qa1708/_index.html
-            CGContextDrawImage(imageContext, CGRectMake(0.0, 0.0, CGFloat(widthToUseForTexture), CGFloat(heightToUseForTexture)), image)
+            imageContext?.draw(image, in:CGRect(x:0.0, y:0.0, width:CGFloat(widthToUseForTexture), height:CGFloat(heightToUseForTexture)))
         } else {
             // Access the raw image bytes directly
-            dataFromImageDataProvider = CGDataProviderCopyData(CGImageGetDataProvider(image))
-            imageData = UnsafeMutablePointer<GLubyte>(CFDataGetBytePtr(dataFromImageDataProvider))
+            dataFromImageDataProvider = image.dataProvider?.data
+            imageData = UnsafeMutablePointer<GLubyte>(mutating:CFDataGetBytePtr(dataFromImageDataProvider))
         }
         
         sharedImageProcessingContext.runOperationSynchronously{
@@ -112,20 +112,20 @@ public class PictureInput: ImageSource {
         }
         
         if (shouldRedrawUsingCoreGraphics) {
-            imageData.dealloc(Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData.deallocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
         }
     }
     
-    public convenience init(image:UIImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .Portrait) {
-        self.init(image:image.CGImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
+    public convenience init(image:UIImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
+        self.init(image:image.cgImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
     }
 
-    public convenience init(imageName:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .Portrait) {
+    public convenience init(imageName:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
         guard let image = UIImage(named:imageName) else { fatalError("No such image named: \(imageName) in your application bundle") }
-        self.init(image:image.CGImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
+        self.init(image:image.cgImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
     }
 
-    public func processImage(synchronously synchronously:Bool = false) {
+    public func processImage(synchronously:Bool = false) {
         if synchronously {
             sharedImageProcessingContext.runOperationSynchronously{
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
@@ -139,7 +139,7 @@ public class PictureInput: ImageSource {
         }
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         if hasProcessedImage {
             imageFramebuffer.lock()
             target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)

@@ -146,6 +146,7 @@
 		BCBEC0C61CCD2E6200B70ED7 /* Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0C51CCD2E6200B70ED7 /* Histogram.swift */; };
 		BCBEC0E01CCD492D00B70ED7 /* HistogramEqualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0DF1CCD492D00B70ED7 /* HistogramEqualization.swift */; };
 		BCBEC0FA1CCD993900B70ED7 /* MovieInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEC0F91CCD993900B70ED7 /* MovieInput.swift */; };
+		BCCAED291D2ED9C700DE28D1 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB825BA1CC9C96B00339790 /* Timestamp.swift */; };
 		BCD1B14A1C66AE00001F2BDC /* SerialDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1491C66AE00001F2BDC /* SerialDispatch.swift */; };
 		BCD1B14C1C66B225001F2BDC /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B14B1C66B225001F2BDC /* Pipeline.swift */; };
 		BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE111A41CBC94FD005293A4 /* AverageLuminanceExtractor.swift */; };
@@ -228,7 +229,7 @@
 		BC4EE1681CB34B8900AD8A65 /* HistogramDisplay.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = HistogramDisplay.vsh; path = Source/Operations/Shaders/HistogramDisplay.vsh; sourceTree = "<group>"; };
 		BC4EE16B1CB34D7B00AD8A65 /* RawDataInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RawDataInput.swift; path = Source/RawDataInput.swift; sourceTree = "<group>"; };
 		BC4EE16E1CB3554200AD8A65 /* RawDataOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RawDataOutput.swift; path = Source/RawDataOutput.swift; sourceTree = "<group>"; };
-		BC4EE1731CB3711600AD8A65 /* GaussianBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GaussianBlur.swift; path = Source/Operations/GaussianBlur.swift; sourceTree = "<group>"; };
+		BC4EE1731CB3711600AD8A65 /* GaussianBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = GaussianBlur.swift; path = Source/Operations/GaussianBlur.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BC5B866E1CC07145006CDE75 /* PictureOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PictureOutput.swift; path = Source/Mac/PictureOutput.swift; sourceTree = "<group>"; };
 		BC6E7CAB1C39A9D8006DF678 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC6E7CB01C39A9D8006DF678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Mac/Info.plist; sourceTree = "<group>"; };
@@ -460,7 +461,7 @@
 		BCFF46BD1CB8ACDA00A0C521 /* TiltShift_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = TiltShift_GL.fsh; path = Source/Operations/Shaders/TiltShift_GL.fsh; sourceTree = "<group>"; };
 		BCFF46BF1CB9556B00A0C521 /* WhiteBalance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WhiteBalance.swift; path = Source/Operations/WhiteBalance.swift; sourceTree = "<group>"; };
 		BCFF46C11CB9560700A0C521 /* WhiteBalance_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = WhiteBalance_GL.fsh; path = Source/Operations/Shaders/WhiteBalance_GL.fsh; sourceTree = "<group>"; };
-		BCFF46C31CB9565F00A0C521 /* MotionBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MotionBlur.swift; path = Source/Operations/MotionBlur.swift; sourceTree = "<group>"; };
+		BCFF46C31CB9565F00A0C521 /* MotionBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = MotionBlur.swift; path = Source/Operations/MotionBlur.swift; sourceTree = "<group>"; };
 		BCFF46C51CB968DE00A0C521 /* ImageBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageBuffer.swift; path = Source/Operations/ImageBuffer.swift; sourceTree = "<group>"; };
 		BCFF46C71CB96AB100A0C521 /* LowPassFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LowPassFilter.swift; path = Source/Operations/LowPassFilter.swift; sourceTree = "<group>"; };
 		BCFF46C91CB96BD700A0C521 /* HighPassFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighPassFilter.swift; path = Source/Operations/HighPassFilter.swift; sourceTree = "<group>"; };
@@ -976,11 +977,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Sunset Lake Software LLC";
 				TargetAttributes = {
 					BC6E7CAA1C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					BC6E7CB41C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1191,6 +1193,7 @@
 				BC09239E1C92658200A2ADFA /* ShaderProgram_Tests.swift in Sources */,
 				BC7FD1941CB1D3E000037949 /* Size.swift in Sources */,
 				BC0923A51C92669900A2ADFA /* FramebufferCache.swift in Sources */,
+				BCCAED291D2ED9C700DE28D1 /* Timestamp.swift in Sources */,
 				BC6E7CC81C39AD9E006DF678 /* ShaderProgram.swift in Sources */,
 				BC7FD0FF1CB071DC00037949 /* Color.swift in Sources */,
 				BC4C85EF1C9F043400FD95D8 /* ConvertedShaders_GL.swift in Sources */,
@@ -1259,6 +1262,7 @@
 				OTHER_SWIFT_FLAGS = "-DGL";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1299,6 +1303,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "-DGL";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1322,6 +1327,7 @@
 				PRODUCT_NAME = GPUImage;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1341,6 +1347,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-Mac";
 				PRODUCT_NAME = GPUImage;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1363,6 +1371,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-MacTests";
 				PRODUCT_NAME = GPUImage;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};

@@ -2,34 +2,35 @@ import OpenGL.GL3
 import Cocoa
 
 public enum PictureFileFormat {
-    case PNG
-    case JPEG
+    case png
+    case jpeg
 }
 
 public class PictureOutput: ImageConsumer {
-    public var encodedImageAvailableCallback:(NSData -> ())?
-    public var encodedImageFormat:PictureFileFormat = .PNG
-    public var imageAvailableCallback:(NSImage -> ())?
+    public var encodedImageAvailableCallback:((Data) -> ())?
+    public var encodedImageFormat:PictureFileFormat = .png
+    public var imageAvailableCallback:((NSImage) -> ())?
     public var onlyCaptureNextFrame:Bool = true
     
     public let sources = SourceContainer()
     public let maximumInputs:UInt = 1
-    var url:NSURL!
+    var url:URL!
     
     public init() {
     }
     
     deinit {
-        debugPrint("Deallocating picture")
     }
 
-    public func saveNextFrameToURL(url:NSURL, format:PictureFileFormat) {
+    public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
         onlyCaptureNextFrame = true
         encodedImageFormat = format
         self.url = url // Create an intentional short-term retain cycle to prevent deallocation before next frame is captured
         encodedImageAvailableCallback = {imageData in
             do {
-                try imageData.writeToURL(self.url, options:.DataWritingAtomic)
+// FIXME: Xcode 8 beta 2
+                try imageData.write(to: self.url, options:.atomic)
+//                try imageData.write(to: self.url, options:NSData.WritingOptions.dataWritingAtomic)
             } catch {
                 // TODO: Handle this better
                 print("WARNING: Couldn't save image with error:\(error)")
@@ -38,28 +39,37 @@ public class PictureOutput: ImageConsumer {
     }
 
     // TODO: Replace with texture caches and a safer capture routine
-    func cgImageFromFramebuffer(framebuffer:Framebuffer) -> CGImage {
+    func cgImageFromFramebuffer(_ framebuffer:Framebuffer) -> CGImage {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
         renderFramebuffer.activateFramebufferForRendering()
-        clearFramebufferWithColor(Color.Red)
-        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.NoRotation)])
+        clearFramebufferWithColor(Color.transparent)
+
+        // Need the blending here to enable non-1.0 alpha on output image
+        glBlendEquation(GLenum(GL_FUNC_ADD))
+        glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
+        glEnable(GLenum(GL_BLEND))
+        
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
+
+        glDisable(GLenum(GL_BLEND))
+        
         framebuffer.unlock()
         
         let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
-        let data = UnsafeMutablePointer<UInt8>.alloc(imageByteSize)
+        let data = UnsafeMutablePointer<UInt8>.allocate(capacity:imageByteSize)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
         renderFramebuffer.unlock()
-        let dataProvider = CGDataProviderCreateWithData(nil, data, imageByteSize, dataProviderReleaseCallback)
+        guard let dataProvider = CGDataProvider(dataInfo: nil, data: data, size: imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not create CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
-        return CGImageCreate(Int(framebuffer.size.width), Int(framebuffer.size.height), 8, 32, 4 * Int(framebuffer.size.width), defaultRGBColorSpace, .ByteOrderDefault /*| CGImageAlphaInfo.Last*/, dataProvider, nil, false, .RenderingIntentDefault)!
-
+        
+        return CGImage(width: Int(framebuffer.size.width), height: Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
     
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let imageCallback = imageAvailableCallback {
             let cgImageFromBytes = cgImageFromFramebuffer(framebuffer)
-            let image = NSImage(CGImage:cgImageFromBytes, size:NSZeroSize)
+            let image = NSImage(cgImage:cgImageFromBytes, size:NSZeroSize)
             
             imageCallback(image)
             
@@ -70,11 +80,11 @@ public class PictureOutput: ImageConsumer {
         
         if let imageCallback = encodedImageAvailableCallback {
             let cgImageFromBytes = cgImageFromFramebuffer(framebuffer)
-            let bitmapRepresentation = NSBitmapImageRep(CGImage:cgImageFromBytes)
-            let imageData:NSData
+            let bitmapRepresentation = NSBitmapImageRep(cgImage:cgImageFromBytes)
+            let imageData:Data
             switch encodedImageFormat {
-                case .PNG: imageData = bitmapRepresentation.representationUsingType(.NSPNGFileType, properties: ["":""])!
-                case .JPEG: imageData = bitmapRepresentation.representationUsingType(.NSJPEGFileType, properties: ["":""])!
+                case .png: imageData = bitmapRepresentation.representation(using: .PNG, properties: ["":""])!
+                case .jpeg: imageData = bitmapRepresentation.representation(using: .JPEG, properties: ["":""])!
             }
 
             imageCallback(imageData)
@@ -87,7 +97,7 @@ public class PictureOutput: ImageConsumer {
 }
 
 public extension ImageSource {
-    public func saveNextFrameToURL(url:NSURL, format:PictureFileFormat) {
+    public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
         let pictureOutput = PictureOutput()
         pictureOutput.saveNextFrameToURL(url, format:format)
         self --> pictureOutput
@@ -95,13 +105,13 @@ public extension ImageSource {
 }
 
 public extension NSImage {
-    public func filterWithOperation<T:ImageProcessingOperation>(operation:T) -> NSImage {
+    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) -> NSImage {
         return filterWithPipeline{input, output in
             input --> operation --> output
         }
     }
 
-    public func filterWithPipeline(pipeline:(input:PictureInput, output:PictureOutput) -> ()) -> NSImage {
+    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> NSImage {
         let picture = PictureInput(image:self)
         var outputImage:NSImage?
         let pictureOutput = PictureOutput()
@@ -109,13 +119,15 @@ public extension NSImage {
         pictureOutput.imageAvailableCallback = {image in
             outputImage = image
         }
-        pipeline(input:picture, output:pictureOutput)
+        pipeline(picture, pictureOutput)
         picture.processImage(synchronously:true)
         return outputImage!
     }
 }
 
 // Why are these flipped in the callback definition?
-func dataProviderReleaseCallback(context:UnsafeMutablePointer<Void>, data:UnsafePointer<Void>, size:Int) {
-    UnsafeMutablePointer<UInt8>(data).dealloc(size)
+func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer?, data:UnsafeRawPointer, size:Int) {
+//    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
+    // FIXME: Verify this is correct
+    data.deallocate(bytes:size, alignedTo:1)
 }

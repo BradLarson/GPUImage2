@@ -8,9 +8,11 @@ public class BoxBlur: TwoStageOperation {
     public var blurRadiusInPixels:Float {
         didSet {
             let (sigma, downsamplingFactor) = sigmaAndDownsamplingForBlurRadius(blurRadiusInPixels, limit:8.0, override:overrideDownsamplingOptimization)
-            self.downsamplingFactor = downsamplingFactor
-            let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
-            shader = crashOnShaderCompileFailure("BoxBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedBoxBlurOfRadius(pixelRadius), fragmentShader:fragmentShaderForOptimizedBoxBlurOfRadius(pixelRadius))}
+            sharedImageProcessingContext.runOperationAsynchronously {
+                self.downsamplingFactor = downsamplingFactor
+                let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
+                self.shader = crashOnShaderCompileFailure("BoxBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedBoxBlurOfRadius(pixelRadius), fragmentShader:fragmentShaderForOptimizedBoxBlurOfRadius(pixelRadius))}
+            }
         }
     }
     
@@ -22,7 +24,7 @@ public class BoxBlur: TwoStageOperation {
     }
 }
 
-func vertexShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
+func vertexShaderForOptimizedBoxBlurOfRadius(_ radius:UInt) -> String {
     guard (radius > 0) else { return OneInputVertexShader }
 
     let numberOfOptimizedOffsets = min(radius / 2 + (radius % 2), 7)
@@ -38,7 +40,7 @@ func vertexShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
     return shaderString
 }
 
-func fragmentShaderForOptimizedBoxBlurOfRadius(radius:UInt) -> String {
+func fragmentShaderForOptimizedBoxBlurOfRadius(_ radius:UInt) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
     
     let numberOfOptimizedOffsets = min(radius / 2 + (radius % 2), 7)

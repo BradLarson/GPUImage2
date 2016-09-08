@@ -1,8 +1,8 @@
 import Cocoa
 
 public class RenderView:NSOpenGLView, ImageConsumer {
-    public var backgroundColor = Color.Black
-    public var fillMode = FillMode.PreserveAspectRatio
+    public var backgroundColor = Color.black
+    public var fillMode = FillMode.preserveAspectRatio
     public var sizeInPixels:Size { get { return Size(width:Float(self.frame.size.width), height:Float(self.frame.size.width)) } }
 
     public let sources = SourceContainer()
@@ -15,7 +15,7 @@ public class RenderView:NSOpenGLView, ImageConsumer {
 
     // TODO: Need to set viewport to appropriate size, resize viewport on view reshape
     
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
         glBindRenderbuffer(GLenum(GL_RENDERBUFFER), 0)
 
@@ -25,8 +25,8 @@ public class RenderView:NSOpenGLView, ImageConsumer {
         clearFramebufferWithColor(backgroundColor)
         
         // TODO: Cache these scaled vertices
-        let scaledVertices = fillMode.transformVertices(verticallyInvertedImageVertices, fromInputSize:framebuffer.sizeForTargetOrientation(.Portrait), toFitSize:viewSize)
-        renderQuadWithShader(self.displayShader, vertices:scaledVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.Portrait)])
+        let scaledVertices = fillMode.transformVertices(verticallyInvertedImageVertices, fromInputSize:framebuffer.sizeForTargetOrientation(.portrait), toFitSize:viewSize)
+        renderQuadWithShader(self.displayShader, vertices:scaledVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.portrait)])
         sharedImageProcessingContext.presentBufferForDisplay()
         
         framebuffer.unlock()

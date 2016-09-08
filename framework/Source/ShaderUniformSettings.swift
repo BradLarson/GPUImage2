@@ -50,7 +50,7 @@ public struct ShaderUniformSettings {
         set(newValue) { uniformValues[index] = newValue }
     }
 
-    func restoreShaderSettings(shader:ShaderProgram) {
+    func restoreShaderSettings(_ shader:ShaderProgram) {
         for (uniform, value) in uniformValues {
             switch value {
                 case let value as Float: shader.setValue(GLfloat(value), forUniform:uniform)
@@ -68,11 +68,11 @@ public struct ShaderUniformSettings {
 
 extension Color {
     func toGLArray() -> [GLfloat] {
-        return [GLfloat(red), GLfloat(green), GLfloat(blue)]
+        return [GLfloat(redComponent), GLfloat(greenComponent), GLfloat(blueComponent)]
     }
 
     func toGLArrayWithAlpha() -> [GLfloat] {
-        return [GLfloat(red), GLfloat(green), GLfloat(blue), GLfloat(alpha)]
+        return [GLfloat(redComponent), GLfloat(greenComponent), GLfloat(blueComponent), GLfloat(alphaComponent)]
     }
 }
 

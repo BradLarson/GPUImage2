@@ -2,9 +2,11 @@ public class SingleComponentGaussianBlur: TwoStageOperation {
     public var blurRadiusInPixels:Float {
         didSet {
             let (sigma, downsamplingFactor) = sigmaAndDownsamplingForBlurRadius(blurRadiusInPixels, limit:8.0, override:overrideDownsamplingOptimization)
-            self.downsamplingFactor = downsamplingFactor
-            let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
-            shader = crashOnShaderCompileFailure("GaussianBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedGaussianBlurOfRadius(pixelRadius, sigma:Double(sigma)), fragmentShader:fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(pixelRadius, sigma:Double(sigma)))}
+            sharedImageProcessingContext.runOperationAsynchronously {
+                self.downsamplingFactor = downsamplingFactor
+                let pixelRadius = pixelRadiusForBlurSigma(Double(sigma))
+                self.shader = crashOnShaderCompileFailure("GaussianBlur"){try sharedImageProcessingContext.programForVertexShader(vertexShaderForOptimizedGaussianBlurOfRadius(pixelRadius, sigma:Double(sigma)), fragmentShader:fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(pixelRadius, sigma:Double(sigma)))}
+            }
         }
     }
     
@@ -17,7 +19,7 @@ public class SingleComponentGaussianBlur: TwoStageOperation {
     
 }
 
-func fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(radius:UInt, sigma:Double) -> String {
+func fragmentShaderForOptimizedSingleComponentGaussianBlurOfRadius(_ radius:UInt, sigma:Double) -> String {
     guard (radius > 0) else { return PassthroughFragmentShader }
     
     let standardWeights = standardGaussianWeightsForRadius(radius, sigma:sigma)

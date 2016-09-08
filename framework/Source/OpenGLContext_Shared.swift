@@ -18,7 +18,7 @@ import Foundation
 public let sharedImageProcessingContext = OpenGLContext()
 
 extension OpenGLContext {
-    public func programForVertexShader(vertexShader:String, fragmentShader:String) throws -> ShaderProgram {
+    public func programForVertexShader(_ vertexShader:String, fragmentShader:String) throws -> ShaderProgram {
         let lookupKeyForShaderProgram = "V: \(vertexShader) - F: \(fragmentShader)"
         if let shaderFromCache = shaderCache[lookupKeyForShaderProgram] {
             return shaderFromCache
@@ -31,15 +31,15 @@ extension OpenGLContext {
         }
     }
 
-    public func programForVertexShader(vertexShader:String, fragmentShader:NSURL) throws -> ShaderProgram {
+    public func programForVertexShader(_ vertexShader:String, fragmentShader:URL) throws -> ShaderProgram {
         return try programForVertexShader(vertexShader, fragmentShader:try shaderFromFile(fragmentShader))
     }
     
-    public func programForVertexShader(vertexShader:NSURL, fragmentShader:NSURL) throws -> ShaderProgram {
+    public func programForVertexShader(_ vertexShader:URL, fragmentShader:URL) throws -> ShaderProgram {
         return try programForVertexShader(try shaderFromFile(vertexShader), fragmentShader:try shaderFromFile(fragmentShader))
     }
     
-    public func openGLDeviceSettingForOption(option:Int32) -> GLint {
+    public func openGLDeviceSettingForOption(_ option:Int32) -> GLint {
         return self.runOperationSynchronously{() -> GLint in
             self.makeCurrentContext()
             var openGLValue:GLint = 0
@@ -48,11 +48,11 @@ extension OpenGLContext {
         }
     }
  
-    public func deviceSupportsExtension(openGLExtension:String) -> Bool {
+    public func deviceSupportsExtension(_ openGLExtension:String) -> Bool {
 #if os(Linux)
         return false
 #else
-        return self.extensionString.containsString(openGLExtension)
+        return self.extensionString.contains(openGLExtension)
 #endif
     }
     
@@ -66,7 +66,7 @@ extension OpenGLContext {
         return deviceSupportsExtension("GL_EXT_shader_framebuffer_fetch")
     }
     
-    public func sizeThatFitsWithinATextureForSize(size:Size) -> Size {
+    public func sizeThatFitsWithinATextureForSize(_ size:Size) -> Size {
         let maxTextureSize = Float(self.maximumTextureSizeForThisDevice)
         if ( (size.width < maxTextureSize) && (size.height < maxTextureSize) ) {
             return size
@@ -83,8 +83,8 @@ extension OpenGLContext {
     }
 }
 
-@_semantics("sil.optimize.never") public func debugPrint(stringToPrint:String, file: StaticString = __FILE__, line: UInt = __LINE__, function: StaticString = __FUNCTION__) {
+@_semantics("sil.optimize.never") public func debugPrint(_ stringToPrint:String, file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
     #if DEBUG
-        print("\(stringToPrint) --> \((String(file) as NSString).lastPathComponent): \(function): \(line)")
+        print("\(stringToPrint) --> \((String(describing:file) as NSString).lastPathComponent): \(function): \(line)")
     #endif
 }

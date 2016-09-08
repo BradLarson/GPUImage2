@@ -15,13 +15,13 @@
 import Foundation
 
 
-struct ShaderCompileError:ErrorType {
+struct ShaderCompileError:Error {
     let compileLog:String
 }
 
 enum ShaderType {
-    case VertexShader
-    case FragmentShader
+    case vertex
+    case fragment
 }
 
 public class ShaderProgram {
@@ -29,7 +29,6 @@ public class ShaderProgram {
     let program:GLuint
     var vertexShader:GLuint! // At some point, the Swift compiler will be able to deal with the early throw and we can convert these to lets
     var fragmentShader:GLuint!
-    var initialized:Bool = false
     private var attributeAddresses = [String:GLuint]()
     private var uniformAddresses = [String:GLint]()
     private var currentUniformIntValues = [String:GLint]()
@@ -42,8 +41,8 @@ public class ShaderProgram {
     public init(vertexShader:String, fragmentShader:String) throws {
         program = glCreateProgram()
         
-        self.vertexShader = try compileShader(vertexShader, type:.VertexShader)
-        self.fragmentShader = try compileShader(fragmentShader, type:.FragmentShader)
+        self.vertexShader = try compileShader(vertexShader, type:.vertex)
+        self.fragmentShader = try compileShader(fragmentShader, type:.fragment)
         
         glAttachShader(program, self.vertexShader)
         glAttachShader(program, self.fragmentShader)
@@ -51,11 +50,11 @@ public class ShaderProgram {
         try link()
     }
 
-    public convenience init(vertexShader:String, fragmentShaderFile:NSURL) throws {
+    public convenience init(vertexShader:String, fragmentShaderFile:URL) throws {
         try self.init(vertexShader:vertexShader, fragmentShader:try shaderFromFile(fragmentShaderFile))
     }
 
-    public convenience init(vertexShaderFile:NSURL, fragmentShaderFile:NSURL) throws {
+    public convenience init(vertexShaderFile:URL, fragmentShaderFile:URL) throws {
         try self.init(vertexShader:try shaderFromFile(vertexShaderFile), fragmentShader:try shaderFromFile(fragmentShaderFile))
     }
     
@@ -74,7 +73,7 @@ public class ShaderProgram {
     // MARK: -
     // MARK: Attributes and uniforms
     
-    public func attributeIndex(attribute:String) -> GLuint? {
+    public func attributeIndex(_ attribute:String) -> GLuint? {
         if let attributeAddress = attributeAddresses[attribute] {
             return attributeAddress
         } else {
@@ -93,7 +92,7 @@ public class ShaderProgram {
         }
     }
     
-    public func uniformIndex(uniform:String) -> GLint? {
+    public func uniformIndex(_ uniform:String) -> GLint? {
         if let uniformAddress = uniformAddresses[uniform] {
             return uniformAddress
         } else {
@@ -114,7 +113,7 @@ public class ShaderProgram {
     // MARK: -
     // MARK: Uniform accessors
     
-    public func setValue(value:GLfloat, forUniform:String) {
+    public func setValue(_ value:GLfloat, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -125,7 +124,7 @@ public class ShaderProgram {
         }
     }
 
-    public func setValue(value:GLint, forUniform:String) {
+    public func setValue(_ value:GLint, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -136,7 +135,7 @@ public class ShaderProgram {
         }
     }
 
-    public func setValue(value:Color, forUniform:String) {
+    public func setValue(_ value:Color, forUniform:String) {
         if colorUniformsUseFourComponents {
             self.setValue(value.toGLArrayWithAlpha(), forUniform:forUniform)
         } else {
@@ -144,12 +143,12 @@ public class ShaderProgram {
         }
     }
     
-    public func setValue(value:[GLfloat], forUniform:String) {
+    public func setValue(_ value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
-        if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{
+        if let previousValue = currentUniformFloatArrayValues[forUniform], previousValue == value{
         } else {
             if (value.count == 2) {
                 glUniform2fv(uniformAddress, 1, value)
@@ -164,12 +163,12 @@ public class ShaderProgram {
         }
     }
 
-    public func setMatrix(value:[GLfloat], forUniform:String) {
+    public func setMatrix(_ value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
         }
-        if let previousValue = currentUniformFloatArrayValues[forUniform] where previousValue == value{
+        if let previousValue = currentUniformFloatArrayValues[forUniform], previousValue == value{
         } else {
             if (value.count == 9) {
                 glUniformMatrix3fv(uniformAddress, 1, GLboolean(GL_FALSE), value)
@@ -194,15 +193,14 @@ public class ShaderProgram {
             var logLength:GLint = 0
             glGetProgramiv(program, GLenum(GL_INFO_LOG_LENGTH), &logLength)
             if (logLength > 0) {
-                var compileLog = [CChar](count:Int(logLength), repeatedValue:0)
+                var compileLog = [CChar](repeating:0, count:Int(logLength))
                 
                 glGetProgramInfoLog(program, logLength, &logLength, &compileLog)
-                print("Link log: \(String.fromCString(compileLog))")
+                print("Link log: \(String(cString:compileLog))")
             }
             
             throw ShaderCompileError(compileLog:"Link error")
         }
-        initialized = true
     }
     
     public func use() {
@@ -210,15 +208,15 @@ public class ShaderProgram {
     }
 }
 
-func compileShader(shaderString:String, type:ShaderType) throws -> GLuint {
+func compileShader(_ shaderString:String, type:ShaderType) throws -> GLuint {
     let shaderHandle:GLuint
     switch type {
-        case .VertexShader: shaderHandle = glCreateShader(GLenum(GL_VERTEX_SHADER))
-        case .FragmentShader: shaderHandle = glCreateShader(GLenum(GL_FRAGMENT_SHADER))
+        case .vertex: shaderHandle = glCreateShader(GLenum(GL_VERTEX_SHADER))
+        case .fragment: shaderHandle = glCreateShader(GLenum(GL_FRAGMENT_SHADER))
     }
     
     shaderString.withGLChar{glString in
-        var tempString = glString
+        var tempString:UnsafePointer<GLchar>? = glString
         glShaderSource(shaderHandle, 1, &tempString, nil)
         glCompileShader(shaderHandle)
     }
@@ -229,15 +227,15 @@ func compileShader(shaderString:String, type:ShaderType) throws -> GLuint {
         var logLength:GLint = 0
         glGetShaderiv(shaderHandle, GLenum(GL_INFO_LOG_LENGTH), &logLength)
         if (logLength > 0) {
-            var compileLog = [CChar](count:Int(logLength), repeatedValue:0)
+            var compileLog = [CChar](repeating:0, count:Int(logLength))
             
             glGetShaderInfoLog(shaderHandle, logLength, &logLength, &compileLog)
-            print("Compile log: \(String.fromCString(compileLog))")
+            print("Compile log: \(String(cString:compileLog))")
             // let compileLogString = String(bytes:compileLog.map{UInt8($0)}, encoding:NSASCIIStringEncoding)
             
             switch type {
-                case .VertexShader: throw ShaderCompileError(compileLog:"Vertex shader compile error:")
-                case .FragmentShader: throw ShaderCompileError(compileLog:"Fragment shader compile error:")
+                case .vertex: throw ShaderCompileError(compileLog:"Vertex shader compile error:")
+                case .fragment: throw ShaderCompileError(compileLog:"Fragment shader compile error:")
             }
         }
     }
@@ -245,7 +243,7 @@ func compileShader(shaderString:String, type:ShaderType) throws -> GLuint {
     return shaderHandle
 }
 
-public func crashOnShaderCompileFailure<T>(shaderName:String, _ operation:() throws -> T) -> T {
+public func crashOnShaderCompileFailure<T>(_ shaderName:String, _ operation:() throws -> T) -> T {
     do {
         return try operation()
     } catch {
@@ -254,11 +252,12 @@ public func crashOnShaderCompileFailure<T>(shaderName:String, _ operation:() thr
     }
 }
 
-public func shaderFromFile(file:NSURL) throws -> String {
+public func shaderFromFile(_ file:URL) throws -> String {
     // Note: this is a hack until Foundation's String initializers are fully functional
     //        let fragmentShaderString = String(contentsOfURL:fragmentShaderFile, encoding:NSASCIIStringEncoding)
-    guard (NSFileManager.defaultManager().fileExistsAtPath(file.path!)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
-    let fragmentShaderString = try NSString(contentsOfFile:file.path!, encoding:NSASCIIStringEncoding)
+    guard (FileManager.default.fileExists(atPath: file.path)) else { throw ShaderCompileError(compileLog:"Shader file \(file) missing")}
+
+    let fragmentShaderString = try NSString(contentsOfFile:file.path, encoding:String.Encoding.ascii.rawValue)
     
     return String(fragmentShaderString)
 }

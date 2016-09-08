@@ -17,7 +17,7 @@ public class TextureInput: ImageSource {
     
     let textureFramebuffer:Framebuffer
 
-    public init(texture:GLuint, size:Size, orientation:ImageOrientation = .Portrait) {
+    public init(texture:GLuint, size:Size, orientation:ImageOrientation = .portrait) {
         do {
             textureFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(size), textureOnly:true, overriddenTexture:texture)
         } catch {
@@ -29,7 +29,7 @@ public class TextureInput: ImageSource {
         updateTargetsWithFramebuffer(textureFramebuffer)
     }
     
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         textureFramebuffer.lock()
         target.newFramebufferAvailable(textureFramebuffer, fromSourceIndex:atIndex)
     }

@@ -19,6 +19,6 @@ public struct Position {
     }
 #endif
 	
-    public static let Center = Position(0.5, 0.5)
-    public static let Zero = Position(0.0, 0.0)
+    public static let center = Position(0.5, 0.5)
+    public static let zero = Position(0.0, 0.0)
 }

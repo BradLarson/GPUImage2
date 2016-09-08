@@ -15,11 +15,11 @@ import Glibc
 
 
 public enum FillMode {
-    case Stretch
-    case PreserveAspectRatio
-    case PreserveAspectRatioAndFill
+    case stretch
+    case preserveAspectRatio
+    case preserveAspectRatioAndFill
     
-    func transformVertices(vertices:[GLfloat], fromInputSize:GLSize, toFitSize:GLSize) -> [GLfloat] {
+    func transformVertices(_ vertices:[GLfloat], fromInputSize:GLSize, toFitSize:GLSize) -> [GLfloat] {
         guard (vertices.count == 8) else { fatalError("Attempted to transform a non-quad to account for fill mode.") }
         
         let aspectRatio = GLfloat(fromInputSize.height) / GLfloat(fromInputSize.width)
@@ -28,8 +28,8 @@ public enum FillMode {
         let yRatio:GLfloat
         let xRatio:GLfloat
         switch self {
-            case Stretch: return vertices
-            case PreserveAspectRatio:
+            case .stretch: return vertices
+            case .preserveAspectRatio:
                 if (aspectRatio > targetAspectRatio) {
                     yRatio = 1.0
 //                    xRatio = (GLfloat(toFitSize.height) / GLfloat(fromInputSize.height)) * (GLfloat(fromInputSize.width) / GLfloat(toFitSize.width))
@@ -38,7 +38,7 @@ public enum FillMode {
                     xRatio = 1.0
                     yRatio = (GLfloat(fromInputSize.height) / GLfloat(toFitSize.height)) * (GLfloat(toFitSize.width) / GLfloat(fromInputSize.width))
                 }
-            case PreserveAspectRatioAndFill:
+            case .preserveAspectRatioAndFill:
                 if (aspectRatio > targetAspectRatio) {
                     xRatio = 1.0
                     yRatio = (GLfloat(fromInputSize.height) / GLfloat(toFitSize.height)) * (GLfloat(toFitSize.width) / GLfloat(fromInputSize.width))
@@ -57,9 +57,22 @@ public enum FillMode {
 		let yConversionDivisor:GLfloat = GLfloat(toFitSize.height) / 2.0
 
 		// The Double casting here is required by Linux
-        return [GLfloat(round(Double(vertices[0] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[1] * yConversionRatio))) / yConversionDivisor,
-                GLfloat(round(Double(vertices[2] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[3] * yConversionRatio))) / yConversionDivisor,
-                GLfloat(round(Double(vertices[4] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[5] * yConversionRatio))) / yConversionDivisor,
-                GLfloat(round(Double(vertices[6] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[7] * yConversionRatio))) / yConversionDivisor]
+
+        let value1:GLfloat = GLfloat(round(Double(vertices[0] * xConversionRatio))) / xConversionDivisor
+        let value2:GLfloat = GLfloat(round(Double(vertices[1] * yConversionRatio))) / yConversionDivisor
+        let value3:GLfloat = GLfloat(round(Double(vertices[2] * xConversionRatio))) / xConversionDivisor
+        let value4:GLfloat = GLfloat(round(Double(vertices[3] * yConversionRatio))) / yConversionDivisor
+        let value5:GLfloat = GLfloat(round(Double(vertices[4] * xConversionRatio))) / xConversionDivisor
+        let value6:GLfloat = GLfloat(round(Double(vertices[5] * yConversionRatio))) / yConversionDivisor
+        let value7:GLfloat = GLfloat(round(Double(vertices[6] * xConversionRatio))) / xConversionDivisor
+        let value8:GLfloat = GLfloat(round(Double(vertices[7] * yConversionRatio))) / yConversionDivisor
+
+        return [value1, value2, value3, value4, value5, value6, value7, value8]
+
+        // This expression chokes the compiler in Xcode 8.0, Swift 3
+//        return [GLfloat(round(Double(vertices[0] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[1] * yConversionRatio))) / yConversionDivisor,
+//                GLfloat(round(Double(vertices[2] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[3] * yConversionRatio))) / yConversionDivisor,
+//                GLfloat(round(Double(vertices[4] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[5] * yConversionRatio))) / yConversionDivisor,
+//                GLfloat(round(Double(vertices[6] * xConversionRatio))) / xConversionDivisor, GLfloat(round(Double(vertices[7] * yConversionRatio))) / yConversionDivisor]
     }
 }

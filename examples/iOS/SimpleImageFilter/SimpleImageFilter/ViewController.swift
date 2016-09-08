@@ -18,9 +18,9 @@ class ViewController: UIViewController {
         
         let pngImage = UIImagePNGRepresentation(filteredImage)!
         do {
-            let documentsDir = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain:.UserDomainMask, appropriateForURL:nil, create:true)
-            let fileURL = NSURL(string:"test.png", relativeToURL:documentsDir)!
-            try pngImage.writeToURL(fileURL, options:.DataWritingAtomic)
+            let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+            let fileURL = URL(string:"test.png", relativeTo:documentsDir)!
+            try pngImage.write(to:fileURL, options:.atomic)
         } catch {
             print("Couldn't write to file with error: \(error)")
         }

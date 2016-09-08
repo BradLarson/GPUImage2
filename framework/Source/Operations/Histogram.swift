@@ -24,11 +24,11 @@
 */
 
 public enum HistogramType {
-    case Red
-    case Blue
-    case Green
-    case Luminance
-    case RGB
+    case red
+    case blue
+    case green
+    case luminance
+    case rgb
 }
 
 public class Histogram: BasicOperation {
@@ -39,11 +39,11 @@ public class Histogram: BasicOperation {
     
     public init(type:HistogramType) {
         switch type {
-            case .Red: super.init(vertexShader:HistogramRedSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
-            case .Blue: super.init(vertexShader:HistogramBlueSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
-            case .Green: super.init(vertexShader:HistogramGreenSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
-            case .Luminance: super.init(vertexShader:HistogramLuminanceSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
-            case .RGB:
+            case .red: super.init(vertexShader:HistogramRedSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
+            case .blue: super.init(vertexShader:HistogramBlueSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
+            case .green: super.init(vertexShader:HistogramGreenSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
+            case .luminance: super.init(vertexShader:HistogramLuminanceSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
+            case .rgb:
                 super.init(vertexShader:HistogramRedSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader, numberOfInputs:1)
                 shader2 = crashOnShaderCompileFailure("Histogram"){try sharedImageProcessingContext.programForVertexShader(HistogramGreenSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader)}
                 shader3 = crashOnShaderCompileFailure("Histogram"){try sharedImageProcessingContext.programForVertexShader(HistogramBlueSamplingVertexShader, fragmentShader:HistogramAccumulationFragmentShader)}
@@ -53,14 +53,14 @@ public class Histogram: BasicOperation {
     override func renderFrame() {
         let inputSize = sizeOfInitialStageBasedOnFramebuffer(inputFramebuffers[0]!)
         let inputByteSize = Int(inputSize.width * inputSize.height * 4)
-        let data = UnsafeMutablePointer<UInt8>.alloc(inputByteSize)
+        let data = UnsafeMutablePointer<UInt8>.allocate(capacity:inputByteSize)
         glReadPixels(0, 0, inputSize.width, inputSize.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
 
-        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:256, height:3), stencil:mask != nil)
+        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:256, height:3), stencil:mask != nil)
         releaseIncomingFramebuffers()
         renderFramebuffer.activateFramebufferForRendering()
         
-        clearFramebufferWithColor(Color.Black)
+        clearFramebufferWithColor(Color.black)
 
         glBlendEquation(GLenum(GL_FUNC_ADD))
         glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
@@ -86,6 +86,6 @@ public class Histogram: BasicOperation {
         }
 
         glDisable(GLenum(GL_BLEND))
-        data.dealloc(inputByteSize)
+        data.deallocate(capacity:inputByteSize)
     }
 }

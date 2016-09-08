@@ -13,8 +13,8 @@ class FilterShowcaseWindowController: NSWindowController {
     dynamic var currentSliderValue:Float = 0.5 {
         willSet(newSliderValue) {
             switch (currentFilterOperation!.sliderConfiguration) {
-                case .Enabled: currentFilterOperation!.updateBasedOnSliderValue(newSliderValue)
-                case .Disabled: break
+                case .enabled: currentFilterOperation!.updateBasedOnSliderValue(newSliderValue)
+                case .disabled: break
             }
         }
     }
@@ -32,45 +32,46 @@ class FilterShowcaseWindowController: NSWindowController {
         do {
             videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset1280x720)
             videoCamera.runBenchmark = true
+            videoCamera.startCapture()
         } catch {
             fatalError("Couldn't initialize camera with error: \(error)")
         }
         self.changeSelectedRow(0)
     }
     
-    func changeSelectedRow(row:Int) {
+    func changeSelectedRow(_ row:Int) {
         guard (currentlySelectedRow != row) else { return }
         currentlySelectedRow = row
         
         // Clean up everything from the previous filter selection first
-        videoCamera.stopCapture()
+//        videoCamera.stopCapture()
         videoCamera.removeAllTargets()
         currentFilterOperation?.filter.removeAllTargets()
         currentFilterOperation?.secondInput?.removeAllTargets()
         
         currentFilterOperation = filterOperations[row]
         switch currentFilterOperation!.filterOperationType {
-            case .SingleInput:
+            case .singleInput:
                 videoCamera.addTarget((currentFilterOperation!.filter))
                 currentFilterOperation!.filter.addTarget(filterView!)
-            case .Blend:
+            case .blend:
                 blendImage.removeAllTargets()
                 videoCamera.addTarget((currentFilterOperation!.filter))
                 self.blendImage.addTarget((currentFilterOperation!.filter))
                 currentFilterOperation!.filter.addTarget(filterView!)
                 self.blendImage.processImage()
-            case let .Custom(filterSetupFunction:setupFunction):
-                currentFilterOperation!.configureCustomFilter(setupFunction(camera:videoCamera!, filter:currentFilterOperation!.filter, outputView:filterView!))
+            case let .custom(filterSetupFunction:setupFunction):
+                currentFilterOperation!.configureCustomFilter(setupFunction(videoCamera!, currentFilterOperation!.filter, filterView!))
         }
         
         switch currentFilterOperation!.sliderConfiguration {
-            case .Disabled:
-                filterSlider.enabled = false
+            case .disabled:
+                filterSlider.isEnabled = false
                 //                case let .Enabled(minimumValue, initialValue, maximumValue, filterSliderCallback):
-            case let .Enabled(minimumValue, maximumValue, initialValue):
+            case let .enabled(minimumValue, maximumValue, initialValue):
                 filterSlider.minValue = Double(minimumValue)
                 filterSlider.maxValue = Double(maximumValue)
-                filterSlider.enabled = true
+                filterSlider.isEnabled = true
                 currentSliderValue = initialValue
         }
         
@@ -80,16 +81,16 @@ class FilterShowcaseWindowController: NSWindowController {
 // MARK: -
 // MARK: Table view delegate and datasource methods
     
-    func numberOfRowsInTableView(aTableView:NSTableView!) -> Int {
+    func numberOfRowsInTableView(_ aTableView:NSTableView!) -> Int {
         return filterOperations.count
     }
     
-    func tableView(aTableView:NSTableView!, objectValueForTableColumn aTableColumn:NSTableColumn!, row rowIndex:Int) -> AnyObject! {
+    func tableView(_ aTableView:NSTableView!, objectValueForTableColumn aTableColumn:NSTableColumn!, row rowIndex:Int) -> AnyObject! {
         let filterInList:FilterOperationInterface = filterOperations[rowIndex]
-        return filterInList.listName
+        return filterInList.listName as NSString
     }
     
-    func tableViewSelectionDidChange(aNotification: NSNotification!) {
+    func tableViewSelectionDidChange(_ aNotification: Notification!) {
         if let currentTableView = aNotification.object as? NSTableView {
             let rowIndex = currentTableView.selectedRow
             self.changeSelectedRow(rowIndex)

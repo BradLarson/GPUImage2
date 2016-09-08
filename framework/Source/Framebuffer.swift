@@ -17,33 +17,33 @@ import Glibc
 import Foundation
 
 // TODO: Add a good lookup table to this to allow for detailed error messages
-struct FramebufferCreationError:ErrorType {
+struct FramebufferCreationError:Error {
     let errorCode:GLenum
 }
 
 public enum FramebufferTimingStyle {
-    case StillImage
-    case VideoFrame(timestamp:Timestamp)
+    case stillImage
+    case videoFrame(timestamp:Timestamp)
     
     func isTransient() -> Bool {
         switch self {
-            case .StillImage: return false
-            case .VideoFrame: return true
+            case .stillImage: return false
+            case .videoFrame: return true
         }
     }
     
     var timestamp:Timestamp? {
         get {
             switch self {
-                case .StillImage: return nil
-                case let .VideoFrame(timestamp): return timestamp
+                case .stillImage: return nil
+                case let .videoFrame(timestamp): return timestamp
             }
         }
     }
 }
 
 public class Framebuffer {
-    public var timingStyle:FramebufferTimingStyle = .StillImage
+    public var timingStyle:FramebufferTimingStyle = .stillImage
     public var orientation:ImageOrientation
 
     let texture:GLuint
@@ -108,7 +108,7 @@ public class Framebuffer {
         }
     }
     
-    func sizeForTargetOrientation(targetOrientation:ImageOrientation) -> GLSize {
+    func sizeForTargetOrientation(_ targetOrientation:ImageOrientation) -> GLSize {
         if self.orientation.rotationNeededForOrientation(targetOrientation).flipsDimensions() {
             return GLSize(width:size.height, height:size.width)
         } else {
@@ -116,7 +116,7 @@ public class Framebuffer {
         }
     }
     
-    func aspectRatioForRotation(rotation:Rotation) -> Float {
+    func aspectRatioForRotation(_ rotation:Rotation) -> Float {
         if rotation.flipsDimensions() {
             return Float(size.width) / Float(size.height)
         } else {
@@ -124,7 +124,7 @@ public class Framebuffer {
         }
     }
 
-    func texelSizeForRotation(rotation:Rotation) -> Size {
+    func texelSize(for rotation:Rotation) -> Size {
         if rotation.flipsDimensions() {
             return Size(width:1.0 / Float(size.height), height:1.0 / Float(size.width))
         } else {
@@ -132,7 +132,7 @@ public class Framebuffer {
         }
     }
 
-    func initialStageTexelSizeForRotation(rotation:Rotation) -> Size {
+    func initialStageTexelSize(for rotation:Rotation) -> Size {
         if rotation.flipsDimensions() {
             return Size(width:1.0 / Float(size.height), height:0.0)
         } else {
@@ -140,11 +140,11 @@ public class Framebuffer {
         }
     }
 
-    func texturePropertiesForOutputRotation(rotation:Rotation) -> InputTextureProperties {
+    func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
         return InputTextureProperties(textureCoordinates:rotation.textureCoordinates(), texture:texture)
     }
 
-    func texturePropertiesForTargetOrientation(targetOrientation:ImageOrientation) -> InputTextureProperties {
+    func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {
         return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
     }
     
@@ -174,12 +174,12 @@ public class Framebuffer {
                 print("WARNING: Tried to overrelease a framebuffer")
             }
             framebufferRetainCount = 0
-            cache?.returnFramebufferToCache(self)
+            cache?.returnToCache(self)
         }
     }
 }
 
-func hashForFramebufferWithProperties(orientation orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int64 {
+func hashForFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int64 {
     var result:Int64 = 1
     let prime:Int64 = 31
     let yesPrime:Int64 = 1231
@@ -202,32 +202,32 @@ func hashForFramebufferWithProperties(orientation orientation:ImageOrientation, 
 extension Rotation {
     func textureCoordinates() -> [GLfloat] {
         switch self {
-            case NoRotation: return [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
-            case RotateCounterclockwise: return [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
-            case RotateClockwise: return [1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-            case Rotate180: return [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
-            case FlipHorizontally: return [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-            case FlipVertically: return [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
-            case RotateClockwiseAndFlipVertically: return [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
-            case RotateClockwiseAndFlipHorizontally: return [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+            case .noRotation: return [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+            case .rotateCounterclockwise: return [0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0]
+            case .rotateClockwise: return [1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+            case .rotate180: return [1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+            case .flipHorizontally: return [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]
+            case .flipVertically: return [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]
+            case .rotateClockwiseAndFlipVertically: return [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
+            case .rotateClockwiseAndFlipHorizontally: return [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
         }
     }
     
-    func croppedTextureCoordinates(offsetFromOrigin offsetFromOrigin:Position, cropSize:Size) -> [GLfloat] {
+    func croppedTextureCoordinates(offsetFromOrigin:Position, cropSize:Size) -> [GLfloat] {
         let minX = GLfloat(offsetFromOrigin.x)
         let minY = GLfloat(offsetFromOrigin.y)
         let maxX = GLfloat(offsetFromOrigin.x) + GLfloat(cropSize.width)
         let maxY = GLfloat(offsetFromOrigin.y) + GLfloat(cropSize.height)
 
         switch self {
-            case NoRotation: return [minX, minY, maxX, minY, minX, maxY, maxX, maxY]
-            case RotateCounterclockwise: return [minX, maxY, minX, minY, maxX, maxY, maxX, minY]
-            case RotateClockwise: return [maxX, minY, maxX, maxY, minX, minY, minX, maxY]
-            case Rotate180: return [maxX, maxY, minX, maxY, maxX, minY, minX, minY]
-            case FlipHorizontally: return [maxX, minY, minX, minY, maxX, maxY, minX, maxY]
-            case FlipVertically: return [minX, maxY, maxX, maxY, minX, minY, maxX, minY]
-            case RotateClockwiseAndFlipVertically: return [minX, minY, minX, maxY, maxX, minY, maxX, maxY]
-            case RotateClockwiseAndFlipHorizontally: return [maxX, maxY, maxX, minY, minX, maxY, minX, minY]
+            case .noRotation: return [minX, minY, maxX, minY, minX, maxY, maxX, maxY]
+            case .rotateCounterclockwise: return [minX, maxY, minX, minY, maxX, maxY, maxX, minY]
+            case .rotateClockwise: return [maxX, minY, maxX, maxY, minX, minY, minX, maxY]
+            case .rotate180: return [maxX, maxY, minX, maxY, maxX, minY, minX, minY]
+            case .flipHorizontally: return [maxX, minY, minX, minY, maxX, maxY, minX, maxY]
+            case .flipVertically: return [minX, maxY, maxX, maxY, minX, minY, maxX, minY]
+            case .rotateClockwiseAndFlipVertically: return [minX, minY, minX, maxY, maxX, minY, maxX, maxY]
+            case .rotateClockwiseAndFlipHorizontally: return [maxX, maxY, maxX, minY, minX, maxY, minX, minY]
         }
     }
 }

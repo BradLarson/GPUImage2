@@ -12,19 +12,19 @@ public class MotionBlur: BasicOperation {
         super.init(vertexShader:MotionBlurVertexShader, fragmentShader:MotionBlurFragmentShader, numberOfInputs:1)
     }
     
-    override func configureFramebufferSpecificUniforms(inputFramebuffer:Framebuffer) {
-        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.Portrait)
-        let texelSize = inputFramebuffer.texelSizeForRotation(outputRotation)
+    override func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
+        let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
+        let texelSize = inputFramebuffer.texelSize(for:outputRotation)
         
         let aspectRatio = inputFramebuffer.aspectRatioForRotation(outputRotation)
         let directionalTexelStep:Position
         if outputRotation.flipsDimensions() {
-            let xOffset = blurSize * Float(sin(Double(blurAngle) * M_PI / 180.0)) * aspectRatio * texelSize.width
-            let yOffset = blurSize * Float(cos(Double(blurAngle) * M_PI / 180.0)) * texelSize.width
+            let xOffset = blurSize * Float(sin(Double(blurAngle) * .pi / 180.0)) * aspectRatio * texelSize.width
+            let yOffset = blurSize * Float(cos(Double(blurAngle) * .pi / 180.0)) * texelSize.width
             directionalTexelStep = Position(xOffset, yOffset)
         } else {
-            let xOffset = blurSize * Float(cos(Double(blurAngle) * M_PI / 180.0)) * aspectRatio * texelSize.width
-            let yOffset = blurSize * Float(sin(Double(blurAngle) * M_PI / 180.0)) * texelSize.width
+            let xOffset = blurSize * Float(cos(Double(blurAngle) * .pi / 180.0)) * aspectRatio * texelSize.width
+            let yOffset = blurSize * Float(sin(Double(blurAngle) * .pi / 180.0)) * texelSize.width
             directionalTexelStep = Position(xOffset, yOffset)
         }
         

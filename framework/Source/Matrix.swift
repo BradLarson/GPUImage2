@@ -32,7 +32,7 @@ public struct Matrix4x4 {
         self.m44 = rowMajorValues[15]
     }
     
-    public static let Identity = Matrix4x4(rowMajorValues:[1.0, 0.0, 0.0, 0.0,
+    public static let identity = Matrix4x4(rowMajorValues:[1.0, 0.0, 0.0, 0.0,
                                                            0.0, 1.0, 0.0, 0.0,
                                                            0.0, 0.0, 1.0, 0.0,
                                                            0.0, 0.0, 0.0, 1.0])
@@ -59,16 +59,16 @@ public struct Matrix3x3 {
         self.m33 = rowMajorValues[8]
     }
     
-    public static let Identity = Matrix3x3(rowMajorValues:[1.0, 0.0, 0.0,
+    public static let identity = Matrix3x3(rowMajorValues:[1.0, 0.0, 0.0,
                                                            0.0, 1.0, 0.0,
                                                            0.0, 0.0, 1.0])
     
-    public static let CenterOnly = Matrix3x3(rowMajorValues:[0.0, 0.0, 0.0,
+    public static let centerOnly = Matrix3x3(rowMajorValues:[0.0, 0.0, 0.0,
                                                              0.0, 1.0, 0.0,
                                                              0.0, 0.0, 0.0])
 }
 
-func orthographicMatrix(left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float, anchorTopLeft:Bool = false) -> Matrix4x4 {
+func orthographicMatrix(_ left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float, anchorTopLeft:Bool = false) -> Matrix4x4 {
     let r_l = right - left
     let t_b = top - bottom
     let f_n = far - near
