@@ -50,7 +50,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)
                 case let .custom(filterSetupFunction:setupFunction):
-                    currentFilterConfiguration.configureCustomFilter(setupFunction(camera:videoCamera, filter:currentFilterConfiguration.filter, outputView:view))
+                    currentFilterConfiguration.configureCustomFilter(setupFunction(videoCamera, currentFilterConfiguration.filter, view))
                 }
                 
                 videoCamera.startCapture()
