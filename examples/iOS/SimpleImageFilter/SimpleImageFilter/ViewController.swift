@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         let pngImage = UIImagePNGRepresentation(filteredImage)!
         do {
-            let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+            let documentsDir = try FileManager.default.url(for:.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
             let fileURL = URL(string:"test.png", relativeTo:documentsDir)!
             try pngImage.write(to:fileURL, options:.atomic)
         } catch {

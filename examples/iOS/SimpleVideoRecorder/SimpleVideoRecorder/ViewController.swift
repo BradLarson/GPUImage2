@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         if (!isRecording) {
             do {
                 self.isRecording = true
-                let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+                let documentsDir = try FileManager.default.url(for:.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
                 let fileURL = URL(string:"test.mp4", relativeTo:documentsDir)!
                 do {
                     try FileManager.default.removeItem(at:fileURL)

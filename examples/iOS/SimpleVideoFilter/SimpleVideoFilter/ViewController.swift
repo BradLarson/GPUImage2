@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     @IBAction func capture(_ sender: AnyObject) {
         print("Capture")
         do {
-            let documentsDir = try FileManager.default.urlForDirectory(.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
+            let documentsDir = try FileManager.default.url(for:.documentDirectory, in:.userDomainMask, appropriateFor:nil, create:true)
             saturationFilter.saveNextFrameToURL(URL(string:"TestImage.png", relativeTo:documentsDir)!, format:.png)
         } catch {
             print("Couldn't save image: \(error)")
@@ -76,10 +76,10 @@ extension ViewController: CameraDelegate {
     func faceLines(_ bounds: CGRect) -> [Line] {
         // convert from CoreImage to GL coords
         let flip = CGAffineTransform(scaleX: 1, y: -1)
-        let rotate = flip.rotate(CGFloat(-M_PI_2))
-        let translate = rotate.translateBy(x: -1, y: -1)
-        let xform = translate.scaleBy(x: CGFloat(2/fbSize.width), y: CGFloat(2/fbSize.height))
-        let glRect = bounds.apply(transform: xform)
+        let rotate = flip.rotated(by: CGFloat(-M_PI_2))
+        let translate = rotate.translatedBy(x: -1, y: -1)
+        let xform = translate.scaledBy(x: CGFloat(2/fbSize.width), y: CGFloat(2/fbSize.height))
+        let glRect = bounds.applying(xform)
 
         let x = Float(glRect.origin.x)
         let y = Float(glRect.origin.y)

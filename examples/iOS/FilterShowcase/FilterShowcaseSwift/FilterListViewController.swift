@@ -7,13 +7,14 @@ class FilterListViewController: UITableViewController {
 
     // #pragma mark - Segues
 
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let filterInList = filterOperations[(indexPath as NSIndexPath).row]
-                (segue.destinationViewController as! FilterDisplayViewController).filterOperation = filterInList
+                (segue.destination as! FilterDisplayViewController).filterOperation = filterInList
             }
         }
+
     }
 
     // #pragma mark - Table View
