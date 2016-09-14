@@ -1,4 +1,4 @@
-public class OperationGroup: ImageProcessingOperation {
+open class OperationGroup: ImageProcessingOperation {
     let inputImageRelay = ImageRelay()
     let outputImageRelay = ImageRelay()
     
