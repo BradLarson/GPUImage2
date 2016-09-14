@@ -20,7 +20,7 @@ public class RPiRenderWindow: ImageConsumer {
 	let windowWidth:UInt32
 	let windowHeight:UInt32
 
-	public init(width:UInt32, height:UInt32) {
+	public init(width:UInt32? = nil, height:UInt32? = nil) {
 		sharedImageProcessingContext.makeCurrentContext()
 	    display = eglGetDisplay(nil /* EGL_DEFAULT_DISPLAY */)
 	    // guard (display != EGL_NO_DISPLAY) else {throw renderingError(errorString:"Could not obtain display")}
@@ -36,7 +36,7 @@ public class RPiRenderWindow: ImageConsumer {
 	        EGL_NONE
 	    ]
 		
-	    var config:EGLConfig = nil
+	    var config:EGLConfig? = nil
 	    var num_config:EGLint = 0
 	    //	guard (eglChooseConfig(display, attributes, &config, 1, &num_config) != EGL_FALSE) else {throw renderingError(errorString:"Could not get a framebuffer configuration")}
 	    eglChooseConfig(display, attributes, &config, 1, &num_config)
@@ -76,7 +76,7 @@ public class RPiRenderWindow: ImageConsumer {
 	    glClear(GLenum(GL_COLOR_BUFFER_BIT))
 	}
 	
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
         glBindRenderbuffer(GLenum(GL_RENDERBUFFER), 0)
 
@@ -85,7 +85,7 @@ public class RPiRenderWindow: ImageConsumer {
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClear(GLenum(GL_COLOR_BUFFER_BIT))
 
-        renderQuadWithShader(self.displayShader, vertices:verticallyInvertedImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.Portrait)])
+        renderQuadWithShader(self.displayShader, vertices:verticallyInvertedImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.portrait)])
 		framebuffer.unlock()
 	    eglSwapBuffers(display, surface)
     }
