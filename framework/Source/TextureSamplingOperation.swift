@@ -1,4 +1,4 @@
-public class TextureSamplingOperation: BasicOperation {
+open class TextureSamplingOperation: BasicOperation {
     public var overriddenTexelSize:Size?
     
     public init(vertexShader:String = NearbyTexelSamplingVertexShader, fragmentShader:String, numberOfInputs:UInt = 1) {
