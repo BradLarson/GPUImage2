@@ -12,7 +12,7 @@
  76543210 
 */
 
-public class LocalBinaryPattern: TextureSamplingOperation {
+open class LocalBinaryPattern: TextureSamplingOperation {
     public init() {
         super.init(fragmentShader:LocalBinaryPatternFragmentShader)
     }

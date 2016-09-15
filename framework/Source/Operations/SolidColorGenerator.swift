@@ -1,6 +1,6 @@
-public class SolidColorGenerator: ImageGenerator {
+open class SolidColorGenerator: ImageGenerator {
 
-    public func renderColor(_ color:Color) {
+    open func renderColor(_ color:Color) {
         imageFramebuffer.activateFramebufferForRendering()
         
         clearFramebufferWithColor(color)

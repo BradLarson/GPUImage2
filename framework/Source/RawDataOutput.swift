@@ -12,18 +12,18 @@
 #endif
 #endif
 
-public class RawDataOutput: ImageConsumer {
-    public var dataAvailableCallback:(([UInt8]) -> ())?
+open class RawDataOutput: ImageConsumer {
+    open var dataAvailableCallback:(([UInt8]) -> ())?
     
-    public let sources = SourceContainer()
-    public let maximumInputs:UInt = 1
+    open let sources = SourceContainer()
+    open let maximumInputs:UInt = 1
 
     public init() {
     }
 
     // TODO: Replace with texture caches
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
-        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
 
         renderFramebuffer.activateFramebufferForRendering()

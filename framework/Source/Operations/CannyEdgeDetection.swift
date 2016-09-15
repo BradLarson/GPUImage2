@@ -12,10 +12,10 @@
  threshold. Finally, pixels from in-between these thresholds are either included in edges or rejected based on neighboring pixels.
  */
 
-public class CannyEdgeDetection: OperationGroup {
-    public var blurRadiusInPixels:Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
-    public var upperThreshold:Float = 0.4 { didSet { directionalNonMaximumSuppression.uniformSettings["upperThreshold"] = upperThreshold } }
-    public var lowerThreshold:Float = 0.1 { didSet { directionalNonMaximumSuppression.uniformSettings["lowerThreshold"] = lowerThreshold } }
+open class CannyEdgeDetection: OperationGroup {
+    open var blurRadiusInPixels:Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
+    open var upperThreshold:Float = 0.4 { didSet { directionalNonMaximumSuppression.uniformSettings["upperThreshold"] = upperThreshold } }
+    open var lowerThreshold:Float = 0.1 { didSet { directionalNonMaximumSuppression.uniformSettings["lowerThreshold"] = lowerThreshold } }
     
     let luminance = Luminance()
     let gaussianBlur = SingleComponentGaussianBlur()

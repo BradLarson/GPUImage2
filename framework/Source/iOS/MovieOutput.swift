@@ -5,9 +5,9 @@ public protocol AudioEncodingTarget {
     func processAudioBuffer(_ sampleBuffer:CMSampleBuffer)
 }
 
-public class MovieOutput: ImageConsumer, AudioEncodingTarget {
-    public let sources = SourceContainer()
-    public let maximumInputs:UInt = 1
+open class MovieOutput: ImageConsumer, AudioEncodingTarget {
+    open let sources = SourceContainer()
+    open let maximumInputs:UInt = 1
     
     let assetWriter:AVAssetWriter
     let assetWriterVideoInput:AVAssetWriterInput
@@ -16,13 +16,13 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     let assetWriterPixelBufferInput:AVAssetWriterInputPixelBufferAdaptor
     let size:Size
     let colorSwizzlingShader:ShaderProgram
-    private var isRecording = false
-    private var videoEncodingIsFinished = false
-    private var audioEncodingIsFinished = false
-    private var startTime:CMTime?
-    private var previousFrameTime = kCMTimeNegativeInfinity
-    private var previousAudioTime = kCMTimeNegativeInfinity
-    private var encodingLiveVideo:Bool
+    fileprivate var isRecording = false
+    fileprivate var videoEncodingIsFinished = false
+    fileprivate var audioEncodingIsFinished = false
+    fileprivate var startTime:CMTime?
+    fileprivate var previousFrameTime = kCMTimeNegativeInfinity
+    fileprivate var previousAudioTime = kCMTimeNegativeInfinity
+    fileprivate var encodingLiveVideo:Bool
     var pixelBuffer:CVPixelBuffer? = nil
     var renderFramebuffer:Framebuffer!
     
@@ -62,7 +62,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         assetWriter.add(assetWriterVideoInput)
     }
     
-    public func startRecording() {
+    open func startRecording() {
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
@@ -87,7 +87,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         }
     }
     
-    public func finishRecording(_ completionCallback:(() -> Void)? = nil) {
+    open func finishRecording(_ completionCallback:(() -> Void)? = nil) {
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = false
             
@@ -116,7 +116,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         }
     }
     
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         defer {
             framebuffer.unlock()
         }
@@ -160,7 +160,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     
     func renderIntoPixelBuffer(_ pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
         if !sharedImageProcessingContext.supportsTextureCaches() {
-            renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
+            renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(framebuffer.orientation, size:GLSize(self.size))
             renderFramebuffer.lock()
         }
         
@@ -180,14 +180,14 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     // MARK: -
     // MARK: Audio support
 
-    public func activateAudioTrack() {
+    open func activateAudioTrack() {
         // TODO: Add ability to set custom output settings
         assetWriterAudioInput = AVAssetWriterInput(mediaType:AVMediaTypeAudio, outputSettings:nil)
         assetWriter.add(assetWriterAudioInput!)
         assetWriterAudioInput?.expectsMediaDataInRealTime = encodingLiveVideo
     }
     
-    public func processAudioBuffer(_ sampleBuffer:CMSampleBuffer) {
+    open func processAudioBuffer(_ sampleBuffer:CMSampleBuffer) {
         guard let assetWriterAudioInput = assetWriterAudioInput else { return }
         
         sharedImageProcessingContext.runOperationSynchronously{

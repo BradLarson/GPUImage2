@@ -12,8 +12,8 @@
 #endif
 #endif
 
-public class TextureInput: ImageSource {
-    public let targets = TargetContainer()
+open class TextureInput: ImageSource {
+    open let targets = TargetContainer()
     
     let textureFramebuffer:Framebuffer
 
@@ -25,11 +25,11 @@ public class TextureInput: ImageSource {
         }
     }
 
-    public func processTexture() {
+    open func processTexture() {
         updateTargetsWithFramebuffer(textureFramebuffer)
     }
     
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         textureFramebuffer.lock()
         target.newFramebufferAvailable(textureFramebuffer, fromSourceIndex:atIndex)
     }

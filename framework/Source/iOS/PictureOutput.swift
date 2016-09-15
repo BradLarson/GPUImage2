@@ -6,14 +6,14 @@ public enum PictureFileFormat {
     case jpeg
 }
 
-public class PictureOutput: ImageConsumer {
-    public var encodedImageAvailableCallback:((Data) -> ())?
-    public var encodedImageFormat:PictureFileFormat = .png
-    public var imageAvailableCallback:((UIImage) -> ())?
-    public var onlyCaptureNextFrame:Bool = true
+open class PictureOutput: ImageConsumer {
+    open var encodedImageAvailableCallback:((Data) -> ())?
+    open var encodedImageFormat:PictureFileFormat = .png
+    open var imageAvailableCallback:((UIImage) -> ())?
+    open var onlyCaptureNextFrame:Bool = true
     
-    public let sources = SourceContainer()
-    public let maximumInputs:UInt = 1
+    open let sources = SourceContainer()
+    open let maximumInputs:UInt = 1
     var url:URL!
     
     public init() {
@@ -22,7 +22,7 @@ public class PictureOutput: ImageConsumer {
     deinit {
     }
     
-    public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
+    open func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
         onlyCaptureNextFrame = true
         encodedImageFormat = format
         self.url = url // Create an intentional short-term retain cycle to prevent deallocation before next frame is captured
@@ -38,7 +38,7 @@ public class PictureOutput: ImageConsumer {
     
     // TODO: Replace with texture caches
     func cgImageFromFramebuffer(_ framebuffer:Framebuffer) -> CGImage {
-        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
+        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(framebuffer.orientation, size:framebuffer.size)
         renderFramebuffer.lock()
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.red)
@@ -54,7 +54,7 @@ public class PictureOutput: ImageConsumer {
         return CGImage(width:Int(framebuffer.size.width), height:Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
     
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let imageCallback = imageAvailableCallback {
             let cgImageFromBytes = cgImageFromFramebuffer(framebuffer)
             
@@ -110,7 +110,7 @@ public extension UIImage {
             outputImage = image
         }
         pipeline(picture, pictureOutput)
-        picture.processImage(synchronously:true)
+        picture.processImage(true)
         return outputImage!
     }
 }

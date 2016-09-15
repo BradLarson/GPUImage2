@@ -1,5 +1,5 @@
-public class OpeningFilter: OperationGroup {
-    public var radius:UInt {
+open class OpeningFilter: OperationGroup {
+    open var radius:UInt {
         didSet {
             erosion.radius = radius
             dilation.radius = radius

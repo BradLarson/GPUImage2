@@ -1,6 +1,6 @@
-public class MotionDetector: OperationGroup {
-    public var lowPassStrength:Float = 1.0 { didSet {lowPassFilter.strength = lowPassStrength}}
-    public var motionDetectedCallback:((Position, Float) -> ())?
+open class MotionDetector: OperationGroup {
+    open var lowPassStrength:Float = 1.0 { didSet {lowPassFilter.strength = lowPassStrength}}
+    open var motionDetectedCallback:((Position, Float) -> ())?
     
     let lowPassFilter = LowPassFilter()
     let motionComparison = BasicOperation(fragmentShader:MotionComparisonFragmentShader, numberOfInputs:2)

@@ -24,11 +24,11 @@
  C. Harris and M. Stephens. A Combined Corner and Edge Detector. Proc. Alvey Vision Conf., Univ. Manchester, pp. 147-151, 1988.
 */
 
-public class HarrisCornerDetector: OperationGroup {
-    public var blurRadiusInPixels:Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
-    public var sensitivity:Float = 5.0 { didSet { harrisCornerDetector.uniformSettings["sensitivity"] = sensitivity } }
-    public var threshold:Float = 0.2 { didSet { nonMaximumSuppression.uniformSettings["threshold"] = threshold } }
-    public var cornersDetectedCallback:(([Position]) -> ())?
+open class HarrisCornerDetector: OperationGroup {
+    open var blurRadiusInPixels:Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
+    open var sensitivity:Float = 5.0 { didSet { harrisCornerDetector.uniformSettings["sensitivity"] = sensitivity } }
+    open var threshold:Float = 0.2 { didSet { nonMaximumSuppression.uniformSettings["threshold"] = threshold } }
+    open var cornersDetectedCallback:(([Position]) -> ())?
 
     let xyDerivative = TextureSamplingOperation(fragmentShader:XYDerivativeFragmentShader)
     let gaussianBlur = GaussianBlur()

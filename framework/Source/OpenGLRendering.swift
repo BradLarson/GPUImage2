@@ -129,7 +129,7 @@ func textureUnitForIndex(_ index:Int) -> GLenum {
     }
 }
 
-func generateTexture(minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
+func generateTexture(_ minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
     var texture:GLuint = 0
     
     glActiveTexture(GLenum(GL_TEXTURE1))
@@ -163,7 +163,7 @@ func generateFramebufferForTexture(_ texture:GLuint, width:GLint, height:GLint, 
     
     let stencilBuffer:GLuint?
     if stencil {
-        stencilBuffer = try attachStencilBuffer(width:width, height:height)
+        stencilBuffer = try attachStencilBuffer(width, height:height)
     } else {
         stencilBuffer = nil
     }
@@ -173,7 +173,7 @@ func generateFramebufferForTexture(_ texture:GLuint, width:GLint, height:GLint, 
     return (framebuffer, stencilBuffer)
 }
 
-func attachStencilBuffer(width:GLint, height:GLint) throws -> GLuint {
+func attachStencilBuffer(_ width:GLint, height:GLint) throws -> GLuint {
     var stencilBuffer:GLuint = 0
     glGenRenderbuffers(1, &stencilBuffer);
     glBindRenderbuffer(GLenum(GL_RENDERBUFFER), stencilBuffer)

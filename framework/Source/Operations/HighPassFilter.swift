@@ -1,5 +1,5 @@
-public class HighPassFilter: OperationGroup {
-    public var strength: Float = 0.5 { didSet { lowPass.strength = strength } }
+open class HighPassFilter: OperationGroup {
+    open var strength: Float = 0.5 { didSet { lowPass.strength = strength } }
     
     let lowPass = LowPassFilter()
     let differenceBlend = DifferenceBlend()

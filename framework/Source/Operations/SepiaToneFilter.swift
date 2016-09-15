@@ -1,4 +1,4 @@
-public class SepiaToneFilter: ColorMatrixFilter {
+open class SepiaToneFilter: ColorMatrixFilter {
     override public init() {
         super.init()
 

@@ -1,5 +1,5 @@
-public class AlphaBlend: BasicOperation {
-    public var mix:Float = 0.5 { didSet { uniformSettings["mixturePercent"] = mix } }
+open class AlphaBlend: BasicOperation {
+    open var mix:Float = 0.5 { didSet { uniformSettings["mixturePercent"] = mix } }
     
     public init() {
         super.init(fragmentShader:AlphaBlendFragmentShader, numberOfInputs:2)

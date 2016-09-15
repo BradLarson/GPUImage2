@@ -1,6 +1,6 @@
-public class ColorMatrixFilter: BasicOperation {
-    public var intensity:Float = 1.0 { didSet { uniformSettings["intensity"] = intensity } }
-    public var colorMatrix:Matrix4x4 = Matrix4x4.identity { didSet { uniformSettings["colorMatrix"] = colorMatrix } }
+open class ColorMatrixFilter: BasicOperation {
+    open var intensity:Float = 1.0 { didSet { uniformSettings["intensity"] = intensity } }
+    open var colorMatrix:Matrix4x4 = Matrix4x4.identity { didSet { uniformSettings["colorMatrix"] = colorMatrix } }
     
     public init() {
         

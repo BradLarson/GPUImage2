@@ -1,5 +1,5 @@
-public class SaturationAdjustment: BasicOperation {
-    public var saturation:Float = 1.0 { didSet { uniformSettings["saturation"] = saturation } }
+open class SaturationAdjustment: BasicOperation {
+    open var saturation:Float = 1.0 { didSet { uniformSettings["saturation"] = saturation } }
     
     public init() {
         super.init(fragmentShader:SaturationFragmentShader, numberOfInputs:1)

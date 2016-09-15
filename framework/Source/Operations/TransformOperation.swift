@@ -12,8 +12,8 @@
 #endif
 #endif
 
-public class TransformOperation: BasicOperation {
-    public var transform:Matrix4x4 = Matrix4x4.identity { didSet { uniformSettings["transformMatrix"] = transform } }
+open class TransformOperation: BasicOperation {
+    open var transform:Matrix4x4 = Matrix4x4.identity { didSet { uniformSettings["transformMatrix"] = transform } }
     var normalizedImageVertices:[GLfloat]!
     
     public init() {

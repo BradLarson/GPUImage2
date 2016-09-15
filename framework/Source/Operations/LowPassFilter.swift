@@ -1,5 +1,5 @@
-public class LowPassFilter: OperationGroup {
-    public var strength: Float = 0.5 { didSet { dissolveBlend.mix = strength } }
+open class LowPassFilter: OperationGroup {
+    open var strength: Float = 0.5 { didSet { dissolveBlend.mix = strength } }
     
     let dissolveBlend = DissolveBlend()
     let buffer = ImageBuffer()

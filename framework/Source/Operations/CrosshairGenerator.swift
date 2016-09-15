@@ -12,10 +12,10 @@
 #endif
 #endif
 
-public class CrosshairGenerator: ImageGenerator {
+open class CrosshairGenerator: ImageGenerator {
     
-    public var crosshairWidth:Float = 5.0 { didSet { uniformSettings["crosshairWidth"] = crosshairWidth } }
-    public var crosshairColor:Color = Color.green { didSet { uniformSettings["crosshairColor"] = crosshairColor } }
+    open var crosshairWidth:Float = 5.0 { didSet { uniformSettings["crosshairWidth"] = crosshairWidth } }
+    open var crosshairColor:Color = Color.green { didSet { uniformSettings["crosshairColor"] = crosshairColor } }
 
     let crosshairShader:ShaderProgram
     var uniformSettings = ShaderUniformSettings()
@@ -29,7 +29,7 @@ public class CrosshairGenerator: ImageGenerator {
     }
     
 
-    public func renderCrosshairs(_ positions:[Position]) {
+    open func renderCrosshairs(_ positions:[Position]) {
         imageFramebuffer.activateFramebufferForRendering()
         imageFramebuffer.timingStyle = .stillImage
 #if GL

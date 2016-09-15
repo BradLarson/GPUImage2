@@ -14,7 +14,7 @@
 
 // TODO: Add mechanism to purge framebuffers on low memory
 
-public class FramebufferCache {
+open class FramebufferCache {
     var framebufferCache = [Int64:[Framebuffer]]()
     let context:OpenGLContext
     
@@ -22,8 +22,8 @@ public class FramebufferCache {
         self.context = context
     }
     
-    public func requestFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Framebuffer {
-        let hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+    open func requestFramebufferWithProperties(_ orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Framebuffer {
+        let hash = hashForFramebufferWithProperties(orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
         let framebuffer:Framebuffer
         if ((framebufferCache[hash]?.count ?? -1) > 0) {
 //            print("Restoring previous framebuffer")
@@ -42,7 +42,7 @@ public class FramebufferCache {
         return framebuffer
     }
     
-    public func purgeAllUnassignedFramebuffers() {
+    open func purgeAllUnassignedFramebuffers() {
         framebufferCache.removeAll()
     }
     

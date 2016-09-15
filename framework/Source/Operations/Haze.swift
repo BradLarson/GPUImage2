@@ -1,6 +1,6 @@
-public class Haze: BasicOperation {
-    public var distance:Float = 0.2 { didSet { uniformSettings["hazeDistance"] = distance } }
-    public var slope:Float = 0.0 { didSet { uniformSettings["slope"] = slope } }
+open class Haze: BasicOperation {
+    open var distance:Float = 0.2 { didSet { uniformSettings["hazeDistance"] = distance } }
+    open var slope:Float = 0.0 { didSet { uniformSettings["slope"] = slope } }
     
     public init() {
         super.init(fragmentShader:HazeFragmentShader, numberOfInputs:1)

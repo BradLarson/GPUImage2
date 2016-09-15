@@ -1,5 +1,5 @@
-public class HueAdjustment: BasicOperation {
-    public var hue:Float = 90.0 { didSet { uniformSettings["hueAdjust"] = hue } }
+open class HueAdjustment: BasicOperation {
+    open var hue:Float = 90.0 { didSet { uniformSettings["hueAdjust"] = hue } }
     
     public init() {
         super.init(fragmentShader:HueFragmentShader, numberOfInputs:1)

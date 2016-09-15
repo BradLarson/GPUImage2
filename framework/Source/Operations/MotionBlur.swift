@@ -4,9 +4,9 @@ import Glibc
 
 import Foundation
 
-public class MotionBlur: BasicOperation {
-    public var blurSize:Float = 2.5
-    public var blurAngle:Float = 0.0
+open class MotionBlur: BasicOperation {
+    open var blurSize:Float = 2.5
+    open var blurAngle:Float = 0.0
     
     public init() {
         super.init(vertexShader:MotionBlurVertexShader, fragmentShader:MotionBlurFragmentShader, numberOfInputs:1)

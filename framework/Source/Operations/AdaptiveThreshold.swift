@@ -1,5 +1,5 @@
-public class AdaptiveThreshold: OperationGroup {
-    public var blurRadiusInPixels: Float { didSet { boxBlur.blurRadiusInPixels = blurRadiusInPixels } }
+open class AdaptiveThreshold: OperationGroup {
+    open var blurRadiusInPixels: Float { didSet { boxBlur.blurRadiusInPixels = blurRadiusInPixels } }
     
     let luminance = Luminance()
     let boxBlur = BoxBlur()

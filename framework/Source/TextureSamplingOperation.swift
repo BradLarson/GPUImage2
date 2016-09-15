@@ -1,5 +1,5 @@
 open class TextureSamplingOperation: BasicOperation {
-    public var overriddenTexelSize:Size?
+    open var overriddenTexelSize:Size?
     
     public init(vertexShader:String = NearbyTexelSamplingVertexShader, fragmentShader:String, numberOfInputs:UInt = 1) {
         super.init(vertexShader:vertexShader, fragmentShader:fragmentShader, numberOfInputs:numberOfInputs)

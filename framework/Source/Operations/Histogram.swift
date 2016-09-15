@@ -31,8 +31,8 @@ public enum HistogramType {
     case rgb
 }
 
-public class Histogram: BasicOperation {
-    public var downsamplingFactor:UInt = 16
+open class Histogram: BasicOperation {
+    open var downsamplingFactor:UInt = 16
     
     var shader2:ShaderProgram? = nil
     var shader3:ShaderProgram? = nil
@@ -56,7 +56,7 @@ public class Histogram: BasicOperation {
         let data = UnsafeMutablePointer<UInt8>.allocate(capacity:inputByteSize)
         glReadPixels(0, 0, inputSize.width, inputSize.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
 
-        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:256, height:3), stencil:mask != nil)
+        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:GLSize(width:256, height:3), stencil:mask != nil)
         releaseIncomingFramebuffers()
         renderFramebuffer.activateFramebufferForRendering()
         

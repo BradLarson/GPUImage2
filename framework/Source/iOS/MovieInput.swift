@@ -1,8 +1,8 @@
 import AVFoundation
 
-public class MovieInput: ImageSource {
-    public let targets = TargetContainer()
-    public var runBenchmark = false
+open class MovieInput: ImageSource {
+    open let targets = TargetContainer()
+    open var runBenchmark = false
     
     let yuvConversionShader:ShaderProgram
     let asset:AVAsset
@@ -42,7 +42,7 @@ public class MovieInput: ImageSource {
     // MARK: -
     // MARK: Playback control
 
-    public func start() {
+    open func start() {
         asset.loadValuesAsynchronously(forKeys:["tracks"], completionHandler:{
             DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default).async(execute: {
                 guard (self.asset.statusOfValue(forKey: "tracks", error:nil) == .loaded) else { return }
@@ -77,7 +77,7 @@ public class MovieInput: ImageSource {
         })
     }
     
-    public func cancel() {
+    open func cancel() {
         assetReader.cancelReading()
         self.endProcessing()
     }
@@ -135,10 +135,10 @@ public class MovieInput: ImageSource {
         let movieFrame = CMSampleBufferGetImageBuffer(frame)!
     
 //        processingFrameTime = currentSampleTime
-        self.process(movieFrame:movieFrame, withSampleTime:currentSampleTime)
+        self.process(movieFrame, withSampleTime:currentSampleTime)
     }
     
-    func process(movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
+    func process(_ movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
         let bufferHeight = CVPixelBufferGetHeight(movieFrame)
         let bufferWidth = CVPixelBufferGetWidth(movieFrame)
         CVPixelBufferLockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
@@ -157,21 +157,21 @@ public class MovieInput: ImageSource {
         
         let startTime = CFAbsoluteTimeGetCurrent()
 
-        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
         luminanceFramebuffer.lock()
         glActiveTexture(GLenum(GL_TEXTURE0))
         glBindTexture(GLenum(GL_TEXTURE_2D), luminanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(movieFrame, 0))
         
-        let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
+        let chrominanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
         chrominanceFramebuffer.lock()
         glActiveTexture(GLenum(GL_TEXTURE1))
         glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(movieFrame, 1))
         
-        let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
+        let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
         
-        convertYUVToRGB(shader:self.yuvConversionShader, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:movieFramebuffer, colorConversionMatrix:conversionMatrix)
+        convertYUVToRGB(self.yuvConversionShader, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:movieFramebuffer, colorConversionMatrix:conversionMatrix)
         CVPixelBufferUnlockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
 
         movieFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(withSampleTime))
@@ -186,7 +186,7 @@ public class MovieInput: ImageSource {
         }
     }
 
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         // Not needed for movie inputs
     }
 }

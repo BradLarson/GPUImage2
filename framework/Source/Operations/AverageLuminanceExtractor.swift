@@ -12,8 +12,8 @@
 #endif
 #endif
 
-public class AverageLuminanceExtractor: BasicOperation {
-    public var extractedLuminanceCallback:((Float) -> ())?
+open class AverageLuminanceExtractor: BasicOperation {
+    open var extractedLuminanceCallback:((Float) -> ())?
     
     public init() {
         super.init(vertexShader:AverageColorVertexShader, fragmentShader:AverageLuminanceFragmentShader)
@@ -23,11 +23,11 @@ public class AverageLuminanceExtractor: BasicOperation {
         // Reduce to luminance before passing into the downsampling
         // TODO: Combine this with the first stage of the downsampling by doing reduction here
         let luminancePassShader = crashOnShaderCompileFailure("AverageLuminance"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:LuminanceFragmentShader)}
-        let luminancePassFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:inputFramebuffers[0]!.orientation, size:inputFramebuffers[0]!.size)
+        let luminancePassFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(inputFramebuffers[0]!.orientation, size:inputFramebuffers[0]!.size)
         luminancePassFramebuffer.activateFramebufferForRendering()
         renderQuadWithShader(luminancePassShader, vertices:standardImageVertices, inputTextures:[inputFramebuffers[0]!.texturePropertiesForTargetOrientation(luminancePassFramebuffer.orientation)])
         
-        averageColorBySequentialReduction(inputFramebuffer:luminancePassFramebuffer, shader:shader, extractAverageOperation:extractAverageLuminanceFromFramebuffer)
+        averageColorBySequentialReduction(luminancePassFramebuffer, shader:shader, extractAverageOperation:extractAverageLuminanceFromFramebuffer)
         releaseIncomingFramebuffers()
     }
     
