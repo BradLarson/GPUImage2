@@ -11,7 +11,7 @@ public func defaultVertexShaderForInputs(_ inputCount:UInt) -> String {
     }
 }
 
-public class BasicOperation: ImageProcessingOperation {
+open class BasicOperation: ImageProcessingOperation {
     public let maximumInputs:UInt
     public var overriddenOutputSize:Size?
     public var overriddenOutputRotation:Rotation?

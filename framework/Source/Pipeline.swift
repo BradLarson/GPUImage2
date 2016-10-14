@@ -93,22 +93,43 @@ class WeakImageConsumer {
 public class TargetContainer:Sequence {
     var targets = [WeakImageConsumer]()
     var count:Int { get {return targets.count}}
+#if !os(Linux)
     let dispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.targetContainerQueue", attributes: [])
-    
+#endif
+
     public init() {
     }
     
     public func append(_ target:ImageConsumer, indexAtTarget:UInt) {
         // TODO: Don't allow the addition of a target more than once
+#if os(Linux)
+            self.targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
+#else
         dispatchQueue.async{
             self.targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
         }
+#endif
     }
     
     public func makeIterator() -> AnyIterator<(ImageConsumer, UInt)> {
         var index = 0
         
         return AnyIterator { () -> (ImageConsumer, UInt)? in
+#if os(Linux)
+                if (index >= self.targets.count) {
+                    return nil
+                }
+                
+                while (self.targets[index].value == nil) {
+                    self.targets.remove(at:index)
+                    if (index >= self.targets.count) {
+                        return nil
+                    }
+                }
+                
+                index += 1
+                return (self.targets[index - 1].value!, self.targets[index - 1].indexAtTarget)
+#else
             return self.dispatchQueue.sync{
                 if (index >= self.targets.count) {
                     return nil
@@ -123,14 +144,19 @@ public class TargetContainer:Sequence {
                 
                 index += 1
                 return (self.targets[index - 1].value!, self.targets[index - 1].indexAtTarget)
-            }
+           }
+#endif
         }
     }
     
     public func removeAll() {
+#if os(Linux)
+            self.targets.removeAll()
+#else
         dispatchQueue.async{
             self.targets.removeAll()
         }
+#endif
     }
 }
 

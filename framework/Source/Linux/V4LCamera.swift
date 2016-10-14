@@ -3,6 +3,8 @@
 #else
     import COpenGL
 #endif
+
+/*
 import CVideo4Linux
 import Glibc
 import Foundation
@@ -120,3 +122,4 @@ public class V4LCamera:ImageSource {
         // Not needed for camera inputs
     }
 }
+*/

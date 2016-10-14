@@ -1,4 +1,4 @@
-public class TwoStageOperation: BasicOperation {
+open class TwoStageOperation: BasicOperation {
     public var overrideDownsamplingOptimization:Bool = false
 
 //    override var outputFramebuffer:Framebuffer { get { return Framebuffer } }

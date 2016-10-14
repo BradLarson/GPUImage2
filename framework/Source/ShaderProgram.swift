@@ -259,5 +259,5 @@ public func shaderFromFile(_ file:URL) throws -> String {
 
     let fragmentShaderString = try NSString(contentsOfFile:file.path, encoding:String.Encoding.ascii.rawValue)
     
-    return String(fragmentShaderString)
+    return String(describing:fragmentShaderString)
 }
