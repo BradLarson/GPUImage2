@@ -1,5 +1,5 @@
 #if !os(Linux)
-public class SoftElegance: OperationGroup {
+open class SoftElegance: OperationGroup {
     let lookup1 = LookupFilter()
     let lookup2 = LookupFilter()
     let gaussianBlur = GaussianBlur()

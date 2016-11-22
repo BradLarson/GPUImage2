@@ -1,5 +1,5 @@
-public class HistogramEqualization: OperationGroup {
-    public var downsamplingFactor: UInt = 16 { didSet { histogram.downsamplingFactor = downsamplingFactor } }
+open class HistogramEqualization: OperationGroup {
+    open var downsamplingFactor: UInt = 16 { didSet { histogram.downsamplingFactor = downsamplingFactor } }
     
     let histogram:Histogram
     let rawDataInput = RawDataInput()

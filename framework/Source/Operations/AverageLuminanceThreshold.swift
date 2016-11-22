@@ -1,5 +1,5 @@
-public class AverageLuminanceThreshold: OperationGroup {
-    public var thresholdMultiplier:Float = 1.0
+open class AverageLuminanceThreshold: OperationGroup {
+    open var thresholdMultiplier:Float = 1.0
     
     let averageLuminance = AverageLuminanceExtractor()
     let luminanceThreshold = LuminanceThreshold()

@@ -1,7 +1,7 @@
-public class iOSBlur: OperationGroup {
-    public var blurRadiusInPixels:Float = 48.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
-    public var saturation:Float = 0.8 { didSet { saturationFilter.saturation = saturation } }
-    public var rangeReductionFactor:Float = 0.6 { didSet { luminanceRange.rangeReductionFactor = rangeReductionFactor } }
+open class iOSBlur: OperationGroup {
+    open var blurRadiusInPixels:Float = 48.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
+    open var saturation:Float = 0.8 { didSet { saturationFilter.saturation = saturation } }
+    open var rangeReductionFactor:Float = 0.6 { didSet { luminanceRange.rangeReductionFactor = rangeReductionFactor } }
     
     let saturationFilter = SaturationAdjustment()
     let gaussianBlur = GaussianBlur()

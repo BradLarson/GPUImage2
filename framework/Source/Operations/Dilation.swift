@@ -1,5 +1,5 @@
-public class Dilation: TwoStageOperation {
-    public var radius:UInt {
+open class Dilation: TwoStageOperation {
+    open var radius:UInt {
         didSet {
             switch radius {
             case 0, 1:

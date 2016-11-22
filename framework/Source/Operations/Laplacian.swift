@@ -1,4 +1,4 @@
-public class Laplacian: TextureSamplingOperation {
+open class Laplacian: TextureSamplingOperation {
     public init() {
         super.init(fragmentShader:LaplacianFragmentShader)
     }

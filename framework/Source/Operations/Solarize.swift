@@ -1,5 +1,5 @@
-public class Solarize: BasicOperation {
-    public var threshold:Float = 0.5 { didSet { uniformSettings["threshold"] = threshold } }
+open class Solarize: BasicOperation {
+    open var threshold:Float = 0.5 { didSet { uniformSettings["threshold"] = threshold } }
     
     public init() {
         super.init(fragmentShader:SolarizeFragmentShader, numberOfInputs:1)

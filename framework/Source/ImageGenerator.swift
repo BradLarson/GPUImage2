@@ -1,7 +1,7 @@
-public class ImageGenerator: ImageSource {
-    public var size:Size
+open class ImageGenerator: ImageSource {
+    open var size:Size
 
-    public let targets = TargetContainer()
+    open let targets = TargetContainer()
     var imageFramebuffer:Framebuffer!
 
     public init(size:Size) {
@@ -13,7 +13,7 @@ public class ImageGenerator: ImageSource {
         }
     }
     
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         imageFramebuffer.lock()
         target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
     }

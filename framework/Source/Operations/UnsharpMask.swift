@@ -1,6 +1,6 @@
-public class UnsharpMask: OperationGroup {
-    public var blurRadiusInPixels: Float { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
-    public var intensity: Float = 1.0 { didSet { unsharpMask.uniformSettings["intensity"] = intensity } }
+open class UnsharpMask: OperationGroup {
+    open var blurRadiusInPixels: Float { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
+    open var intensity: Float = 1.0 { didSet { unsharpMask.uniformSettings["intensity"] = intensity } }
     
     let gaussianBlur = GaussianBlur()
     let unsharpMask = BasicOperation(fragmentShader:UnsharpMaskFragmentShader, numberOfInputs:2)

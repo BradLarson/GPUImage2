@@ -1,4 +1,4 @@
-public class MedianFilter: TextureSamplingOperation {
+open class MedianFilter: TextureSamplingOperation {
     public init() {
         super.init(fragmentShader:MedianFragmentShader)
     }

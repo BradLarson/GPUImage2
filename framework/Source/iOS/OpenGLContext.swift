@@ -4,7 +4,7 @@ import UIKit
 // TODO: Find a way to warn people if they set this after the context has been created
 var imageProcessingShareGroup:EAGLSharegroup? = nil
 
-public class OpenGLContext: SerialDispatch {
+open class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
@@ -23,8 +23,8 @@ public class OpenGLContext: SerialDispatch {
     }()
     
     
-    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
-    public let dispatchQueueKey = DispatchSpecificKey<Int>()
+    open let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
+    open let dispatchQueueKey = DispatchSpecificKey<Int>()
     
     // MARK: -
     // MARK: Initialization and teardown
@@ -46,7 +46,7 @@ public class OpenGLContext: SerialDispatch {
     // MARK: -
     // MARK: Rendering
     
-    public func makeCurrentContext() {
+    open func makeCurrentContext() {
         if (EAGLContext.current() != self.context)
         {
             EAGLContext.setCurrent(self.context)
@@ -69,18 +69,18 @@ public class OpenGLContext: SerialDispatch {
 #endif
     }
     
-    public var maximumTextureSizeForThisDevice:GLint {get { return _maximumTextureSizeForThisDevice } }
-    private lazy var _maximumTextureSizeForThisDevice:GLint = {
+    open var maximumTextureSizeForThisDevice:GLint {get { return _maximumTextureSizeForThisDevice } }
+    fileprivate lazy var _maximumTextureSizeForThisDevice:GLint = {
         return self.openGLDeviceSettingForOption(GL_MAX_TEXTURE_SIZE)
     }()
 
-    public var maximumTextureUnitsForThisDevice:GLint {get { return _maximumTextureUnitsForThisDevice } }
-    private lazy var _maximumTextureUnitsForThisDevice:GLint = {
+    open var maximumTextureUnitsForThisDevice:GLint {get { return _maximumTextureUnitsForThisDevice } }
+    fileprivate lazy var _maximumTextureUnitsForThisDevice:GLint = {
         return self.openGLDeviceSettingForOption(GL_MAX_TEXTURE_IMAGE_UNITS)
     }()
 
-    public var maximumVaryingVectorsForThisDevice:GLint {get { return _maximumVaryingVectorsForThisDevice } }
-    private lazy var _maximumVaryingVectorsForThisDevice:GLint = {
+    open var maximumVaryingVectorsForThisDevice:GLint {get { return _maximumVaryingVectorsForThisDevice } }
+    fileprivate lazy var _maximumVaryingVectorsForThisDevice:GLint = {
         return self.openGLDeviceSettingForOption(GL_MAX_VARYING_VECTORS)
     }()
 

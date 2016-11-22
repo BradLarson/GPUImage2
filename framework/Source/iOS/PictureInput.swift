@@ -1,8 +1,8 @@
 import OpenGLES
 import UIKit
 
-public class PictureInput: ImageSource {
-    public let targets = TargetContainer()
+open class PictureInput: ImageSource {
+    open let targets = TargetContainer()
     var imageFramebuffer:Framebuffer!
     var hasProcessedImage:Bool = false
     
@@ -125,7 +125,7 @@ public class PictureInput: ImageSource {
         self.init(image:image.cgImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
     }
 
-    public func processImage(synchronously:Bool = false) {
+    open func processImage(_ synchronously:Bool = false) {
         if synchronously {
             sharedImageProcessingContext.runOperationSynchronously{
                 self.updateTargetsWithFramebuffer(self.imageFramebuffer)
@@ -139,7 +139,7 @@ public class PictureInput: ImageSource {
         }
     }
     
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         if hasProcessedImage {
             imageFramebuffer.lock()
             target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)

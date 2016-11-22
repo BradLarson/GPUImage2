@@ -24,16 +24,16 @@ enum ShaderType {
     case fragment
 }
 
-public class ShaderProgram {
-    public var colorUniformsUseFourComponents = false
+open class ShaderProgram {
+    open var colorUniformsUseFourComponents = false
     let program:GLuint
     var vertexShader:GLuint! // At some point, the Swift compiler will be able to deal with the early throw and we can convert these to lets
     var fragmentShader:GLuint!
-    private var attributeAddresses = [String:GLuint]()
-    private var uniformAddresses = [String:GLint]()
-    private var currentUniformIntValues = [String:GLint]()
-    private var currentUniformFloatValues = [String:GLfloat]()
-    private var currentUniformFloatArrayValues = [String:[GLfloat]]()
+    fileprivate var attributeAddresses = [String:GLuint]()
+    fileprivate var uniformAddresses = [String:GLint]()
+    fileprivate var currentUniformIntValues = [String:GLint]()
+    fileprivate var currentUniformFloatValues = [String:GLfloat]()
+    fileprivate var currentUniformFloatArrayValues = [String:[GLfloat]]()
     
     // MARK: -
     // MARK: Initialization and teardown
@@ -73,7 +73,7 @@ public class ShaderProgram {
     // MARK: -
     // MARK: Attributes and uniforms
     
-    public func attributeIndex(_ attribute:String) -> GLuint? {
+    open func attributeIndex(_ attribute:String) -> GLuint? {
         if let attributeAddress = attributeAddresses[attribute] {
             return attributeAddress
         } else {
@@ -92,7 +92,7 @@ public class ShaderProgram {
         }
     }
     
-    public func uniformIndex(_ uniform:String) -> GLint? {
+    open func uniformIndex(_ uniform:String) -> GLint? {
         if let uniformAddress = uniformAddresses[uniform] {
             return uniformAddress
         } else {
@@ -113,7 +113,7 @@ public class ShaderProgram {
     // MARK: -
     // MARK: Uniform accessors
     
-    public func setValue(_ value:GLfloat, forUniform:String) {
+    open func setValue(_ value:GLfloat, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -124,7 +124,7 @@ public class ShaderProgram {
         }
     }
 
-    public func setValue(_ value:GLint, forUniform:String) {
+    open func setValue(_ value:GLint, forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -135,7 +135,7 @@ public class ShaderProgram {
         }
     }
 
-    public func setValue(_ value:Color, forUniform:String) {
+    open func setValue(_ value:Color, forUniform:String) {
         if colorUniformsUseFourComponents {
             self.setValue(value.toGLArrayWithAlpha(), forUniform:forUniform)
         } else {
@@ -143,7 +143,7 @@ public class ShaderProgram {
         }
     }
     
-    public func setValue(_ value:[GLfloat], forUniform:String) {
+    open func setValue(_ value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -163,7 +163,7 @@ public class ShaderProgram {
         }
     }
 
-    public func setMatrix(_ value:[GLfloat], forUniform:String) {
+    open func setMatrix(_ value:[GLfloat], forUniform:String) {
         guard let uniformAddress = uniformIndex(forUniform) else {
             debugPrint("Warning: Tried to set a uniform (\(forUniform)) that was missing or optimized out by the compiler")
             return
@@ -203,7 +203,7 @@ public class ShaderProgram {
         }
     }
     
-    public func use() {
+    open func use() {
         glUseProgram(program)
     }
 }

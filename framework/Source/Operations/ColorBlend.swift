@@ -1,4 +1,4 @@
-public class ColorBlend: BasicOperation {
+open class ColorBlend: BasicOperation {
     public init() {
         super.init(fragmentShader:ColorBlendFragmentShader, numberOfInputs:2)
     }

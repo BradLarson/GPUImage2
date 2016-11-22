@@ -1,4 +1,4 @@
-public class HueBlend: BasicOperation {
+open class HueBlend: BasicOperation {
     public init() {
         super.init(fragmentShader:HueBlendFragmentShader, numberOfInputs:2)
     }

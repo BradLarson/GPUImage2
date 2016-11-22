@@ -12,12 +12,12 @@ public func defaultVertexShaderForInputs(_ inputCount:UInt) -> String {
 }
 
 open class BasicOperation: ImageProcessingOperation {
-    public let maximumInputs:UInt
-    public var overriddenOutputSize:Size?
-    public var overriddenOutputRotation:Rotation?
-    public var backgroundColor = Color.black
-    public var drawUnmodifiedImageOutsideOfMask:Bool = true
-    public var mask:ImageSource? {
+    open let maximumInputs:UInt
+    open var overriddenOutputSize:Size?
+    open var overriddenOutputRotation:Rotation?
+    open var backgroundColor = Color.black
+    open var drawUnmodifiedImageOutsideOfMask:Bool = true
+    open var mask:ImageSource? {
         didSet {
             if let mask = mask {
                 maskImageRelay.newImageCallback = {[weak self] framebuffer in
@@ -33,14 +33,14 @@ open class BasicOperation: ImageProcessingOperation {
             }
         }
     }
-    public var activatePassthroughOnNextFrame:Bool = false
-    public var uniformSettings = ShaderUniformSettings()
+    open var activatePassthroughOnNextFrame:Bool = false
+    open var uniformSettings = ShaderUniformSettings()
 
     // MARK: -
     // MARK: Internal
 
-    public let targets = TargetContainer()
-    public let sources = SourceContainer()
+    open let targets = TargetContainer()
+    open let sources = SourceContainer()
     var shader:ShaderProgram
     var inputFramebuffers = [UInt:Framebuffer]()
     var renderFramebuffer:Framebuffer!
@@ -84,7 +84,7 @@ open class BasicOperation: ImageProcessingOperation {
     // MARK: -
     // MARK: Rendering
     
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let previousFramebuffer = inputFramebuffers[fromSourceIndex] {
             previousFramebuffer.unlock()
         }
@@ -104,7 +104,7 @@ open class BasicOperation: ImageProcessingOperation {
     }
     
     func renderFrame() {
-        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:sizeOfInitialStageBasedOnFramebuffer(inputFramebuffers[0]!), stencil:mask != nil)
+        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:sizeOfInitialStageBasedOnFramebuffer(inputFramebuffers[0]!), stencil:mask != nil)
         
         let textureProperties = initialTextureProperties()
         configureFramebufferSpecificUniforms(inputFramebuffers[0]!)
@@ -182,7 +182,7 @@ open class BasicOperation: ImageProcessingOperation {
         }
     }
     
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         sharedImageProcessingContext.runOperationAsynchronously{
             guard let renderFramebuffer = self.renderFramebuffer, (!renderFramebuffer.timingStyle.isTransient()) else { return }
             

@@ -30,9 +30,9 @@ public enum Line {
     }
 }
 
-public class LineGenerator: ImageGenerator {
-    public var lineColor:Color = Color.green { didSet { uniformSettings["lineColor"] = lineColor } }
-    public var lineWidth:Float = 1.0 {
+open class LineGenerator: ImageGenerator {
+    open var lineColor:Color = Color.green { didSet { uniformSettings["lineColor"] = lineColor } }
+    open var lineWidth:Float = 1.0 {
         didSet {
             lineShader.use()
             glLineWidth(lineWidth)
@@ -50,7 +50,7 @@ public class LineGenerator: ImageGenerator {
         ({lineColor = Color.red})()
     }
 
-    public func renderLines(_ lines:[Line]) {
+    open func renderLines(_ lines:[Line]) {
         imageFramebuffer.activateFramebufferForRendering()
         
         lineShader.use()

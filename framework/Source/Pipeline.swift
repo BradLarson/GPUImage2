@@ -90,7 +90,7 @@ class WeakImageConsumer {
     }
 }
 
-public class TargetContainer:Sequence {
+open class TargetContainer:Sequence {
     var targets = [WeakImageConsumer]()
     var count:Int { get {return targets.count}}
 #if !os(Linux)
@@ -100,7 +100,7 @@ public class TargetContainer:Sequence {
     public init() {
     }
     
-    public func append(_ target:ImageConsumer, indexAtTarget:UInt) {
+    open func append(_ target:ImageConsumer, indexAtTarget:UInt) {
         // TODO: Don't allow the addition of a target more than once
 #if os(Linux)
             self.targets.append(WeakImageConsumer(value:target, indexAtTarget:indexAtTarget))
@@ -111,7 +111,7 @@ public class TargetContainer:Sequence {
 #endif
     }
     
-    public func makeIterator() -> AnyIterator<(ImageConsumer, UInt)> {
+    open func makeIterator() -> AnyIterator<(ImageConsumer, UInt)> {
         var index = 0
         
         return AnyIterator { () -> (ImageConsumer, UInt)? in
@@ -149,7 +149,7 @@ public class TargetContainer:Sequence {
         }
     }
     
-    public func removeAll() {
+    open func removeAll() {
 #if os(Linux)
             self.targets.removeAll()
 #else
@@ -160,13 +160,13 @@ public class TargetContainer:Sequence {
     }
 }
 
-public class SourceContainer {
+open class SourceContainer {
     var sources:[UInt:ImageSource] = [:]
     
     public init() {
     }
     
-    public func append(_ source:ImageSource, maximumInputs:UInt) -> UInt? {
+    open func append(_ source:ImageSource, maximumInputs:UInt) -> UInt? {
         var currentIndex:UInt = 0
         while currentIndex < maximumInputs {
             if (sources[currentIndex] == nil) {
@@ -179,33 +179,33 @@ public class SourceContainer {
         return nil
     }
     
-    public func insert(_ source:ImageSource, atIndex:UInt, maximumInputs:UInt) -> UInt {
+    open func insert(_ source:ImageSource, atIndex:UInt, maximumInputs:UInt) -> UInt {
         guard (atIndex < maximumInputs) else { fatalError("ERROR: Attempted to set a source beyond the maximum number of inputs on this operation") }
         sources[atIndex] = source
         return atIndex
     }
     
-    public func removeAtIndex(_ index:UInt) {
+    open func removeAtIndex(_ index:UInt) {
         sources[index] = nil
     }
 }
 
-public class ImageRelay: ImageProcessingOperation {
-    public var newImageCallback:((Framebuffer) -> ())?
+open class ImageRelay: ImageProcessingOperation {
+    open var newImageCallback:((Framebuffer) -> ())?
     
-    public let sources = SourceContainer()
-    public let targets = TargetContainer()
-    public let maximumInputs:UInt = 1
-    public var preventRelay:Bool = false
+    open let sources = SourceContainer()
+    open let targets = TargetContainer()
+    open let maximumInputs:UInt = 1
+    open var preventRelay:Bool = false
     
     init() {
     }
     
-    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
+    open func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         sources.sources[0]?.transmitPreviousImage(to:self, atIndex:0)
     }
 
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if let newImageCallback = newImageCallback {
             newImageCallback(framebuffer)
         }
@@ -214,7 +214,7 @@ public class ImageRelay: ImageProcessingOperation {
         }
     }
     
-    public func relayFramebufferOnward(_ framebuffer:Framebuffer) {
+    open func relayFramebufferOnward(_ framebuffer:Framebuffer) {
         // Need to override to guarantee a removal of the previously applied lock
         for _ in targets {
             framebuffer.lock()

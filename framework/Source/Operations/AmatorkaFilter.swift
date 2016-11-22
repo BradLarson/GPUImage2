@@ -7,7 +7,7 @@
 
 #if !os(Linux)
 
-public class AmatorkaFilter: LookupFilter {
+open class AmatorkaFilter: LookupFilter {
     public override init() {
         super.init()
         

@@ -1,7 +1,7 @@
-public class SmoothToonFilter: OperationGroup {
-    public var blurRadiusInPixels: Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
-    public var threshold: Float = 0.2 { didSet { toonFilter.threshold = threshold } }
-    public var quantizationLevels: Float = 10.0 { didSet { toonFilter.quantizationLevels = quantizationLevels } }
+open class SmoothToonFilter: OperationGroup {
+    open var blurRadiusInPixels: Float = 2.0 { didSet { gaussianBlur.blurRadiusInPixels = blurRadiusInPixels } }
+    open var threshold: Float = 0.2 { didSet { toonFilter.threshold = threshold } }
+    open var quantizationLevels: Float = 10.0 { didSet { toonFilter.quantizationLevels = quantizationLevels } }
 
     let gaussianBlur = GaussianBlur()
     let toonFilter = ToonFilter()

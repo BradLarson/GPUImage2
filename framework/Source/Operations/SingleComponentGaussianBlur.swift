@@ -1,5 +1,5 @@
-public class SingleComponentGaussianBlur: TwoStageOperation {
-    public var blurRadiusInPixels:Float {
+open class SingleComponentGaussianBlur: TwoStageOperation {
+    open var blurRadiusInPixels:Float {
         didSet {
             let (sigma, downsamplingFactor) = sigmaAndDownsamplingForBlurRadius(blurRadiusInPixels, limit:8.0, override:overrideDownsamplingOptimization)
             sharedImageProcessingContext.runOperationAsynchronously {

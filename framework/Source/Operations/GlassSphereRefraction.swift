@@ -1,7 +1,7 @@
-public class GlassSphereRefraction: BasicOperation {
-    public var radius:Float = 0.25 { didSet { uniformSettings["radius"] = radius } }
-    public var refractiveIndex:Float = 0.71 { didSet { uniformSettings["refractiveIndex"] = refractiveIndex } }
-    public var center:Position = Position.center { didSet { uniformSettings["center"] = center } }
+open class GlassSphereRefraction: BasicOperation {
+    open var radius:Float = 0.25 { didSet { uniformSettings["radius"] = radius } }
+    open var refractiveIndex:Float = 0.71 { didSet { uniformSettings["refractiveIndex"] = refractiveIndex } }
+    open var center:Position = Position.center { didSet { uniformSettings["center"] = center } }
     
     public init() {
         super.init(fragmentShader:GlassSphereFragmentShader, numberOfInputs:1)

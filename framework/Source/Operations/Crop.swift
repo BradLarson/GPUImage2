@@ -1,9 +1,9 @@
 // TODO: Have this adjust in real time to changing crop sizes
 // TODO: Verify at all orientations
 
-public class Crop: BasicOperation {
-    public var cropSizeInPixels: Size?
-    public var locationOfCropInPixels: Position?
+open class Crop: BasicOperation {
+    open var cropSizeInPixels: Size?
+    open var locationOfCropInPixels: Position?
     
     public init() {
         super.init(fragmentShader:PassthroughFragmentShader, numberOfInputs:1)
@@ -29,9 +29,9 @@ public class Crop: BasicOperation {
         }
         let normalizedCropSize = Size(width:Float(finalCropSize.width) / Float(inputSize.width), height:Float(finalCropSize.height) / Float(inputSize.height))
         
-        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:finalCropSize, stencil:false)
+        renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:finalCropSize, stencil:false)
         
-        let textureProperties = InputTextureProperties(textureCoordinates:inputFramebuffer.orientation.rotationNeededForOrientation(.portrait).croppedTextureCoordinates(offsetFromOrigin:normalizedOffsetFromOrigin, cropSize:normalizedCropSize), texture:inputFramebuffer.texture)
+        let textureProperties = InputTextureProperties(textureCoordinates:inputFramebuffer.orientation.rotationNeededForOrientation(.portrait).croppedTextureCoordinates(normalizedOffsetFromOrigin, cropSize:normalizedCropSize), texture:inputFramebuffer.texture)
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)

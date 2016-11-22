@@ -42,9 +42,9 @@ public enum FramebufferTimingStyle {
     }
 }
 
-public class Framebuffer {
-    public var timingStyle:FramebufferTimingStyle = .stillImage
-    public var orientation:ImageOrientation
+open class Framebuffer {
+    open var timingStyle:FramebufferTimingStyle = .stillImage
+    open var orientation:ImageOrientation
 
     let texture:GLuint
     let framebuffer:GLuint?
@@ -64,14 +64,14 @@ public class Framebuffer {
         self.format = format
         self.type = type
         
-        self.hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+        self.hash = hashForFramebufferWithProperties(orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
 
         if let newTexture = overriddenTexture {
             textureOverride = true
             texture = newTexture
         } else {
             textureOverride = false
-            texture = generateTexture(minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT)
+            texture = generateTexture(minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT)
         }
         
         if (!textureOnly) {
@@ -148,7 +148,7 @@ public class Framebuffer {
         return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
     }
     
-    public func activateFramebufferForRendering() {
+    open func activateFramebufferForRendering() {
         guard let framebuffer = framebuffer else { fatalError("ERROR: Attempted to activate a framebuffer that has not been initialized") }
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), framebuffer)
         glViewport(0, 0, size.width, size.height)
@@ -179,7 +179,7 @@ public class Framebuffer {
     }
 }
 
-func hashForFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int64 {
+func hashForFramebufferWithProperties(_ orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int64 {
     var result:Int64 = 1
     let prime:Int64 = 31
     let yesPrime:Int64 = 1231
@@ -213,7 +213,7 @@ extension Rotation {
         }
     }
     
-    func croppedTextureCoordinates(offsetFromOrigin:Position, cropSize:Size) -> [GLfloat] {
+    func croppedTextureCoordinates(_ offsetFromOrigin:Position, cropSize:Size) -> [GLfloat] {
         let minX = GLfloat(offsetFromOrigin.x)
         let minY = GLfloat(offsetFromOrigin.y)
         let maxX = GLfloat(offsetFromOrigin.x) + GLfloat(cropSize.width)

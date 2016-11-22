@@ -1,5 +1,5 @@
-public class Halftone: BasicOperation {
-    public var fractionalWidthOfAPixel:Float = 0.01 {
+open class Halftone: BasicOperation {
+    open var fractionalWidthOfAPixel:Float = 0.01 {
         didSet {
             sharedImageProcessingContext.runOperationAsynchronously{
                 let imageWidth = 1.0 / Float(self.renderFramebuffer?.size.width ?? 2048)

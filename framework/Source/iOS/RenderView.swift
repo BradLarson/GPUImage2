@@ -2,19 +2,19 @@ import UIKit
 
 // TODO: Add support for transparency
 // TODO: Deal with view resizing
-public class RenderView:UIView, ImageConsumer {
-    public var backgroundRenderColor = Color.black
-    public var fillMode = FillMode.preserveAspectRatio
-    public var orientation:ImageOrientation = .portrait
-    public var sizeInPixels:Size { get { return Size(width:Float(frame.size.width * contentScaleFactor), height:Float(frame.size.height * contentScaleFactor))}}
+open class RenderView:UIView, ImageConsumer {
+    open var backgroundRenderColor = Color.black
+    open var fillMode = FillMode.preserveAspectRatio
+    open var orientation:ImageOrientation = .portrait
+    open var sizeInPixels:Size { get { return Size(width:Float(frame.size.width * contentScaleFactor), height:Float(frame.size.height * contentScaleFactor))}}
     
-    public let sources = SourceContainer()
-    public let maximumInputs:UInt = 1
+    open let sources = SourceContainer()
+    open let maximumInputs:UInt = 1
     var displayFramebuffer:GLuint?
     var displayRenderbuffer:GLuint?
     var backingSize = GLSize(width:0, height:0)
     
-    private lazy var displayShader:ShaderProgram = {
+    fileprivate lazy var displayShader:ShaderProgram = {
         return sharedImageProcessingContext.passthroughShader
     }()
 
@@ -30,7 +30,7 @@ public class RenderView:UIView, ImageConsumer {
         self.commonInit()
     }
 
-    override public class var layerClass:Swift.AnyClass {
+    override open class var layerClass:Swift.AnyClass {
         get {
             return CAEAGLLayer.self
         }
@@ -100,7 +100,7 @@ public class RenderView:UIView, ImageConsumer {
         glViewport(0, 0, backingSize.width, backingSize.height)
     }
     
-    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    open func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if (displayFramebuffer == nil) {
             self.createDisplayFramebuffer()
         }

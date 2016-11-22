@@ -1,5 +1,5 @@
-public class EmbossFilter : Convolution3x3 {
-    public var intensity:Float = 1.0 {
+open class EmbossFilter : Convolution3x3 {
+    open var intensity:Float = 1.0 {
         didSet {
             self.convolutionKernel = Matrix3x3(rowMajorValues:[
                 intensity * (-2.0), -intensity, 0.0,

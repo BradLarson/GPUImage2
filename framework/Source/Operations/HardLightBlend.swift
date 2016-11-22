@@ -1,4 +1,4 @@
-public class HardLightBlend: BasicOperation {
+open class HardLightBlend: BasicOperation {
     public init() {
         super.init(fragmentShader:HardLightBlendFragmentShader, numberOfInputs:2)
     }

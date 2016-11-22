@@ -1,4 +1,4 @@
-public class LightenBlend: BasicOperation {
+open class LightenBlend: BasicOperation {
     public init() {
         super.init(fragmentShader:LightenBlendFragmentShader, numberOfInputs:2)
     }

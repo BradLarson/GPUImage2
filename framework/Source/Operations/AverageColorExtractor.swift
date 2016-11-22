@@ -15,15 +15,15 @@ import Glibc
 
 import Foundation
 
-public class AverageColorExtractor: BasicOperation {
-    public var extractedColorCallback:((Color) -> ())?
+open class AverageColorExtractor: BasicOperation {
+    open var extractedColorCallback:((Color) -> ())?
     
     public init() {
         super.init(vertexShader:AverageColorVertexShader, fragmentShader:AverageColorFragmentShader)
     }
 
     override func renderFrame() {
-        averageColorBySequentialReduction(inputFramebuffer:inputFramebuffers[0]!, shader:shader, extractAverageOperation:extractAverageColorFromFramebuffer)
+        averageColorBySequentialReduction(inputFramebuffers[0]!, shader:shader, extractAverageOperation:extractAverageColorFromFramebuffer)
         releaseIncomingFramebuffers()
     }
     
@@ -49,7 +49,7 @@ public class AverageColorExtractor: BasicOperation {
     }
 }
 
-func averageColorBySequentialReduction(inputFramebuffer:Framebuffer, shader:ShaderProgram, extractAverageOperation:(Framebuffer) -> ()) {
+func averageColorBySequentialReduction(_ inputFramebuffer:Framebuffer, shader:ShaderProgram, extractAverageOperation:(Framebuffer) -> ()) {
     var uniformSettings = ShaderUniformSettings()
     let inputSize = Size(inputFramebuffer.size)
     let numberOfReductionsInX = floor(log(Double(inputSize.width)) / log(4.0))
@@ -59,7 +59,7 @@ func averageColorBySequentialReduction(inputFramebuffer:Framebuffer, shader:Shad
     var previousFramebuffer = inputFramebuffer
     for currentReduction in 0..<reductionsToHitSideLimit {
         let currentStageSize = Size(width:Float(floor(Double(inputSize.width) / pow(4.0, Double(currentReduction) + 1.0))), height:Float(floor(Double(inputSize.height) / pow(4.0, Double(currentReduction) + 1.0))))
-        let currentFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:previousFramebuffer.orientation, size:GLSize(currentStageSize))
+        let currentFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(previousFramebuffer.orientation, size:GLSize(currentStageSize))
         currentFramebuffer.lock()
         uniformSettings["texelWidth"] = 0.25 / currentStageSize.width
         uniformSettings["texelHeight"] = 0.25 / currentStageSize.height

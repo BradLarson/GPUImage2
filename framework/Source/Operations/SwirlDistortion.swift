@@ -1,7 +1,7 @@
-public class SwirlDistortion: BasicOperation {
-    public var radius:Float = 0.5 { didSet { uniformSettings["radius"] = radius } }
-    public var angle:Float = 1.0 { didSet { uniformSettings["angle"] = angle } }
-    public var center:Position = Position.center { didSet { uniformSettings["center"] = center } }
+open class SwirlDistortion: BasicOperation {
+    open var radius:Float = 0.5 { didSet { uniformSettings["radius"] = radius } }
+    open var angle:Float = 1.0 { didSet { uniformSettings["angle"] = angle } }
+    open var center:Position = Position.center { didSet { uniformSettings["center"] = center } }
     
     public init() {
         super.init(fragmentShader:SwirlFragmentShader, numberOfInputs:1)

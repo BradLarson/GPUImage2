@@ -13,7 +13,7 @@
 #endif
 
 public struct ShaderUniformSettings {
-    private var uniformValues = [String:Any]()
+    fileprivate var uniformValues = [String:Any]()
 
     public subscript(index:String) -> Float? {
         get { return uniformValues[index] as? Float}

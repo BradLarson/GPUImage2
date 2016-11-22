@@ -12,7 +12,7 @@
 #endif
 #endif
 
-public class CircleGenerator: ImageGenerator {
+open class CircleGenerator: ImageGenerator {
     let circleShader:ShaderProgram
     
     public override init(size:Size) {
@@ -21,7 +21,7 @@ public class CircleGenerator: ImageGenerator {
         super.init(size:size)
     }
 
-    public func renderCircleOfRadius(_ radius:Float, center:Position, circleColor:Color = Color.white, backgroundColor:Color = Color.black) {
+    open func renderCircleOfRadius(_ radius:Float, center:Position, circleColor:Color = Color.white, backgroundColor:Color = Color.black) {
         let scaledRadius = radius * 2.0
         imageFramebuffer.activateFramebufferForRendering()
         var uniformSettings = ShaderUniformSettings()

@@ -6,7 +6,7 @@
 //       from Resources folder to your application bundle.
 
 #if !os(Linux)
-public class MissEtikateFilter: LookupFilter {
+open class MissEtikateFilter: LookupFilter {
     public override init() {
         super.init()
         

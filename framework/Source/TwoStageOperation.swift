@@ -1,5 +1,5 @@
 open class TwoStageOperation: BasicOperation {
-    public var overrideDownsamplingOptimization:Bool = false
+    open var overrideDownsamplingOptimization:Bool = false
 
 //    override var outputFramebuffer:Framebuffer { get { return Framebuffer } }
 
@@ -14,7 +14,7 @@ open class TwoStageOperation: BasicOperation {
         let downsamplingFramebuffer:Framebuffer?
         if let downsamplingFactor = downsamplingFactor {
             internalStageSize = GLSize(Size(width:max(5.0, Float(renderFramebuffer.size.width) / downsamplingFactor), height:max(5.0, Float(renderFramebuffer.size.height) / downsamplingFactor)))
-            downsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
+            downsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:internalStageSize, stencil:false)
             downsamplingFramebuffer!.lock()
             downsamplingFramebuffer!.activateFramebufferForRendering()
             clearFramebufferWithColor(backgroundColor)
@@ -29,7 +29,7 @@ open class TwoStageOperation: BasicOperation {
         }
 
         // Render first stage
-        let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
+        let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:internalStageSize, stencil:false)
         firstStageFramebuffer.lock()
 
         firstStageFramebuffer.activateFramebufferForRendering()
@@ -52,7 +52,7 @@ open class TwoStageOperation: BasicOperation {
         
         // Render second stage and upsample
         if (downsamplingFactor != nil) {
-            let beforeUpsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
+            let beforeUpsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:internalStageSize, stencil:false)
             beforeUpsamplingFramebuffer.activateFramebufferForRendering()
             beforeUpsamplingFramebuffer.lock()
             clearFramebufferWithColor(backgroundColor)

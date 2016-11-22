@@ -1,4 +1,4 @@
-public class LanczosResampling: BasicOperation {
+open class LanczosResampling: BasicOperation {
     public init() {
         super.init(vertexShader:LanczosResamplingVertexShader, fragmentShader:LanczosResamplingFragmentShader)
     }
@@ -8,7 +8,7 @@ public class LanczosResampling: BasicOperation {
         
         // Shrink the vertical component of the first stage
         let inputSize = inputFramebuffer.sizeForTargetOrientation(.portrait)
-        let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:inputSize.width, height:renderFramebuffer.size.height), stencil:false)
+        let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(.portrait, size:GLSize(width:inputSize.width, height:renderFramebuffer.size.height), stencil:false)
         firstStageFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)
         

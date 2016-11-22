@@ -21,7 +21,7 @@ public let colorConversionMatrix709Default = Matrix3x3(rowMajorValues:[
     1.793, -0.533,   0.0,
 ])
 
-public func convertYUVToRGB(shader:ShaderProgram, luminanceFramebuffer:Framebuffer, chrominanceFramebuffer:Framebuffer, secondChrominanceFramebuffer:Framebuffer? = nil, resultFramebuffer:Framebuffer, colorConversionMatrix:Matrix3x3) {
+public func convertYUVToRGB(_ shader:ShaderProgram, luminanceFramebuffer:Framebuffer, chrominanceFramebuffer:Framebuffer, secondChrominanceFramebuffer:Framebuffer? = nil, resultFramebuffer:Framebuffer, colorConversionMatrix:Matrix3x3) {
     let textureProperties:[InputTextureProperties]
     if let secondChrominanceFramebuffer = secondChrominanceFramebuffer {
         textureProperties = [luminanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), chrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation), secondChrominanceFramebuffer.texturePropertiesForTargetOrientation(resultFramebuffer.orientation)]

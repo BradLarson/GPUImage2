@@ -1,4 +1,4 @@
-public class DivideBlend: BasicOperation {
+open class DivideBlend: BasicOperation {
     public init() {
         super.init(fragmentShader:DivideBlendFragmentShader, numberOfInputs:2)
     }
