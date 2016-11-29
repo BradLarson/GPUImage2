@@ -45,9 +45,9 @@ public class ParallelCoordinateLineTransform: BasicOperation {
         let imageByteWidth = framebuffer.size.width * 4
         let maxLinePairsToRender = (Int(inputSize.width * inputSize.height) / Int(self.MAX_SCALING_FACTOR))
         let lineCoordinates = self.lineCoordinates ??
-            UnsafeMutablePointer<GLfloat>.alloc(Int(maxLinePairsToRender * 8))
+            UnsafeMutablePointer<GLfloat>.allocate(capacity: Int(maxLinePairsToRender * 8))
 
-        let rawImagePixels = UnsafeMutablePointer<UInt8>.alloc(Int(inputByteSize))
+        let rawImagePixels = UnsafeMutablePointer<UInt8>.allocate(capacity: Int(inputByteSize))
         glFinish()
         glReadPixels(0, 0, inputSize.width, inputSize.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), rawImagePixels)
 

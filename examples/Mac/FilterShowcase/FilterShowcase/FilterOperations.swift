@@ -501,11 +501,11 @@ let filterOperations: Array<FilterOperationInterface> = [
         filter:{ParallelCoordinateLineTransform()},
         listName:"Parallel Coordinate Tester",
         titleName:"Parallel Coordinate Tester",
-        sliderConfiguration:.Enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
+        sliderConfiguration:.enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
         sliderUpdateCallback: {(filter, sliderValue) in
             //            filter.threshold = sliderValue
         },
-        filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
+        filterOperationType:.custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! ParallelCoordinateLineTransform
             // TODO: Get this more dynamically sized
             let thresholdEdgeDetectionFilter = CannyEdgeDetection()
@@ -527,11 +527,11 @@ let filterOperations: Array<FilterOperationInterface> = [
         filter:{HoughTransformLineDetector()},
         listName:"Hough Line detector",
         titleName:"Hough Line Detector",
-        sliderConfiguration:.Enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
+        sliderConfiguration:.enabled(minimumValue:0.01, maximumValue:0.70, initialValue:0.20),
         sliderUpdateCallback: {(filter, sliderValue) in
             filter.lineDetectionThreshold = sliderValue
         },
-        filterOperationType:.Custom(filterSetupFunction:{(camera, filter, outputView) in
+        filterOperationType:.custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! HoughTransformLineDetector
             // TODO: Get this more dynamically sized
             #if os(iOS)

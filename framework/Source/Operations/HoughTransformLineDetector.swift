@@ -27,7 +27,7 @@ public class HoughTransformLineDetector: OperationGroup {
     let thresholdEdgeDetectionFilter = CannyEdgeDetection()
     let nonMaximumSuppression = TextureSamplingOperation(fragmentShader:ThresholdedNonMaximumSuppressionFragmentShader)
 
-    public var linesDetectedCallback:([Line] -> ())?
+    public var linesDetectedCallback:(([Line]) -> ())?
     public var edgeThreshold:Float = 0.9
     public var lineDetectionThreshold:Float = 0.2 { didSet { nonMaximumSuppression.uniformSettings["threshold"] = lineDetectionThreshold } }
     public var cannyBlurRadiusInPixels:Float = 2.0 { didSet { thresholdEdgeDetectionFilter.blurRadiusInPixels = cannyBlurRadiusInPixels } }
@@ -41,7 +41,7 @@ public class HoughTransformLineDetector: OperationGroup {
 
         outputImageRelay.newImageCallback = {[weak self] framebuffer in
             if let linesDetectedCallback = self?.linesDetectedCallback {
-                linesDetectedCallback(extractLinesFromImage(framebuffer))
+                linesDetectedCallback(extractLinesFromImage(framebuffer: framebuffer))
             }
         }
 
@@ -56,7 +56,7 @@ func extractLinesFromImage(framebuffer: Framebuffer) -> [Line] {
     let pixCount = UInt32(frameSize.width * frameSize.height)
     let chanCount: UInt32 = 4
     let imageByteSize = Int(pixCount * chanCount) // since we're comparing to currentByte, might as well cast here
-    let rawImagePixels = UnsafeMutablePointer<UInt8>.alloc(Int(imageByteSize))
+    let rawImagePixels = UnsafeMutablePointer<UInt8>.allocate(capacity: Int(imageByteSize))
     glReadPixels(0, 0, frameSize.width, frameSize.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), rawImagePixels)
     // since we only set one position with each iteration of the loop, we'll have ot set positions then combine into lines
     //    linesArray = calloc(1024 * 2, sizeof(GLfloat)); - lines is 2048 floats - which is 1024 positions or 528 lines
@@ -82,15 +82,15 @@ func extractLinesFromImage(framebuffer: Framebuffer) -> [Line] {
                     // T space
                     // m = -1 - d/u
                     // b = d * v/u
-                    ? Line.Infinite(slope:100000.0, intercept: normalizedYCoordinate)
-                    : Line.Infinite(slope: -1.0 - 1.0 / normalizedXCoordinate, intercept: 1.0 * normalizedYCoordinate / normalizedXCoordinate)
+                    ? Line.infinite(slope:100000.0, intercept: normalizedYCoordinate)
+                    : Line.infinite(slope: -1.0 - 1.0 / normalizedXCoordinate, intercept: 1.0 * normalizedYCoordinate / normalizedXCoordinate)
                 )
                 : ( normalizedXCoordinate < 0.05
                     // S space
                     // m = 1 - d/u
                     // b = d * v/u
-                    ? Line.Infinite(slope: 100000.0, intercept: normalizedYCoordinate)
-                    : Line.Infinite(slope: 1.0 - 1.0 / normalizedXCoordinate,intercept: 1.0 * normalizedYCoordinate / normalizedXCoordinate)
+                    ? Line.infinite(slope: 100000.0, intercept: normalizedYCoordinate)
+                    : Line.infinite(slope: 1.0 - 1.0 / normalizedXCoordinate,intercept: 1.0 * normalizedYCoordinate / normalizedXCoordinate)
                     )
                 )
             lines.append(nextLine)
