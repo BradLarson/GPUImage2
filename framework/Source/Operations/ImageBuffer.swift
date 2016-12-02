@@ -10,7 +10,7 @@ public class ImageBuffer: ImageProcessingOperation {
 
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         bufferedFramebuffers.append(framebuffer)
-        if (bufferedFramebuffers.count > Int(bufferSize)) {
+        if (bufferedFramebuffers.count >= Int(bufferSize)) {
             let releasedFramebuffer = bufferedFramebuffers.removeFirst()
             updateTargetsWithFramebuffer(releasedFramebuffer)
             releasedFramebuffer.unlock()
