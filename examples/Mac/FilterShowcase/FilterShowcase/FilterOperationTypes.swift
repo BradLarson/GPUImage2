@@ -58,3 +58,4 @@ class FilterOperation<FilterClass: ImageProcessingOperation>: FilterOperationInt
         sliderUpdateCallback?(internalFilter, sliderValue)
     }
 }
+
