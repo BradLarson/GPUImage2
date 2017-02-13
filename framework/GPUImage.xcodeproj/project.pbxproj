@@ -41,7 +41,6 @@
 		BC6E7CC81C39AD9E006DF678 /* ShaderProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6E7CC61C39AD9E006DF678 /* ShaderProgram.swift */; };
 		BC6E7CCA1C39ADCC006DF678 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6E7CC91C39ADCC006DF678 /* OpenGL.framework */; };
 		BC6E7CCC1C39B34B006DF678 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6E7CC91C39ADCC006DF678 /* OpenGL.framework */; };
-		BC6E7CD21C3A27AA006DF678 /* GPUImage-Mac.h in Headers */ = {isa = PBXBuildFile; fileRef = BC6E7CD11C3A27AA006DF678 /* GPUImage-Mac.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC6E7CD41C3A29FF006DF678 /* OpenGLContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6E7CD31C3A29FF006DF678 /* OpenGLContext.swift */; };
 		BC6E7CD61C3A2D49006DF678 /* RenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6E7CD51C3A2D49006DF678 /* RenderView.swift */; };
 		BC77295A1CB30B4E004C9E0B /* Convolution3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7729591CB30B4E004C9E0B /* Convolution3x3.swift */; };
@@ -354,12 +353,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BC6E7CB71C39A9D8006DF678 /* PBXContainerItemProxy */ = {
+		BC88650E1E526F9D00F16A7E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC6E7CA21C39A9D8006DF678 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = BC6E7CAA1C39A9D8006DF678;
-			remoteInfo = "GPUImage-Mac";
+			remoteInfo = GPUImage_macOS;
 		};
 		BC9E34F31E524A2300B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -410,12 +409,9 @@
 		BC4EE1731CB3711600AD8A65 /* GaussianBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = GaussianBlur.swift; path = Source/Operations/GaussianBlur.swift; sourceTree = "<group>"; };
 		BC5B866E1CC07145006CDE75 /* PictureOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PictureOutput.swift; path = Source/Mac/PictureOutput.swift; sourceTree = "<group>"; };
 		BC6E7CAB1C39A9D8006DF678 /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC6E7CB01C39A9D8006DF678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Mac/Info.plist; sourceTree = "<group>"; };
-		BC6E7CB51C39A9D8006DF678 /* GPUImage.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImage.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC6E7CBC1C39A9D8006DF678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Mac/Info.plist; sourceTree = "<group>"; };
+		BC6E7CB51C39A9D8006DF678 /* GPUImageTests_macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImageTests_macOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC6E7CC61C39AD9E006DF678 /* ShaderProgram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShaderProgram.swift; path = Source/ShaderProgram.swift; sourceTree = "<group>"; };
 		BC6E7CC91C39ADCC006DF678 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		BC6E7CD11C3A27AA006DF678 /* GPUImage-Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "GPUImage-Mac.h"; path = "Source/Mac/GPUImage-Mac.h"; sourceTree = SOURCE_ROOT; };
 		BC6E7CD31C3A29FF006DF678 /* OpenGLContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenGLContext.swift; path = Source/Mac/OpenGLContext.swift; sourceTree = "<group>"; };
 		BC6E7CD51C3A2D49006DF678 /* RenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RenderView.swift; path = Source/Mac/RenderView.swift; sourceTree = "<group>"; };
 		BC7729591CB30B4E004C9E0B /* Convolution3x3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Convolution3x3.swift; path = Source/Operations/Convolution3x3.swift; sourceTree = "<group>"; };
@@ -955,7 +951,7 @@
 			isa = PBXGroup;
 			children = (
 				BC6E7CAB1C39A9D8006DF678 /* GPUImage.framework */,
-				BC6E7CB51C39A9D8006DF678 /* GPUImage.xctest */,
+				BC6E7CB51C39A9D8006DF678 /* GPUImageTests_macOS.xctest */,
 				BC9E34E91E524A2200B8604F /* GPUImage.framework */,
 				BC9E34F11E524A2200B8604F /* GPUImageTests_iOS.xctest */,
 			);
@@ -967,11 +963,8 @@
 			children = (
 				BC4C85ED1C9F042900FD95D8 /* ConvertedShaders_GL.swift */,
 				BC9E35531E52521F00B8604F /* ConvertedShaders_GLES.swift */,
-				BC6E7CD11C3A27AA006DF678 /* GPUImage-Mac.h */,
-				BC6E7CB01C39A9D8006DF678 /* Info.plist */,
 			);
 			name = Other;
-			path = "GPUImage-Mac";
 			sourceTree = "<group>";
 		};
 		BC6E7CB91C39A9D8006DF678 /* Tests */ = {
@@ -979,10 +972,8 @@
 			children = (
 				BC09239F1C9265A600A2ADFA /* Pipeline_Tests.swift */,
 				BC09239D1C92658200A2ADFA /* ShaderProgram_Tests.swift */,
-				BC6E7CBC1C39A9D8006DF678 /* Info.plist */,
 			);
 			name = Tests;
-			path = "GPUImage-MacTests";
 			sourceTree = "<group>";
 		};
 		BC6E7CC51C39AD7B006DF678 /* Base */ = {
@@ -1207,7 +1198,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC6E7CD21C3A27AA006DF678 /* GPUImage-Mac.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1235,7 +1225,7 @@
 			dependencies = (
 			);
 			name = GPUImage_macOS;
-			productName = "GPUImage-Mac";
+			productName = GPUImage;
 			productReference = BC6E7CAB1C39A9D8006DF678 /* GPUImage.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -1253,8 +1243,8 @@
 				BC6E7CB81C39A9D8006DF678 /* PBXTargetDependency */,
 			);
 			name = GPUImageTests_macOS;
-			productName = "GPUImage-MacTests";
-			productReference = BC6E7CB51C39A9D8006DF678 /* GPUImage.xctest */;
+			productName = GPUImageTests;
+			productReference = BC6E7CB51C39A9D8006DF678 /* GPUImageTests_macOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		BC9E34E81E524A2200B8604F /* GPUImage_iOS */ = {
@@ -1745,7 +1735,7 @@
 		BC6E7CB81C39A9D8006DF678 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BC6E7CAA1C39A9D8006DF678 /* GPUImage_macOS */;
-			targetProxy = BC6E7CB71C39A9D8006DF678 /* PBXContainerItemProxy */;
+			targetProxy = BC88650E1E526F9D00F16A7E /* PBXContainerItemProxy */;
 		};
 		BC9E34F41E524A2300B8604F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1793,8 +1783,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /Library/Frameworks;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1837,8 +1827,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = /Library/Frameworks;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -1857,7 +1847,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Source/Mac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImage_Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGL -DDEBUG";
@@ -1879,7 +1869,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Source/Mac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImage_Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGL";
@@ -1895,11 +1885,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Mac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImageTestSuite_Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGL";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-MacTests";
-				PRODUCT_NAME = GPUImage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
@@ -1907,11 +1897,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Mac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImageTestSuite_Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGL";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sunsetlakesoftware.GPUImage-MacTests";
-				PRODUCT_NAME = GPUImage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
@@ -1930,7 +1920,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/iOS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImage_Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1959,7 +1949,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/iOS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImage_Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1985,7 +1975,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7P4K3HK5JL;
-				INFOPLIST_FILE = Tests/iOS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImageTestSuite_Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGLES";
@@ -2007,7 +1997,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7P4K3HK5JL;
-				INFOPLIST_FILE = Tests/iOS/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/GPUImage.xcodeproj/GPUImageTestSuite_Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DGLES";
