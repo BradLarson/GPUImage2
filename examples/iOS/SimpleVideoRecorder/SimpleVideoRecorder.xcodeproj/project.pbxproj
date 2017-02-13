@@ -7,36 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC9E36A21E525CB400B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E369D1E525C9900B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCA0C3341CCBFFAE0034F922 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */; };
 		BCA0C3361CCBFFAE0034F922 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA0C3351CCBFFAE0034F922 /* ViewController.swift */; };
 		BCA0C33E1CCBFFAE0034F922 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C33C1CCBFFAE0034F922 /* LaunchScreen.storyboard */; };
 		BCA0C3471CCBFFE70034F922 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C3461CCBFFE70034F922 /* Assets-iOS.xcassets */; };
 		BCA0C34A1CCC00B20034F922 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCA0C3481CCC00B20034F922 /* Main.storyboard */; };
-		BCA0C3571CCC01250034F922 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCA0C3521CCC01120034F922 /* GPUImage.framework */; };
-		BCA0C3591CCC01350034F922 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCA0C3521CCC01120034F922 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BCA0C3511CCC01120034F922 /* PBXContainerItemProxy */ = {
+		BC9E36981E525C9900B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
-			remoteInfo = GPUImage;
+			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
+			remoteInfo = GPUImage_macOS;
 		};
-		BCA0C3531CCC01120034F922 /* PBXContainerItemProxy */ = {
+		BC9E369A1E525C9900B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
-			remoteInfo = GPUImageTests;
+			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
+			remoteInfo = GPUImageTests_macOS;
 		};
-		BCA0C3551CCC011D0034F922 /* PBXContainerItemProxy */ = {
+		BC9E369C1E525C9900B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
+		};
+		BC9E369E1E525C9900B8604F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
+			remoteInfo = GPUImageTests_iOS;
+		};
+		BC9E36A01E525CAF00B8604F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
-			remoteInfo = GPUImage;
+			remoteGlobalIDString = BC9E34E81E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -47,13 +60,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BCA0C3591CCC01350034F922 /* GPUImage.framework in CopyFiles */,
+				BC9E36A21E525CB400B8604F /* GPUImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCA0C3301CCBFFAE0034F922 /* SimpleVideoRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCA0C3351CCBFFAE0034F922 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,7 +75,6 @@
 		BCA0C33F1CCBFFAE0034F922 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCA0C3461CCBFFE70034F922 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Assets-iOS.xcassets"; path = "../../../SharedAssets/Assets-iOS.xcassets"; sourceTree = "<group>"; };
 		BCA0C3491CCC00B20034F922 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-iOS.xcodeproj"; path = "../../../../framework/GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,13 +82,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCA0C3571CCC01250034F922 /* GPUImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC9E36921E525C9900B8604F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC9E36991E525C9900B8604F /* GPUImage.framework */,
+				BC9E369B1E525C9900B8604F /* GPUImage.xctest */,
+				BC9E369D1E525C9900B8604F /* GPUImage.framework */,
+				BC9E369F1E525C9900B8604F /* GPUImageTests_iOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BCA0C3271CCBFFAE0034F922 = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +122,7 @@
 				BCA0C3331CCBFFAE0034F922 /* AppDelegate.swift */,
 				BCA0C3351CCBFFAE0034F922 /* ViewController.swift */,
 				BCA0C3481CCC00B20034F922 /* Main.storyboard */,
-				BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */,
+				BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */,
 			);
 			name = Applications;
 			path = SimpleVideoRecorder;
@@ -114,15 +137,6 @@
 			);
 			name = Resources;
 			path = SimpleVideoRecorder;
-			sourceTree = "<group>";
-		};
-		BCA0C34D1CCC01120034F922 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BCA0C3521CCC01120034F922 /* GPUImage.framework */,
-				BCA0C3541CCC01120034F922 /* GPUImageTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +154,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				BCA0C3561CCC011D0034F922 /* PBXTargetDependency */,
+				BC9E36A11E525CAF00B8604F /* PBXTargetDependency */,
 			);
 			name = SimpleVideoRecorder;
 			productName = SimpleVideoRecorder;
@@ -176,8 +190,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = BCA0C34D1CCC01120034F922 /* Products */;
-					ProjectRef = BCA0C34C1CCC01120034F922 /* GPUImage-iOS.xcodeproj */;
+					ProductGroup = BC9E36921E525C9900B8604F /* Products */;
+					ProjectRef = BC9E36911E525C9900B8604F /* GPUImage.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -188,18 +202,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		BCA0C3521CCC01120034F922 /* GPUImage.framework */ = {
+		BC9E36991E525C9900B8604F /* GPUImage.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = GPUImage.framework;
-			remoteRef = BCA0C3511CCC01120034F922 /* PBXContainerItemProxy */;
+			remoteRef = BC9E36981E525C9900B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BCA0C3541CCC01120034F922 /* GPUImageTests.xctest */ = {
+		BC9E369B1E525C9900B8604F /* GPUImage.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = GPUImageTests.xctest;
-			remoteRef = BCA0C3531CCC01120034F922 /* PBXContainerItemProxy */;
+			path = GPUImage.xctest;
+			remoteRef = BC9E369A1E525C9900B8604F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BC9E369D1E525C9900B8604F /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BC9E369C1E525C9900B8604F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BC9E369F1E525C9900B8604F /* GPUImageTests_iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_iOS.xctest;
+			remoteRef = BC9E369E1E525C9900B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -230,10 +258,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BCA0C3561CCC011D0034F922 /* PBXTargetDependency */ = {
+		BC9E36A11E525CAF00B8604F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = GPUImage;
-			targetProxy = BCA0C3551CCC011D0034F922 /* PBXContainerItemProxy */;
+			name = GPUImage_iOS;
+			targetProxy = BC9E36A01E525CAF00B8604F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -346,6 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;
@@ -358,6 +387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleVideoRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleVideoRecorder;

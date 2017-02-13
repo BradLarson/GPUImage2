@@ -90,7 +90,7 @@ class Pipeline_Tests: XCTestCase {
             let operation = target as! FakeOperation
             switch index {
                 case 0: XCTAssert(operation.name == "Operation 3")
-        t        default: XCTFail("Should not have hit an index this high")
+                default: XCTFail("Should not have hit an index this high")
             }
         }
 

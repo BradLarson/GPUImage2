@@ -1,5 +1,9 @@
 import Foundation
 
+#if os(iOS)
+import UIKit
+#endif
+
 public struct Position {
     public let x:Float
     public let y:Float

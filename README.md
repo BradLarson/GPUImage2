@@ -38,9 +38,9 @@ Examples for usage of the framework in common applications are shown below.
 
 ## Using GPUImage in an Mac or iOS application ##
 
-To add the GPUImage framework to your iOS application, either drag the GPUImage-iOS.xcodeproj project into your application's project or add it via File | Add Files To...
+To add the GPUImage framework to your Mac or iOS application, either drag the GPUImage.xcodeproj project into your application's project or add it via File | Add Files To...
 
-After that, go to your project's Build Phases and add GPUImage as a Target Dependency. Add it to the Link Binary With Libraries phase. Add a new Copy Files build phase, set its destination to Frameworks, and add GPUImage.framework to that. That last step will make sure the framework is deployed in your application bundle. 
+After that, go to your project's Build Phases and add GPUImage_iOS or GPUImage_macOS as a Target Dependency. Add it to the Link Binary With Libraries phase. Add a new Copy Files build phase, set its destination to Frameworks, and add the upper GPUImage.framework (for Mac) or lower GPUImage.framework (for iOS) to that. That last step will make sure the framework is deployed in your application bundle. 
 
 In any of your Swift files that reference GPUImage classes, simply add
 
@@ -186,7 +186,23 @@ In the above, the imageAvailableCallback will be triggered right at the processI
 
 ### Filtering and re-encoding a movie ###
 
-Functionality not completed.
+To filter an existing movie file, you can write code like the following:
+
+```swift
+
+do {
+	let bundleURL = Bundle.main.resourceURL!
+	let movieURL = URL(string:"sample_iPod.m4v", relativeTo:bundleURL)!
+	movie = try MovieInput(url:movieURL, playAtActualSpeed:true)
+    filter = SaturationAdjustment()
+    movie --> filter --> renderView
+    movie.start()
+} catch {
+    fatalError("Could not initialize rendering pipeline: \(error)")
+}
+```
+
+where renderView is an instance of RenderView that you've placed somewhere in your view hierarchy. The above loads a movie named "sample_iPod.m4v" from the application's bundle, creates a saturation filter, and directs movie frames to be processed through the saturation filter on their way to the screen. start() initiates the movie playback.
 
 ### Writing a custom image processing operation ###
 

@@ -7,37 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC9E36691E525B6C00B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E36641E525B5B00B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCD985B01CA43FD5001FF01F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */; };
 		BCD985B21CA43FD5001FF01F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985B11CA43FD5001FF01F /* ViewController.swift */; };
 		BCD985B51CA43FD5001FF01F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCD985B31CA43FD5001FF01F /* Main.storyboard */; };
 		BCD985BA1CA43FD5001FF01F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCD985B81CA43FD5001FF01F /* LaunchScreen.storyboard */; };
-		BCD985CC1CA46BBF001FF01F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD985C71CA43FF2001FF01F /* GPUImage.framework */; };
-		BCD985D01CA46BD3001FF01F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BCD985C71CA43FF2001FF01F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCD985D51CA48F15001FF01F /* WID-small.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCD985D41CA48F15001FF01F /* WID-small.jpg */; };
 		BCFB058C1CBF17FD009B2333 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BCD985C61CA43FF2001FF01F /* PBXContainerItemProxy */ = {
+		BC9E365F1E525B5B00B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
-			remoteInfo = GPUImage;
+			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
+			remoteInfo = GPUImage_macOS;
 		};
-		BCD985C81CA43FF2001FF01F /* PBXContainerItemProxy */ = {
+		BC9E36611E525B5B00B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
-			remoteInfo = GPUImageTests;
+			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
+			remoteInfo = GPUImageTests_macOS;
 		};
-		BCD985CD1CA46BC6001FF01F /* PBXContainerItemProxy */ = {
+		BC9E36631E525B5B00B8604F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+			containerPortal = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
+		};
+		BC9E36651E525B5B00B8604F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
+			remoteInfo = GPUImageTests_iOS;
+		};
+		BC9E36671E525B6600B8604F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
-			remoteInfo = GPUImage;
+			remoteGlobalIDString = BC9E34E81E524A2200B8604F;
+			remoteInfo = GPUImage_iOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -48,20 +61,20 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BCD985D01CA46BD3001FF01F /* GPUImage.framework in CopyFiles */,
+				BC9E36691E525B6C00B8604F /* GPUImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCD985AC1CA43FD5001FF01F /* SimpleImageFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleImageFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD985AF1CA43FD5001FF01F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCD985B11CA43FD5001FF01F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BCD985B41CA43FD5001FF01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BCD985B91CA43FD5001FF01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCD985BB1CA43FD5001FF01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GPUImage-iOS.xcodeproj"; path = "../../../../framework/GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
 		BCD985D41CA48F15001FF01F /* WID-small.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "WID-small.jpg"; path = "../../../SharedAssets/WID-small.jpg"; sourceTree = "<group>"; };
 		BCFB058B1CBF17FD009B2333 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Assets-iOS.xcassets"; path = "../../../SharedAssets/Assets-iOS.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,13 +84,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCD985CC1CA46BBF001FF01F /* GPUImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC9E36591E525B5A00B8604F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC9E36601E525B5B00B8604F /* GPUImage.framework */,
+				BC9E36621E525B5B00B8604F /* GPUImage.xctest */,
+				BC9E36641E525B5B00B8604F /* GPUImage.framework */,
+				BC9E36661E525B5B00B8604F /* GPUImageTests_iOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BCD985A31CA43FD5001FF01F = {
 			isa = PBXGroup;
 			children = (
@@ -106,15 +129,6 @@
 			path = SimpleImageFilter;
 			sourceTree = "<group>";
 		};
-		BCD985C21CA43FF2001FF01F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BCD985C71CA43FF2001FF01F /* GPUImage.framework */,
-				BCD985C91CA43FF2001FF01F /* GPUImageTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		BCD985CA1CA44005001FF01F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,7 +143,7 @@
 		BCD985CB1CA4400E001FF01F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */,
+				BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */,
 			);
 			name = Frameworks;
 			path = SimpleImageFilter;
@@ -150,7 +164,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				BCD985CE1CA46BC6001FF01F /* PBXTargetDependency */,
+				BC9E36681E525B6600B8604F /* PBXTargetDependency */,
 			);
 			name = SimpleImageFilter;
 			productName = SimpleImageFilter;
@@ -186,8 +200,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = BCD985C21CA43FF2001FF01F /* Products */;
-					ProjectRef = BCD985C11CA43FF2001FF01F /* GPUImage-iOS.xcodeproj */;
+					ProductGroup = BC9E36591E525B5A00B8604F /* Products */;
+					ProjectRef = BC9E36581E525B5A00B8604F /* GPUImage.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -198,18 +212,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		BCD985C71CA43FF2001FF01F /* GPUImage.framework */ = {
+		BC9E36601E525B5B00B8604F /* GPUImage.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = GPUImage.framework;
-			remoteRef = BCD985C61CA43FF2001FF01F /* PBXContainerItemProxy */;
+			remoteRef = BC9E365F1E525B5B00B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BCD985C91CA43FF2001FF01F /* GPUImageTests.xctest */ = {
+		BC9E36621E525B5B00B8604F /* GPUImage.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = GPUImageTests.xctest;
-			remoteRef = BCD985C81CA43FF2001FF01F /* PBXContainerItemProxy */;
+			path = GPUImage.xctest;
+			remoteRef = BC9E36611E525B5B00B8604F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BC9E36641E525B5B00B8604F /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = BC9E36631E525B5B00B8604F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BC9E36661E525B5B00B8604F /* GPUImageTests_iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests_iOS.xctest;
+			remoteRef = BC9E36651E525B5B00B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -241,10 +269,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BCD985CE1CA46BC6001FF01F /* PBXTargetDependency */ = {
+		BC9E36681E525B6600B8604F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = GPUImage;
-			targetProxy = BCD985CD1CA46BC6001FF01F /* PBXContainerItemProxy */;
+			name = GPUImage_iOS;
+			targetProxy = BC9E36671E525B6600B8604F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -357,6 +385,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleImageFilter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleImageFilter;
@@ -369,6 +398,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleImageFilter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.SimpleImageFilter;
