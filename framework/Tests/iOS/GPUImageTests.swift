@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import GPUImage
+import AVFoundation
 
 class GPUImageTests: XCTestCase {
     
@@ -30,6 +31,19 @@ class GPUImageTests: XCTestCase {
         // This is an example of a performance test case.
         self.measureBlock {
             // Put the code you want to measure the time of here.
+        }
+    }
+    
+    func testCameraError() {
+        if ( PhysicalCameraLocation.BackFacing.device() == nil && PhysicalCameraLocation.FrontFacing.device() == nil) {
+            do {
+                let camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+                XCTFail("Camera():\(camera) should throw error on Simulator")
+            } catch {
+                XCTAssert(error is CameraError, "Exception should be CameraError")
+            }
+        } else {
+            XCTAssert(true, "Untestable condition: camera available")
         }
     }
     

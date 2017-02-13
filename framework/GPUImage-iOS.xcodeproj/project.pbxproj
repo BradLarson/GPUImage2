@@ -41,8 +41,6 @@
 		BCC49FB81CD6E3D900B63EEB /* MovieInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC49FB71CD6E3D900B63EEB /* MovieInput.swift */; };
 		BCD03F0F1CA23D6300271751 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD03F0E1CA23D6300271751 /* Camera.swift */; };
 		BCD1B1301C66A262001F2BDC /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1B1251C66A262001F2BDC /* GPUImage.framework */; };
-		BCD1B1351C66A262001F2BDC /* GPUImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */; };
-		BCD1B1431C66A695001F2BDC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCD1B1411C66A68E001F2BDC /* Info.plist */; };
 		BCD985D21CA48CC2001FF01F /* PictureInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD985D11CA48CC2001FF01F /* PictureInput.swift */; };
 		BCE316EB1CA0E5CC00323D5B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE316EA1CA0E5CC00323D5B /* OpenGLES.framework */; };
 		BCE316FA1CA0E69800323D5B /* Framebuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE316F31CA0E69800323D5B /* Framebuffer.swift */; };
@@ -168,6 +166,7 @@
 		BCFB074C1CBF2BC1009B2333 /* ZoomBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFB073E1CBF2BC1009B2333 /* ZoomBlur.swift */; };
 		BCFB07991CBF4B44009B2333 /* TextureInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFB07981CBF4B44009B2333 /* TextureInput.swift */; };
 		BCFB079C1CBF4B92009B2333 /* TextureOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFB079B1CBF4B92009B2333 /* TextureOutput.swift */; };
+		F449DE351D5C0CB900BCBC64 /* GPUImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449DE341D5C0CB900BCBC64 /* GPUImageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,7 +226,6 @@
 		BCD03F0E1CA23D6300271751 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Camera.swift; path = Source/iOS/Camera.swift; sourceTree = "<group>"; };
 		BCD1B1251C66A262001F2BDC /* GPUImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GPUImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD1B12F1C66A262001F2BDC /* GPUImageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPUImageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GPUImageTests.swift; path = Tests/iOS/GPUImageTests.swift; sourceTree = "<group>"; };
 		BCD1B13F1C66A676001F2BDC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Source/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		BCD1B1411C66A68E001F2BDC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/iOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		BCD985D11CA48CC2001FF01F /* PictureInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PictureInput.swift; path = Source/iOS/PictureInput.swift; sourceTree = "<group>"; };
@@ -479,6 +477,7 @@
 		BCFB079B1CBF4B92009B2333 /* TextureOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextureOutput.swift; path = Source/TextureOutput.swift; sourceTree = "<group>"; };
 		BCFB079D1CBF4E39009B2333 /* FiveInput.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = FiveInput.vsh; path = Source/Operations/Shaders/FiveInput.vsh; sourceTree = "<group>"; };
 		BCFB079E1CBF4E39009B2333 /* FourInput.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = FourInput.vsh; path = Source/Operations/Shaders/FourInput.vsh; sourceTree = "<group>"; };
+		F449DE341D5C0CB900BCBC64 /* GPUImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPUImageTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -539,10 +538,10 @@
 			isa = PBXGroup;
 			children = (
 				BCD1B1411C66A68E001F2BDC /* Info.plist */,
-				BCD1B1341C66A262001F2BDC /* GPUImageTests.swift */,
+				F449DE341D5C0CB900BCBC64 /* GPUImageTests.swift */,
 			);
 			name = Tests;
-			path = GPUImageTests;
+			path = Tests/iOS;
 			sourceTree = "<group>";
 		};
 		BCE316E81CA0E59B00323D5B /* Base */ = {
@@ -1009,7 +1008,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCD1B1431C66A695001F2BDC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1178,7 +1176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCD1B1351C66A262001F2BDC /* GPUImageTests.swift in Sources */,
+				F449DE351D5C0CB900BCBC64 /* GPUImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1331,7 +1329,7 @@
 		BCD1B13D1C66A262001F2BDC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = GPUImageTests/Info.plist;
+				INFOPLIST_FILE = Tests/iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.GPUImageTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1342,7 +1340,7 @@
 		BCD1B13E1C66A262001F2BDC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = GPUImageTests/Info.plist;
+				INFOPLIST_FILE = Tests/iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlakesoftware.GPUImageTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
