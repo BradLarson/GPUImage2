@@ -49,7 +49,7 @@ public class Framebuffer {
     let texture:GLuint
     let framebuffer:GLuint?
     let stencilBuffer:GLuint?
-    let size:GLSize
+    public let size:GLSize
     let internalFormat:Int32
     let format:Int32
     let type:Int32
@@ -140,11 +140,11 @@ public class Framebuffer {
         }
     }
 
-    func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
+    public func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
         return InputTextureProperties(textureCoordinates:rotation.textureCoordinates(), texture:texture)
     }
 
-    func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {
+    public func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {
         return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
     }
     
@@ -167,7 +167,7 @@ public class Framebuffer {
         framebufferRetainCount = 0
     }
     
-    func unlock() {
+    public func unlock() {
         framebufferRetainCount -= 1
         if (framebufferRetainCount < 1) {
             if ((framebufferRetainCount < 0) && (cache != nil)) {

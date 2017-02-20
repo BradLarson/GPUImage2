@@ -198,7 +198,7 @@ public class ImageRelay: ImageProcessingOperation {
     public let maximumInputs:UInt = 1
     public var preventRelay:Bool = false
     
-    init() {
+    public init() {
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {

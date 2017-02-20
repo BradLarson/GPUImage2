@@ -14,6 +14,9 @@
 
 public struct ShaderUniformSettings {
     private var uniformValues = [String:Any]()
+    
+    public init() {
+    }
 
     public subscript(index:String) -> Float? {
         get { return uniformValues[index] as? Float}
