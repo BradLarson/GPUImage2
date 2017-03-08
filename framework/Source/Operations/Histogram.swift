@@ -62,10 +62,8 @@ public class Histogram: BasicOperation {
         
         clearFramebufferWithColor(Color.black)
 
-        glBlendEquation(GLenum(GL_FUNC_ADD))
-        glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
-        glEnable(GLenum(GL_BLEND))
-
+        enableAdditiveBlending()
+        
         shader.use()
         guard let positionAttribute = shader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
         glVertexAttribPointer(positionAttribute, 4, GLenum(GL_UNSIGNED_BYTE), 0, (GLint(downsamplingFactor) - 1) * 4, data)
@@ -85,7 +83,7 @@ public class Histogram: BasicOperation {
             glDrawArrays(GLenum(GL_POINTS), 0, inputSize.width * inputSize.height / GLint(downsamplingFactor))
         }
 
-        glDisable(GLenum(GL_BLEND))
+        disableBlending()
         data.deallocate(capacity:inputByteSize)
     }
 }

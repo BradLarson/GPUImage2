@@ -63,13 +63,12 @@ public class LineGenerator: ImageGenerator {
         let lineEndpoints = lines.flatMap{$0.toGLEndpoints()}
         glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, lineEndpoints)
         
-        glBlendEquation(GLenum(GL_FUNC_ADD))
-        glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
-        glEnable(GLenum(GL_BLEND))
+        
+        enableAdditiveBlending()
 
         glDrawArrays(GLenum(GL_LINES), 0, GLsizei(lines.count) * 2)
 
-        glDisable(GLenum(GL_BLEND))
+        disableBlending()
 
         notifyTargets()
     }

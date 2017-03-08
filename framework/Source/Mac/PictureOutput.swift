@@ -46,13 +46,11 @@ public class PictureOutput: ImageConsumer {
         clearFramebufferWithColor(Color.transparent)
 
         // Need the blending here to enable non-1.0 alpha on output image
-        glBlendEquation(GLenum(GL_FUNC_ADD))
-        glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
-        glEnable(GLenum(GL_BLEND))
+        enableAdditiveBlending()
         
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
 
-        glDisable(GLenum(GL_BLEND))
+        disableBlending()
         
         framebuffer.unlock()
         

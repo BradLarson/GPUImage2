@@ -193,6 +193,16 @@ func attachStencilBuffer(width:GLint, height:GLint) throws -> GLuint {
     return stencilBuffer
 }
 
+public func enableAdditiveBlending() {
+    glBlendEquation(GLenum(GL_FUNC_ADD))
+    glBlendFunc(GLenum(GL_ONE), GLenum(GL_ONE))
+    glEnable(GLenum(GL_BLEND))
+}
+
+public func disableBlending() {
+    glDisable(GLenum(GL_BLEND))
+}
+
 extension String {
     func withNonZeroSuffix(_ suffix:Int) -> String {
         if suffix == 0 {
