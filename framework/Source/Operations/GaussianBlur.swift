@@ -124,9 +124,9 @@ func optimizedGaussianOffsetsForRadius(_ blurRadius:UInt, sigma:Double) -> [Doub
     let numberOfOptimizedOffsets = min(blurRadius / 2 + (blurRadius % 2), 7)
     
     var optimizedOffsets = [Double]()
-    for currentOptimizedOffset in 0..<numberOfOptimizedOffsets {
-        let firstWeight = Double(standardWeights[Int(currentOptimizedOffset * 2 + 1)])
-        let secondWeight = Double(standardWeights[Int(currentOptimizedOffset * 2 + 2)])
+    for currentOptimizedOffset in 0..<Int(numberOfOptimizedOffsets) {
+        let firstWeight = Double(standardWeights[currentOptimizedOffset * 2 + 1])
+        let secondWeight = Double(standardWeights[currentOptimizedOffset * 2 + 2])
         let optimizedWeight = firstWeight + secondWeight
 
         optimizedOffsets.append((firstWeight * (Double(currentOptimizedOffset) * 2.0 + 1.0) + secondWeight * (Double(currentOptimizedOffset) * 2.0 + 2.0)) / optimizedWeight)
