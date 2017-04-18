@@ -188,7 +188,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     }
     
     public func processAudioBuffer(_ sampleBuffer:CMSampleBuffer) {
-        guard let assetWriterAudioInput = assetWriterAudioInput else { return }
+        guard isRecording, let assetWriterAudioInput = assetWriterAudioInput else { return }
         
         sharedImageProcessingContext.runOperationSynchronously{
             let currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
