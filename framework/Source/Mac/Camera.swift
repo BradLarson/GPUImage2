@@ -35,8 +35,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global(priority:standardProcessingQueuePriority)
-    let audioProcessingQueue = DispatchQueue.global(priority:lowProcessingQueuePriority)
+    let cameraProcessingQueue = standardProcessingQueue()
+    let audioProcessingQueue = lowProcessingQueue()
 
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
