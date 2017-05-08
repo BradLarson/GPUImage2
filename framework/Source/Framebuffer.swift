@@ -124,7 +124,7 @@ public class Framebuffer {
         }
     }
 
-    func texelSize(for rotation:Rotation) -> Size {
+    public func texelSize(for rotation:Rotation) -> Size {
         if rotation.flipsDimensions() {
             return Size(width:1.0 / Float(size.height), height:1.0 / Float(size.width))
         } else {
