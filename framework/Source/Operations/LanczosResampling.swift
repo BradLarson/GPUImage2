@@ -16,7 +16,7 @@ public class LanczosResampling: BasicOperation {
         uniformSettings["texelWidth"] = texelSize.width
         uniformSettings["texelHeight"] = texelSize.height
         
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:textureProperties)
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:textureProperties)
         releaseIncomingFramebuffers()
 
         // Shrink the width component of the result
@@ -25,7 +25,7 @@ public class LanczosResampling: BasicOperation {
         uniformSettings["texelHeight"] = 0.0
         
         renderFramebuffer.activateFramebufferForRendering()
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
         firstStageFramebuffer.unlock()
     }
 }

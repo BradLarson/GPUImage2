@@ -18,7 +18,7 @@ open class TwoStageOperation: BasicOperation {
             downsamplingFramebuffer!.lock()
             downsamplingFramebuffer!.activateFramebufferForRendering()
             clearFramebufferWithColor(backgroundColor)
-            renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertices:standardImageVertices, inputTextures:textureProperties)
+            renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:textureProperties)
             releaseIncomingFramebuffers()
 
             firstStageTextureProperties = [downsamplingFramebuffer!.texturePropertiesForOutputRotation(.noRotation)]
@@ -39,7 +39,7 @@ open class TwoStageOperation: BasicOperation {
         uniformSettings["texelWidth"] = texelSize.width * (downsamplingFactor ?? 1.0)
         uniformSettings["texelHeight"] = texelSize.height * (downsamplingFactor ?? 1.0)
         
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:firstStageTextureProperties)
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:firstStageTextureProperties)
         if let downsamplingFramebuffer = downsamplingFramebuffer {
             downsamplingFramebuffer.unlock()
         } else {
@@ -56,15 +56,15 @@ open class TwoStageOperation: BasicOperation {
             beforeUpsamplingFramebuffer.activateFramebufferForRendering()
             beforeUpsamplingFramebuffer.lock()
             clearFramebufferWithColor(backgroundColor)
-            renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
+            renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
             firstStageFramebuffer.unlock()
             
             renderFramebuffer.activateFramebufferForRendering()
-            renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertices:standardImageVertices, inputTextures:[beforeUpsamplingFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
+            renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[beforeUpsamplingFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
             beforeUpsamplingFramebuffer.unlock()
         } else {
             renderFramebuffer.activateFramebufferForRendering()
-            renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
+            renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
             firstStageFramebuffer.unlock()
         }
     }

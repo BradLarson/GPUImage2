@@ -25,7 +25,7 @@ public class AverageLuminanceExtractor: BasicOperation {
         let luminancePassShader = crashOnShaderCompileFailure("AverageLuminance"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(1), fragmentShader:LuminanceFragmentShader)}
         let luminancePassFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:inputFramebuffers[0]!.orientation, size:inputFramebuffers[0]!.size)
         luminancePassFramebuffer.activateFramebufferForRendering()
-        renderQuadWithShader(luminancePassShader, vertices:standardImageVertices, inputTextures:[inputFramebuffers[0]!.texturePropertiesForTargetOrientation(luminancePassFramebuffer.orientation)])
+        renderQuadWithShader(luminancePassShader, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[inputFramebuffers[0]!.texturePropertiesForTargetOrientation(luminancePassFramebuffer.orientation)])
         
         averageColorBySequentialReduction(inputFramebuffer:luminancePassFramebuffer, shader:shader, extractAverageOperation:extractAverageLuminanceFromFramebuffer)
         releaseIncomingFramebuffers()

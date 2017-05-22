@@ -32,7 +32,7 @@ func vertexShaderForOptimizedBoxBlurOfRadius(_ radius:UInt) -> String {
     shaderString += "blurCoordinates[0] = inputTextureCoordinate.xy;\n"
     for currentOptimizedOffset in 0..<numberOfOptimizedOffsets {
         let optimizedOffset = Float(currentOptimizedOffset * 2) + 1.5
-        shaderString += "blurCoordinates[\((currentOptimizedOffset * 2) + 1)] = inputTextureCoordinate.xy + singleStepOffset * \(optimizedOffset);\n"
+        shaderString += "blurCoordinates[\((currentOptimizedOffset * 2) + 1)] = inputTextureCoordinate.xy - singleStepOffset * \(optimizedOffset);\n"
         shaderString += "blurCoordinates[\((currentOptimizedOffset * 2) + 2)] = inputTextureCoordinate.xy + singleStepOffset * \(optimizedOffset);\n"
     }
     

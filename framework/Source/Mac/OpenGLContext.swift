@@ -7,6 +7,8 @@ public class OpenGLContext: SerialDispatch {
     public lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
+    public let standardImageVBO:GLuint
+    
     var shaderCache:[String:ShaderProgram] = [:]
     
     let context:NSOpenGLContext
@@ -39,7 +41,9 @@ public class OpenGLContext: SerialDispatch {
         }
         
         self.context = generatedContext
-        self.context.makeCurrentContext()
+        generatedContext.makeCurrentContext()
+        
+        standardImageVBO = generateVBO(for:standardImageVertices)
         
         glDisable(GLenum(GL_DEPTH_TEST))
         glEnable(GLenum(GL_TEXTURE_2D))
