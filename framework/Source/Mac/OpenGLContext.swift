@@ -7,9 +7,10 @@ public class OpenGLContext: SerialDispatch {
     public lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
-    public let standardImageVBO:GLuint
     
     var shaderCache:[String:ShaderProgram] = [:]
+    public let standardImageVBO:GLuint
+    var textureVBOs:[Rotation:GLuint] = [:]
     
     let context:NSOpenGLContext
     

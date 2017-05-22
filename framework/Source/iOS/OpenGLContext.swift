@@ -10,6 +10,7 @@ public class OpenGLContext: SerialDispatch {
     }()
     var shaderCache:[String:ShaderProgram] = [:]
     public let standardImageVBO:GLuint
+    var textureVBOs:[Rotation:GLuint] = [:]
 
     let context:EAGLContext
     

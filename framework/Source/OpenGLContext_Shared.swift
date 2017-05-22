@@ -81,6 +81,22 @@ extension OpenGLContext {
         
         return adjustedSize
     }
+    
+    func generateTextureVBOs() {
+        textureVBOs[.noRotation] = generateVBO(for:Rotation.noRotation.textureCoordinates())
+        textureVBOs[.rotateCounterclockwise] = generateVBO(for:Rotation.rotateCounterclockwise.textureCoordinates())
+        textureVBOs[.rotateClockwise] = generateVBO(for:Rotation.rotateClockwise.textureCoordinates())
+        textureVBOs[.rotate180] = generateVBO(for:Rotation.rotate180.textureCoordinates())
+        textureVBOs[.flipHorizontally] = generateVBO(for:Rotation.flipHorizontally.textureCoordinates())
+        textureVBOs[.flipVertically] = generateVBO(for:Rotation.flipVertically.textureCoordinates())
+        textureVBOs[.rotateClockwiseAndFlipVertically] = generateVBO(for:Rotation.rotateClockwiseAndFlipVertically.textureCoordinates())
+        textureVBOs[.rotateClockwiseAndFlipHorizontally] = generateVBO(for:Rotation.rotateClockwiseAndFlipHorizontally.textureCoordinates())
+    }
+    
+    public func textureVBO(for rotation:Rotation) -> GLuint {
+        guard let textureVBO = textureVBOs[rotation] else {fatalError("GPUImage doesn't have a texture VBO set for the rotation \(rotation)") }
+        return textureVBO
+    }
 }
 
 @_semantics("sil.optimize.never") public func debugPrint(_ stringToPrint:String, file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
