@@ -45,6 +45,7 @@ public class OpenGLContext: SerialDispatch {
         generatedContext.makeCurrentContext()
         
         standardImageVBO = generateVBO(for:standardImageVertices)
+        generateTextureVBOs()
         
         glDisable(GLenum(GL_DEPTH_TEST))
         glEnable(GLenum(GL_TEXTURE_2D))

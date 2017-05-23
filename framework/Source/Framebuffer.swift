@@ -57,7 +57,10 @@ public class Framebuffer {
     let hash:Int64
     let textureOverride:Bool
     
+    weak var context:OpenGLContext?
+    
     public init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
+        self.context = context
         self.size = size
         self.orientation = orientation
         self.internalFormat = internalFormat
@@ -141,7 +144,7 @@ public class Framebuffer {
     }
 
     public func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
-        return InputTextureProperties(textureCoordinates:rotation.textureCoordinates(), texture:texture)
+        return InputTextureProperties(textureVBO:context!.textureVBO(for:rotation), texture:texture)
     }
 
     public func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {

@@ -17,9 +17,24 @@
 
 import Foundation
 
+public enum InputTextureStorageFormat {
+    case textureCoordinates([GLfloat])
+    case textureVBO(GLuint)
+}
+
 public struct InputTextureProperties {
-    public let textureCoordinates:[GLfloat]
+    public let textureStorage:InputTextureStorageFormat
     public let texture:GLuint
+    
+    public init(textureCoordinates:[GLfloat]? = nil, textureVBO:GLuint? = nil, texture:GLuint) {
+        self.texture = texture
+        switch (textureCoordinates, textureVBO) {
+            case let (.some(coordinates), .none): self.textureStorage = .textureCoordinates(coordinates)
+            case let (.none, .some(vbo)): self.textureStorage = .textureVBO(vbo)
+            case (.none, .none): fatalError("Need to specify either texture coordinates or a VBO to InputTextureProperties")
+            case (.some, .some): fatalError("Can't specify both texture coordinates and a VBO to InputTextureProperties")
+        }
+    }
 }
 
 public struct GLSize {
@@ -73,7 +88,15 @@ public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderU
 
     for (index, inputTexture) in inputTextures.enumerated() {
         if let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) {
-            glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, inputTexture.textureCoordinates)
+            switch inputTexture.textureStorage {
+                case let .textureCoordinates(textureCoordinates):
+                    print("Texture slow path")
+                    glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, textureCoordinates)
+                case let .textureVBO(textureVBO):
+                    glBindBuffer(GLenum(GL_ARRAY_BUFFER), textureVBO)
+                    glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, nil)
+                    glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
+            }
         } else if (index == 0) {
             fatalError("The required attribute named inputTextureCoordinate was missing from the shader program during rendering.")
         }
@@ -226,7 +249,6 @@ public func generateVBO(for vertices:[GLfloat]) -> GLuint {
     var newBuffer:GLuint = 0
     glGenBuffers(1, &newBuffer)
     glBindBuffer(GLenum(GL_ARRAY_BUFFER), newBuffer)
-    print("Allocating buffer for size: \(MemoryLayout<GLfloat>.size * vertices.count), at index: \(newBuffer)")
     glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLfloat>.size * vertices.count, vertices, GLenum(GL_STATIC_DRAW))
     glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
     return newBuffer
