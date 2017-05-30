@@ -19,6 +19,9 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     private var isRecording = false
     private var videoEncodingIsFinished = false
     private var audioEncodingIsFinished = false
+    private var allowWriteAudio: Bool = false
+    private var willFinish: Bool = false
+    private var completeHandler: (() -> (Void))? = nil
     private var startTime:CMTime?
     private var previousFrameTime = kCMTimeNegativeInfinity
     private var previousAudioTime = kCMTimeNegativeInfinity
@@ -66,6 +69,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
+            self.allowWriteAudio = false
             
             CVPixelBufferPoolCreatePixelBuffer(nil, self.assetWriterPixelBufferInput.pixelBufferPool!, &self.pixelBuffer)
             
@@ -89,14 +93,27 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     
     public func finishRecording(_ completionCallback:(() -> Void)? = nil) {
         sharedImageProcessingContext.runOperationSynchronously{
-            self.isRecording = false
+            self.willFinish = false
             
             if (self.assetWriter.status == .completed || self.assetWriter.status == .cancelled || self.assetWriter.status == .unknown) {
+                self.isRecording = false
                 sharedImageProcessingContext.runOperationAsynchronously{
                     completionCallback?()
                 }
                 return
             }
+            
+            self.allowWriteAudio = false
+            if (CMTimeCompare(previousFrameTime, previousAudioTime) == -1) {
+                // recoreded audio frame is longer than video frame
+                self.willFinish = true
+                completeHandler = completionCallback
+                return
+            }
+            
+            completeHandler = nil
+            self.isRecording = false
+            
             if ((self.assetWriter.status == .writing) && (!self.videoEncodingIsFinished)) {
                 self.videoEncodingIsFinished = true
                 self.assetWriterVideoInput.markAsFinished()
@@ -119,6 +136,11 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         defer {
             framebuffer.unlock()
+            
+            if willFinish && CMTimeCompare(previousFrameTime, previousAudioTime) != -1 {
+                willFinish = false
+                self.finishRecording(completeHandler)
+            }
         }
         guard isRecording else { return }
         // Ignore still images and other non-video updates (do I still need this?)
@@ -133,6 +155,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             
             assetWriter.startSession(atSourceTime: frameTime)
             startTime = frameTime
+            allowWriteAudio = true
         }
         
         // TODO: Run the following on an internal movie recording dispatch queue, context
@@ -188,7 +211,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     }
     
     public func processAudioBuffer(_ sampleBuffer:CMSampleBuffer) {
-        guard let assetWriterAudioInput = assetWriterAudioInput else { return }
+        guard let assetWriterAudioInput = assetWriterAudioInput, allowWriteAudio == true else { return }
         
         sharedImageProcessingContext.runOperationSynchronously{
             let currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
