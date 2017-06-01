@@ -90,7 +90,6 @@ public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderU
         if let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) {
             switch inputTexture.textureStorage {
                 case let .textureCoordinates(textureCoordinates):
-                    print("Texture slow path")
                     glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, textureCoordinates)
                 case let .textureVBO(textureVBO):
                     glBindBuffer(GLenum(GL_ARRAY_BUFFER), textureVBO)
@@ -252,6 +251,11 @@ public func generateVBO(for vertices:[GLfloat]) -> GLuint {
     glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLfloat>.size * vertices.count, vertices, GLenum(GL_STATIC_DRAW))
     glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
     return newBuffer
+}
+
+public func deleteVBO(_ vbo:GLuint) {
+    var deletedVBO = vbo
+    glDeleteBuffers(1, &deletedVBO)
 }
 
 extension String {
