@@ -46,7 +46,7 @@ public class Framebuffer {
     public var timingStyle:FramebufferTimingStyle = .stillImage
     public var orientation:ImageOrientation
 
-    let texture:GLuint
+    public let texture:GLuint
     let framebuffer:GLuint?
     let stencilBuffer:GLuint?
     public let size:GLSize
