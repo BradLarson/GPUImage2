@@ -28,7 +28,7 @@ public class RawDataOutput: ImageConsumer {
 
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.black)
-        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         framebuffer.unlock()
         
         var data = [UInt8](repeating:0, count:Int(framebuffer.size.width * framebuffer.size.height * 4))

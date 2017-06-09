@@ -167,7 +167,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.black)
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
-        renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertices:standardImageVertices, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
+        renderQuadWithShader(colorSwizzlingShader, uniformSettings:ShaderUniformSettings(), vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         
         if sharedImageProcessingContext.supportsTextureCaches() {
             glFinish()

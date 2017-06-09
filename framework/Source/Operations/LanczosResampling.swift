@@ -9,6 +9,7 @@ public class LanczosResampling: BasicOperation {
         // Shrink the vertical component of the first stage
         let inputSize = inputFramebuffer.sizeForTargetOrientation(.portrait)
         let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:inputSize.width, height:renderFramebuffer.size.height), stencil:false)
+        firstStageFramebuffer.lock()
         firstStageFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)
         
@@ -16,7 +17,7 @@ public class LanczosResampling: BasicOperation {
         uniformSettings["texelWidth"] = texelSize.width
         uniformSettings["texelHeight"] = texelSize.height
         
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:textureProperties)
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:textureProperties)
         releaseIncomingFramebuffers()
 
         // Shrink the width component of the result
@@ -25,7 +26,7 @@ public class LanczosResampling: BasicOperation {
         uniformSettings["texelHeight"] = 0.0
         
         renderFramebuffer.activateFramebufferForRendering()
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
         firstStageFramebuffer.unlock()
     }
 }

@@ -17,9 +17,24 @@
 
 import Foundation
 
+public enum InputTextureStorageFormat {
+    case textureCoordinates([GLfloat])
+    case textureVBO(GLuint)
+}
+
 public struct InputTextureProperties {
-    public let textureCoordinates:[GLfloat]
+    public let textureStorage:InputTextureStorageFormat
     public let texture:GLuint
+    
+    public init(textureCoordinates:[GLfloat]? = nil, textureVBO:GLuint? = nil, texture:GLuint) {
+        self.texture = texture
+        switch (textureCoordinates, textureVBO) {
+            case let (.some(coordinates), .none): self.textureStorage = .textureCoordinates(coordinates)
+            case let (.none, .some(vbo)): self.textureStorage = .textureVBO(vbo)
+            case (.none, .none): fatalError("Need to specify either texture coordinates or a VBO to InputTextureProperties")
+            case (.some, .some): fatalError("Can't specify both texture coordinates and a VBO to InputTextureProperties")
+        }
+    }
 }
 
 public struct GLSize {
@@ -48,17 +63,39 @@ public let standardImageVertices:[GLfloat] = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 
 public let verticallyInvertedImageVertices:[GLfloat] = [-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]
 
 // "position" and "inputTextureCoordinate", "inputTextureCoordinate2" attribute naming follows the convention of the old GPUImage
-public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat], inputTextures:[InputTextureProperties]) {
+public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat]? = nil, vertexBufferObject:GLuint? = nil, inputTextures:[InputTextureProperties]) {
+    switch (vertices, vertexBufferObject) {
+        case (.none, .some): break
+        case (.some, .none): break
+        case (.some, .some): fatalError("Can't specify both vertices and a VBO in renderQuadWithShader()")
+        case (.none, .none): fatalError("Can't specify both vertices and a VBO in renderQuadWithShader()")
+    }
+    
     sharedImageProcessingContext.makeCurrentContext()
     shader.use()
     uniformSettings?.restoreShaderSettings(shader)
 
     guard let positionAttribute = shader.attributeIndex("position") else { fatalError("A position attribute was missing from the shader program during rendering.") }
-    glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, vertices)
+
+
+    if let boundVBO = vertexBufferObject {
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), boundVBO)
+        glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, nil)
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
+    } else {
+        glVertexAttribPointer(positionAttribute, 2, GLenum(GL_FLOAT), 0, 0, vertices!)
+    }
 
     for (index, inputTexture) in inputTextures.enumerated() {
         if let textureCoordinateAttribute = shader.attributeIndex("inputTextureCoordinate".withNonZeroSuffix(index)) {
-            glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, inputTexture.textureCoordinates)
+            switch inputTexture.textureStorage {
+                case let .textureCoordinates(textureCoordinates):
+                    glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, textureCoordinates)
+                case let .textureVBO(textureVBO):
+                    glBindBuffer(GLenum(GL_ARRAY_BUFFER), textureVBO)
+                    glVertexAttribPointer(textureCoordinateAttribute, 2, GLenum(GL_FLOAT), 0, 0, nil)
+                    glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
+            }
         } else if (index == 0) {
             fatalError("The required attribute named inputTextureCoordinate was missing from the shader program during rendering.")
         }
@@ -70,6 +107,10 @@ public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderU
     }
     
     glDrawArrays(GLenum(GL_TRIANGLE_STRIP), 0, 4)
+    
+    if (vertexBufferObject != nil) {
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
+    }
     
     for (index, _) in inputTextures.enumerated() {
         glActiveTexture(textureUnitForIndex(index))
@@ -201,6 +242,20 @@ public func enableAdditiveBlending() {
 
 public func disableBlending() {
     glDisable(GLenum(GL_BLEND))
+}
+
+public func generateVBO(for vertices:[GLfloat]) -> GLuint {
+    var newBuffer:GLuint = 0
+    glGenBuffers(1, &newBuffer)
+    glBindBuffer(GLenum(GL_ARRAY_BUFFER), newBuffer)
+    glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLfloat>.size * vertices.count, vertices, GLenum(GL_STATIC_DRAW))
+    glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0)
+    return newBuffer
+}
+
+public func deleteVBO(_ vbo:GLuint) {
+    var deletedVBO = vbo
+    glDeleteBuffers(1, &deletedVBO)
 }
 
 extension String {

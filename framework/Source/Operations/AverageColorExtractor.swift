@@ -65,7 +65,7 @@ func averageColorBySequentialReduction(inputFramebuffer:Framebuffer, shader:Shad
         uniformSettings["texelHeight"] = 0.25 / currentStageSize.height
         
         currentFramebuffer.activateFramebufferForRendering()
-        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertices:standardImageVertices, inputTextures:[previousFramebuffer.texturePropertiesForTargetOrientation(currentFramebuffer.orientation)])
+        renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[previousFramebuffer.texturePropertiesForTargetOrientation(currentFramebuffer.orientation)])
         previousFramebuffer.unlock()
         previousFramebuffer = currentFramebuffer
     }
