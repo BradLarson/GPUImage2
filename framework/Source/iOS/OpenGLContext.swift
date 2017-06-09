@@ -34,12 +34,19 @@ public class OpenGLContext: SerialDispatch {
     init() {
         serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:81)
         
-        guard let generatedContext = EAGLContext(api:.openGLES2, sharegroup:imageProcessingShareGroup) else {
+        let generatedContext:EAGLContext?
+        if let shareGroup = imageProcessingShareGroup {
+            generatedContext = EAGLContext(api:.openGLES2, sharegroup:shareGroup)
+        } else {
+            generatedContext = EAGLContext(api:.openGLES2)
+        }
+        
+        guard let concreteGeneratedContext = generatedContext else {
             fatalError("Unable to create an OpenGL ES 2.0 context. The GPUImage framework requires OpenGL ES 2.0 support to work.")
         }
         
-        self.context = generatedContext
-        EAGLContext.setCurrent(generatedContext)
+        self.context = concreteGeneratedContext
+        EAGLContext.setCurrent(concreteGeneratedContext)
         
         standardImageVBO = generateVBO(for:standardImageVertices)
         generateTextureVBOs()
