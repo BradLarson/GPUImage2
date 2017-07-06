@@ -170,7 +170,7 @@ func textureUnitForIndex(_ index:Int) -> GLenum {
     }
 }
 
-func generateTexture(minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
+public func generateTexture(minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32) -> GLuint {
     var texture:GLuint = 0
     
     glActiveTexture(GLenum(GL_TEXTURE1))
@@ -184,6 +184,13 @@ func generateTexture(minFilter:Int32, magFilter:Int32, wrapS:Int32, wrapT:Int32)
     glBindTexture(GLenum(GL_TEXTURE_2D), 0)
     
     return texture
+}
+
+public func uploadLocalArray(data:[GLfloat], into texture:GLuint, size:GLSize) {
+    glActiveTexture(GLenum(GL_TEXTURE1))
+    glBindTexture(GLenum(GL_TEXTURE_2D), texture)
+    glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, size.width, size.height, 0, GLenum(GL_RGBA), GLenum(GL_FLOAT), data)
+    glBindTexture(GLenum(GL_TEXTURE_2D), 0)
 }
 
 func generateFramebufferForTexture(_ texture:GLuint, width:GLint, height:GLint, internalFormat:Int32, format:Int32, type:Int32, stencil:Bool) throws -> (GLuint, GLuint?) {
