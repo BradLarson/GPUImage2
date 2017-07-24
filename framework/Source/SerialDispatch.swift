@@ -18,20 +18,20 @@ extension SerialDispatch {
 
 #else
 
-public let standardProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
+public let standardProcessingQueuePriority:DispatchQoS.QoSClass = {
     // DispatchQueue.QoSClass.default
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalQueuePriority.default
+        return DispatchQoS.QoSClass.default
     } else {
-        return DispatchQueue.GlobalQueuePriority.default
+        return DispatchQoS.QoSClass.default
     }
 }()
     
-public let lowProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
+public let lowProcessingQueuePriority:DispatchQoS.QoSClass = {
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalQueuePriority.low
+        return DispatchQoS.QoSClass.utility
     } else {
-        return DispatchQueue.GlobalQueuePriority.low
+        return DispatchQoS.QoSClass.utility
     }
 }()
 
