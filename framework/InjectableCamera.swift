@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import ImageIO
 
 
 /// Errors describing InjectableCamera
@@ -33,14 +34,10 @@ public class InjectableCamera: NSObject, ImageSource {
     public let targets = TargetContainer()
     public var runBenchmark: Bool = false
     public var logFPS: Bool = false
-    
-    public var location: PhysicalCameraLocation {
-        didSet {
-            // TODO: Swap the camera locations, framebuffers as needed
-        }
-    }
+    public var onExifCaptured: ((_ exifData: CFTypeRef) -> ())?
     
     fileprivate var videoOutput: AVCaptureVideoDataOutput?
+    fileprivate var location: PhysicalCameraLocation
     
     fileprivate var originalCaptureVideoDataOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     fileprivate let frameRenderingSemaphore = DispatchSemaphore(value:1)
@@ -115,6 +112,7 @@ extension InjectableCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
         // Capture and handle image
         let isVideo = captureOutput is AVCaptureVideoDataOutput
         if isVideo {
+            handleExifData(sampleBuffer)
             handleSampleBuffer(sampleBuffer)
         }
         
@@ -126,6 +124,14 @@ extension InjectableCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
 
 // MARK: - Frame handling methods
 fileprivate extension InjectableCamera {
+    
+    func handleExifData(_ sampleBuffer: CMSampleBuffer) {
+        guard let onExifCaptured = onExifCaptured else { return }
+        
+        if let exif = CMGetAttachment(sampleBuffer, kCGImagePropertyExifDictionary as NSString, nil) {
+            onExifCaptured(exif)
+        }
+    }
     
     func initializeYUVSupport(fromVideoOutput videoOutput: AVCaptureVideoDataOutput) {
         let pixelFormatType: NSNumber
@@ -242,7 +248,6 @@ fileprivate extension InjectableCamera {
 fileprivate extension InjectableCamera {
     
     func getLuminanceFramebuffer(cameraFrame: CVImageBuffer, width: Int, height: Int) -> Framebuffer {
-        // TODO: Need optimalisation for iPhone 4S
         
         let luminanceFramebuffer: Framebuffer
         let videoTextureCache = sharedImageProcessingContext.coreVideoTextureCache
@@ -288,7 +293,6 @@ fileprivate extension InjectableCamera {
     }
     
     func getChrominanceFramebuffer(cameraFrame: CVImageBuffer, width: Int, height: Int) -> Framebuffer {
-        // TODO: Need optimalisation for iPhone 4S
         
         let chrominanceFramebuffer:Framebuffer
         let videoTextureCache = sharedImageProcessingContext.coreVideoTextureCache
