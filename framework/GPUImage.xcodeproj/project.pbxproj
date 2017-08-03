@@ -350,6 +350,8 @@
 		BCFF46FC1CBAF85000A0C521 /* TransformOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF46FB1CBAF85000A0C521 /* TransformOperation.swift */; };
 		BCFF46FE1CBB0C1F00A0C521 /* AverageColorExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF46FD1CBB0C1F00A0C521 /* AverageColorExtractor.swift */; };
 		BCFF47081CBB443B00A0C521 /* CameraConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF47071CBB443B00A0C521 /* CameraConversion.swift */; };
+		E914E4AC1F32FD29001A3058 /* MotionComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = E914E4AB1F32FD29001A3058 /* MotionComparison.swift */; };
+		E914E4AD1F32FFDB001A3058 /* MotionComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = E914E4AB1F32FD29001A3058 /* MotionComparison.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -620,7 +622,6 @@
 		BCE111A81CBC9960005293A4 /* AverageLuminanceThreshold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AverageLuminanceThreshold.swift; path = Source/Operations/AverageLuminanceThreshold.swift; sourceTree = "<group>"; };
 		BCE111AA1CBC9B1F005293A4 /* MotionDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MotionDetector.swift; path = Source/Operations/MotionDetector.swift; sourceTree = "<group>"; };
 		BCE111AC1CBC9BAC005293A4 /* MotionBlur.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = MotionBlur.vsh; path = Source/Operations/Shaders/MotionBlur.vsh; sourceTree = "<group>"; };
-		BCE111AD1CBC9BAC005293A4 /* MotionComparison_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = MotionComparison_GL.fsh; path = Source/Operations/Shaders/MotionComparison_GL.fsh; sourceTree = "<group>"; };
 		BCFB07131CBF2A5A009B2333 /* YUVConversionFullRange_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = YUVConversionFullRange_GL.fsh; path = Source/Operations/Shaders/YUVConversionFullRange_GL.fsh; sourceTree = "<group>"; };
 		BCFB07141CBF2A5A009B2333 /* YUVConversionVideoRange_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = YUVConversionVideoRange_GL.fsh; path = Source/Operations/Shaders/YUVConversionVideoRange_GL.fsh; sourceTree = "<group>"; };
 		BCFB07911CBF37A1009B2333 /* TextureInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextureInput.swift; path = Source/TextureInput.swift; sourceTree = "<group>"; };
@@ -686,6 +687,7 @@
 		BCFF46FF1CBB0D8900A0C521 /* AverageColor_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AverageColor_GL.fsh; path = Source/Operations/Shaders/AverageColor_GL.fsh; sourceTree = "<group>"; };
 		BCFF47001CBB0D8900A0C521 /* AverageColor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AverageColor.vsh; path = Source/Operations/Shaders/AverageColor.vsh; sourceTree = "<group>"; };
 		BCFF47071CBB443B00A0C521 /* CameraConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraConversion.swift; path = Source/CameraConversion.swift; sourceTree = "<group>"; };
+		E914E4AB1F32FD29001A3058 /* MotionComparison.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionComparison.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -924,8 +926,8 @@
 				BCFF46E91CBAF78D00A0C521 /* LanczosResampling.vsh */,
 				BCFF46FB1CBAF85000A0C521 /* TransformOperation.swift */,
 				BCFF46ED1CBAF78D00A0C521 /* Transform.vsh */,
+				E914E4AB1F32FD29001A3058 /* MotionComparison.swift */,
 				BCE111AA1CBC9B1F005293A4 /* MotionDetector.swift */,
-				BCE111AD1CBC9BAC005293A4 /* MotionComparison_GL.fsh */,
 				BCA4E2481CC3EF26007B51BA /* ColourFASTFeatureDetection.swift */,
 				BCA4E24B1CC3F3C5007B51BA /* ColourFASTDecriptor.vsh */,
 				BCA4E24A1CC3F3C5007B51BA /* ColourFASTDecriptor_GL.fsh */,
@@ -1417,6 +1419,7 @@
 				BC1E12FA1C9F4CAB008F844F /* DissolveBlend.swift in Sources */,
 				BC7FD0B91CA7793500037949 /* CGAColorspaceFilter.swift in Sources */,
 				BCFF46B41CB756B800A0C521 /* SmoothToonFilter.swift in Sources */,
+				E914E4AD1F32FFDB001A3058 /* MotionComparison.swift in Sources */,
 				BC7FD15D1CB0CCD000037949 /* ColorMatrixFilter.swift in Sources */,
 				BCE111A51CBC94FD005293A4 /* AverageLuminanceExtractor.swift in Sources */,
 				BC7729601CB31ED0004C9E0B /* EmbossFilter.swift in Sources */,
@@ -1617,6 +1620,7 @@
 				BC9E351B1E524CF500B8604F /* PictureInput.swift in Sources */,
 				BC9E35631E5256AA00B8604F /* Luminance.swift in Sources */,
 				BC9E35BE1E5257CB00B8604F /* AddBlend.swift in Sources */,
+				E914E4AC1F32FD29001A3058 /* MotionComparison.swift in Sources */,
 				BC9E35801E52570700B8604F /* ChromaKeying.swift in Sources */,
 				BC9E35401E524D8900B8604F /* Size.swift in Sources */,
 				BC9E35441E524D9000B8604F /* FillMode.swift in Sources */,
