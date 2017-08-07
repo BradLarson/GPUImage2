@@ -34,10 +34,10 @@ public class InjectableCamera: NSObject, ImageSource {
     public let targets = TargetContainer()
     public var runBenchmark: Bool = false
     public var logFPS: Bool = false
+    public var location: PhysicalCameraLocation
     public var onExifCaptured: ((_ exifData: CFTypeRef) -> ())?
     
     fileprivate var videoOutput: AVCaptureVideoDataOutput?
-    fileprivate var location: PhysicalCameraLocation
     
     fileprivate var originalCaptureVideoDataOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     fileprivate let frameRenderingSemaphore = DispatchSemaphore(value:1)
@@ -57,7 +57,7 @@ public class InjectableCamera: NSObject, ImageSource {
     // MARK: - Initialization
     
     public init(withSession session: AVCaptureSession,
-                location: PhysicalCameraLocation = .frontFacing,
+                location: PhysicalCameraLocation = .backFacing,
                 captureAsYUV: Bool = true) throws {
         
         self.location = location
@@ -95,7 +95,8 @@ public class InjectableCamera: NSObject, ImageSource {
     deinit {
         sharedImageProcessingContext.runOperationSynchronously {
             self.videoOutput?.setSampleBufferDelegate(
-                originalCaptureVideoDataOutputDelegate, queue: .main)
+                originalCaptureVideoDataOutputDelegate,
+                queue: DispatchQueue.global(qos: .default))
         }
     }
     
@@ -115,8 +116,7 @@ extension InjectableCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
                               from connection: AVCaptureConnection!) {
         
         // Capture and handle image
-        let isVideo = captureOutput is AVCaptureVideoDataOutput
-        if isVideo {
+        if captureOutput is AVCaptureVideoDataOutput {
             handleExifData(sampleBuffer)
             handleSampleBuffer(sampleBuffer)
         }
