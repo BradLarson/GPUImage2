@@ -27,6 +27,11 @@ infix operator --> : AdditionPrecedence
     return destination
 }
 
+@discardableResult public func -->(source:ImageSource, destination:ImageConsumer) -> ImageConsumer {
+    source.addTarget(destination)
+    return destination
+}
+
 // MARK: -
 // MARK: Extensions and supporting types
 
