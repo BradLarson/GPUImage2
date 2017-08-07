@@ -41,6 +41,7 @@ public class InjectableCamera: NSObject, ImageSource {
     
     fileprivate var originalCaptureVideoDataOutputDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     fileprivate let frameRenderingSemaphore = DispatchSemaphore(value:1)
+    fileprivate let cameraProcessingQueue = DispatchQueue.global(qos: .default)
     
     // Logging properties
     fileprivate var numberOfFramesCaptured = 0
@@ -75,7 +76,11 @@ public class InjectableCamera: NSObject, ImageSource {
                 self.originalCaptureVideoDataOutputDelegate = videoOutput.sampleBufferDelegate;
                 
                 // Assign our own delegate
-                videoOutput.setSampleBufferDelegate(self, queue: .main)
+                videoOutput.setSampleBufferDelegate(self, queue: cameraProcessingQueue)
+                
+                // TODO: Determine if it is a good idea
+                // Drops late frames
+                videoOutput.alwaysDiscardsLateVideoFrames = true
                 
                 hasOriginalVideoOutput = true
                 continue
