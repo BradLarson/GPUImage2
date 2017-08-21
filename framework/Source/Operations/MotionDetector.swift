@@ -1,9 +1,10 @@
 public class MotionDetector: OperationGroup {
     public var lowPassStrength:Float = 1.0 { didSet {lowPassFilter.strength = lowPassStrength}}
+    public var treshold:Float = 0.2 { didSet {motionComparison.treshold = treshold}}
     public var motionDetectedCallback:((Position, Float) -> ())?
     
     let lowPassFilter = LowPassFilter()
-    let motionComparison = BasicOperation(fragmentShader:MotionComparisonFragmentShader, numberOfInputs:2)
+    let motionComparison = MotionComparison()
     let averageColorExtractor = AverageColorExtractor()
     
     public override init() {
