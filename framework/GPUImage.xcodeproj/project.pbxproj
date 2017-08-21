@@ -352,6 +352,8 @@
 		BCFF47081CBB443B00A0C521 /* CameraConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF47071CBB443B00A0C521 /* CameraConversion.swift */; };
 		E914E4AC1F32FD29001A3058 /* MotionComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = E914E4AB1F32FD29001A3058 /* MotionComparison.swift */; };
 		E914E4AD1F32FFDB001A3058 /* MotionComparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = E914E4AB1F32FD29001A3058 /* MotionComparison.swift */; };
+		E9522C671F4B1B1B00FC3E88 /* ObjectMotionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9522C661F4B1B1B00FC3E88 /* ObjectMotionDetector.swift */; };
+		E9522C681F4B1B1B00FC3E88 /* ObjectMotionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9522C661F4B1B1B00FC3E88 /* ObjectMotionDetector.swift */; };
 		E99574761F25ECAE00B768F8 /* InjectableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3BAE71F25E8E8001565B1 /* InjectableCamera.swift */; };
 /* End PBXBuildFile section */
 
@@ -689,6 +691,7 @@
 		BCFF47001CBB0D8900A0C521 /* AverageColor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AverageColor.vsh; path = Source/Operations/Shaders/AverageColor.vsh; sourceTree = "<group>"; };
 		BCFF47071CBB443B00A0C521 /* CameraConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraConversion.swift; path = Source/CameraConversion.swift; sourceTree = "<group>"; };
 		E914E4AB1F32FD29001A3058 /* MotionComparison.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionComparison.swift; sourceTree = "<group>"; };
+		E9522C661F4B1B1B00FC3E88 /* ObjectMotionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectMotionDetector.swift; sourceTree = "<group>"; };
 		E9E3BAE71F25E8E8001565B1 /* InjectableCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InjectableCamera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -930,6 +933,7 @@
 				BCFF46ED1CBAF78D00A0C521 /* Transform.vsh */,
 				E914E4AB1F32FD29001A3058 /* MotionComparison.swift */,
 				BCE111AA1CBC9B1F005293A4 /* MotionDetector.swift */,
+				E9522C661F4B1B1B00FC3E88 /* ObjectMotionDetector.swift */,
 				BCA4E2481CC3EF26007B51BA /* ColourFASTFeatureDetection.swift */,
 				BCA4E24B1CC3F3C5007B51BA /* ColourFASTDecriptor.vsh */,
 				BCA4E24A1CC3F3C5007B51BA /* ColourFASTDecriptor_GL.fsh */,
@@ -1410,6 +1414,7 @@
 				BC7FD0F71CB0620E00037949 /* ChromaKeyBlend.swift in Sources */,
 				BC7FD0861CA62E1100037949 /* BrightnessAdjustment.swift in Sources */,
 				BC7FD1631CB17C8D00037949 /* ImageOrientation.swift in Sources */,
+				E9522C671F4B1B1B00FC3E88 /* ObjectMotionDetector.swift in Sources */,
 				BC9673411C8B897100FB64C2 /* FramebufferCache.swift in Sources */,
 				BC7FD0BB1CA7799B00037949 /* Halftone.swift in Sources */,
 				BC4EE15A1CB346F300AD8A65 /* SketchFilter.swift in Sources */,
@@ -1606,6 +1611,7 @@
 				BC9E35951E52574700B8604F /* Crop.swift in Sources */,
 				BC9E35321E524D7600B8604F /* SerialDispatch.swift in Sources */,
 				BC9E35651E5256B500B8604F /* ExposureAdjustment.swift in Sources */,
+				E9522C681F4B1B1B00FC3E88 /* ObjectMotionDetector.swift in Sources */,
 				BC9E35821E52570D00B8604F /* Laplacian.swift in Sources */,
 				BC9E35B91E5257B900B8604F /* TiltShift.swift in Sources */,
 				BC9E35771E5256E800B8604F /* SoftElegance.swift in Sources */,
