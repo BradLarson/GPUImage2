@@ -46,12 +46,10 @@ for fileName in fileNames {
         shaderPlatform = .Both
     }
     
-    var accumulatedString = "public let \(convertedShaderName) = \""
+    var accumulatedString = "public let \(convertedShaderName) = \"\"\"\n"
     let fileContents = try String(contentsOfFile:fileName, encoding:String.Encoding.ascii)
-    fileContents.enumerateLines {line, stop in
-        accumulatedString += "\(line.replacingOccurrences(of:"\"", with:"\\\""))\\n "
-    }
-    accumulatedString += "\"\n"
+    accumulatedString += fileContents
+    accumulatedString += "\n\"\"\"\n"
     
     switch (shaderPlatform) {
     case .OpenGL: allConvertedGLShaders += accumulatedString
