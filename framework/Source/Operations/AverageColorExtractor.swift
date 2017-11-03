@@ -31,7 +31,7 @@ public class AverageColorExtractor: BasicOperation {
         var data = [UInt8](repeating:0, count:Int(framebuffer.size.width * framebuffer.size.height * 4))
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), &data)
         renderFramebuffer = framebuffer
-        framebuffer.resetRetainCount()
+        
 
         let totalNumberOfPixels = Int(framebuffer.size.width * framebuffer.size.height)
 
@@ -55,18 +55,18 @@ func averageColorBySequentialReduction(inputFramebuffer:Framebuffer, shader:Shad
     let numberOfReductionsInX = floor(log(Double(inputSize.width)) / log(4.0))
     let numberOfReductionsInY = floor(log(Double(inputSize.height)) / log(4.0))
     let reductionsToHitSideLimit = Int(floor(min(numberOfReductionsInX, numberOfReductionsInY)))
-    inputFramebuffer.lock()
+    
     var previousFramebuffer = inputFramebuffer
     for currentReduction in 0..<reductionsToHitSideLimit {
         let currentStageSize = Size(width:Float(floor(Double(inputSize.width) / pow(4.0, Double(currentReduction) + 1.0))), height:Float(floor(Double(inputSize.height) / pow(4.0, Double(currentReduction) + 1.0))))
         let currentFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:previousFramebuffer.orientation, size:GLSize(currentStageSize))
-        currentFramebuffer.lock()
+        
         uniformSettings["texelWidth"] = 0.25 / currentStageSize.width
         uniformSettings["texelHeight"] = 0.25 / currentStageSize.height
         
         currentFramebuffer.activateFramebufferForRendering()
         renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[previousFramebuffer.texturePropertiesForTargetOrientation(currentFramebuffer.orientation)])
-        previousFramebuffer.unlock()
+        
         previousFramebuffer = currentFramebuffer
     }
     

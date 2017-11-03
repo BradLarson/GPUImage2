@@ -13,13 +13,13 @@ public class ImageBuffer: ImageProcessingOperation {
         if (bufferedFramebuffers.count > Int(bufferSize)) {
             let releasedFramebuffer = bufferedFramebuffers.removeFirst()
             updateTargetsWithFramebuffer(releasedFramebuffer)
-            releasedFramebuffer.unlock()
+            
         } else if activatePassthroughOnNextFrame {
             activatePassthroughOnNextFrame = false
             // Pass along the current frame to keep processing going until the buffer is built up
-            framebuffer.lock()
+            
             updateTargetsWithFramebuffer(framebuffer)
-            framebuffer.unlock()
+            
         }
     }
     

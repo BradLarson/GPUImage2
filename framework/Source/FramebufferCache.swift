@@ -15,7 +15,7 @@
 // TODO: Add mechanism to purge framebuffers on low memory
 
 public class FramebufferCache {
-    var framebufferCache = [Int64:[Framebuffer]]()
+    var framebufferCache = [Int64:[Framebuffer.Core]]()
     let context:OpenGLContext
     
     init(context:OpenGLContext) {
@@ -24,35 +24,35 @@ public class FramebufferCache {
     
     public func requestFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Framebuffer {
         let hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
-        let framebuffer:Framebuffer
+        let core:Framebuffer.Core
         if ((framebufferCache[hash]?.count ?? -1) > 0) {
 //            print("Restoring previous framebuffer")
-            framebuffer = framebufferCache[hash]!.removeLast()
-            framebuffer.orientation = orientation
+            core = framebufferCache[hash]!.removeLast()
+            core.orientation = orientation
         } else {
             do {
                 debugPrint("Generating new framebuffer at size: \(size)")
 
-                framebuffer = try Framebuffer(context:context, orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
-                framebuffer.cache = self
+                core = try Framebuffer.Core(context:context, orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+                core.cache = self
             } catch {
                 fatalError("Could not create a framebuffer of the size (\(size.width), \(size.height)), error: \(error)")
             }
         }
-        return framebuffer
+        return Framebuffer(with:core)
     }
     
     public func purgeAllUnassignedFramebuffers() {
         framebufferCache.removeAll()
     }
     
-    func returnToCache(_ framebuffer:Framebuffer) {
+    internal func returnToCache(_ core:Framebuffer.Core) {
 //        print("Returning to cache: \(framebuffer)")
         context.runOperationSynchronously{
-            if (self.framebufferCache[framebuffer.hash] != nil) {
-                self.framebufferCache[framebuffer.hash]!.append(framebuffer)
+            if (self.framebufferCache[core.hash] != nil) {
+                self.framebufferCache[core.hash]!.append(core)
             } else {
-                self.framebufferCache[framebuffer.hash] = [framebuffer]
+                self.framebufferCache[core.hash] = [core]
             }
         }
     }

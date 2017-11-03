@@ -21,13 +21,12 @@ open class BasicOperation: ImageProcessingOperation {
         didSet {
             if let mask = mask {
                 maskImageRelay.newImageCallback = {[weak self] framebuffer in
-                    self?.maskFramebuffer?.unlock()
-                    framebuffer.lock()
+                    
                     self?.maskFramebuffer = framebuffer
                 }
                 mask.addTarget(maskImageRelay)
             } else {
-                maskFramebuffer?.unlock()
+                
                 maskImageRelay.removeSourceAtIndex(0)
                 maskFramebuffer = nil
             }
@@ -85,9 +84,6 @@ open class BasicOperation: ImageProcessingOperation {
     // MARK: Rendering
     
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
-        if let previousFramebuffer = inputFramebuffers[fromSourceIndex] {
-            previousFramebuffer.unlock()
-        }
         inputFramebuffers[fromSourceIndex] = framebuffer
 
         guard (!activatePassthroughOnNextFrame) else { // Use this to allow a bootstrap of cyclical processing, like with a low pass filter
@@ -143,7 +139,7 @@ open class BasicOperation: ImageProcessingOperation {
                     renderFramebuffer.timingStyle = .videoFrame(timestamp:timestamp)
                 }
                 
-                framebuffer.unlock()
+                
             } else {
                 remainingFramebuffers[key] = framebuffer
             }
@@ -186,7 +182,7 @@ open class BasicOperation: ImageProcessingOperation {
         sharedImageProcessingContext.runOperationAsynchronously{
             guard let renderFramebuffer = self.renderFramebuffer, (!renderFramebuffer.timingStyle.isTransient()) else { return }
             
-            renderFramebuffer.lock()
+            
             target.newFramebufferAvailable(renderFramebuffer, fromSourceIndex:atIndex)
         }
     }

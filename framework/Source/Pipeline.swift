@@ -52,15 +52,6 @@ public extension ImageSource {
     }
     
     public func updateTargetsWithFramebuffer(_ framebuffer:Framebuffer) {
-        if targets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
-            framebuffer.lock()
-            framebuffer.unlock()
-        } else {
-            // Lock first for each output, to guarantee proper ordering on multi-output operations
-            for _ in targets {
-                framebuffer.lock()
-            }
-        }
         for (target, index) in targets {
             target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
         }
@@ -215,11 +206,6 @@ public class ImageRelay: ImageProcessingOperation {
     }
     
     public func relayFramebufferOnward(_ framebuffer:Framebuffer) {
-        // Need to override to guarantee a removal of the previously applied lock
-        for _ in targets {
-            framebuffer.lock()
-        }
-        framebuffer.unlock()
         for (target, index) in targets {
             target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
         }

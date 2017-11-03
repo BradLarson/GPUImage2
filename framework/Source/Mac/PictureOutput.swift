@@ -41,7 +41,7 @@ public class PictureOutput: ImageConsumer {
     // TODO: Replace with texture caches and a safer capture routine
     func cgImageFromFramebuffer(_ framebuffer:Framebuffer) -> CGImage {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
-        renderFramebuffer.lock()
+        
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.transparent)
 
@@ -52,12 +52,12 @@ public class PictureOutput: ImageConsumer {
 
         disableBlending()
         
-        framebuffer.unlock()
+        
         
         let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
         let data = UnsafeMutablePointer<UInt8>.allocate(capacity:imageByteSize)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
-        renderFramebuffer.unlock()
+        
         guard let dataProvider = CGDataProvider(dataInfo: nil, data: data, size: imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not create CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         

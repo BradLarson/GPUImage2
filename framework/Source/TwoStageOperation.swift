@@ -15,7 +15,7 @@ open class TwoStageOperation: BasicOperation {
         if let downsamplingFactor = downsamplingFactor {
             internalStageSize = GLSize(Size(width:max(5.0, Float(renderFramebuffer.size.width) / downsamplingFactor), height:max(5.0, Float(renderFramebuffer.size.height) / downsamplingFactor)))
             downsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
-            downsamplingFramebuffer!.lock()
+            
             downsamplingFramebuffer!.activateFramebufferForRendering()
             clearFramebufferWithColor(backgroundColor)
             renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:textureProperties)
@@ -30,7 +30,7 @@ open class TwoStageOperation: BasicOperation {
 
         // Render first stage
         let firstStageFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
-        firstStageFramebuffer.lock()
+        
 
         firstStageFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(backgroundColor)
@@ -40,9 +40,8 @@ open class TwoStageOperation: BasicOperation {
         uniformSettings["texelHeight"] = texelSize.height * (downsamplingFactor ?? 1.0)
         
         renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:firstStageTextureProperties)
-        if let downsamplingFramebuffer = downsamplingFramebuffer {
-            downsamplingFramebuffer.unlock()
-        } else {
+        
+        if downsamplingFramebuffer == nil {
             releaseIncomingFramebuffers()
         }
         
@@ -54,18 +53,18 @@ open class TwoStageOperation: BasicOperation {
         if (downsamplingFactor != nil) {
             let beforeUpsamplingFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:internalStageSize, stencil:false)
             beforeUpsamplingFramebuffer.activateFramebufferForRendering()
-            beforeUpsamplingFramebuffer.lock()
+            
             clearFramebufferWithColor(backgroundColor)
             renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
-            firstStageFramebuffer.unlock()
+            
             
             renderFramebuffer.activateFramebufferForRendering()
             renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:nil, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[beforeUpsamplingFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
-            beforeUpsamplingFramebuffer.unlock()
+            
         } else {
             renderFramebuffer.activateFramebufferForRendering()
             renderQuadWithShader(shader, uniformSettings:uniformSettings, vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[firstStageFramebuffer.texturePropertiesForOutputRotation(.noRotation)])
-            firstStageFramebuffer.unlock()
+            
         }
     }
 }
