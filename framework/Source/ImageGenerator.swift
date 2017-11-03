@@ -14,7 +14,6 @@ public class ImageGenerator: ImageSource {
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
-        imageFramebuffer.lock()
         target.newFramebufferAvailable(imageFramebuffer, fromSourceIndex:atIndex)
     }
     

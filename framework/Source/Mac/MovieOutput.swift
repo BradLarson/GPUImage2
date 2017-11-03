@@ -89,9 +89,6 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     }
     
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
-        defer {
-            framebuffer.unlock()
-        }
         
         guard isRecording else { return }
         // Ignore still images and other non-video updates (do I still need this?)
@@ -132,7 +129,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     
     func renderIntoPixelBuffer(_ pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
-        renderFramebuffer.lock()
+        
         
         renderFramebuffer.activateFramebufferForRendering()
         clearFramebufferWithColor(Color.black)
@@ -141,7 +138,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
 
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
         glReadPixels(0, 0, renderFramebuffer.size.width, renderFramebuffer.size.height, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
-        renderFramebuffer.unlock()
+        
     }
     
     // MARK: -

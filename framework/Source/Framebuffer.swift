@@ -43,143 +43,243 @@ public enum FramebufferTimingStyle {
 }
 
 public class Framebuffer {
-    public var timingStyle:FramebufferTimingStyle = .stillImage
-    public var orientation:ImageOrientation
-
-    public let texture:GLuint
-    let framebuffer:GLuint?
-    let stencilBuffer:GLuint?
-    public let size:GLSize
-    let internalFormat:Int32
-    let format:Int32
-    let type:Int32
-
-    let hash:Int64
-    let textureOverride:Bool
     
-    weak var context:OpenGLContext?
-    
-    public init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
-        self.context = context
-        self.size = size
-        self.orientation = orientation
-        self.internalFormat = internalFormat
-        self.format = format
-        self.type = type
+    internal class Core {
         
-        self.hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
-
-        if let newTexture = overriddenTexture {
-            textureOverride = true
-            texture = newTexture
-        } else {
-            textureOverride = false
-            texture = generateTexture(minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT)
-        }
+        public var timingStyle:FramebufferTimingStyle = .stillImage
+        public var orientation:ImageOrientation
         
-        if (!textureOnly) {
-            do {
-                let (createdFrameBuffer, createdStencil) = try generateFramebufferForTexture(texture, width:size.width, height:size.height, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
-                framebuffer = createdFrameBuffer
-                stencilBuffer = createdStencil
-            } catch {
+        public let texture:GLuint
+        let framebuffer:GLuint?
+        let stencilBuffer:GLuint?
+        public let size:GLSize
+        let internalFormat:Int32
+        let format:Int32
+        let type:Int32
+        
+        let hash:Int64
+        let textureOverride:Bool
+        
+        weak var context:OpenGLContext?
+        
+        public init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
+            self.context = context
+            self.size = size
+            self.orientation = orientation
+            self.internalFormat = internalFormat
+            self.format = format
+            self.type = type
+            
+            self.hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+            
+            if let newTexture = overriddenTexture {
+                textureOverride = true
+                texture = newTexture
+            } else {
+                textureOverride = false
+                texture = generateTexture(minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT)
+            }
+            
+            if (!textureOnly) {
+                do {
+                    let (createdFrameBuffer, createdStencil) = try generateFramebufferForTexture(texture, width:size.width, height:size.height, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
+                    framebuffer = createdFrameBuffer
+                    stencilBuffer = createdStencil
+                } catch {
+                    stencilBuffer = nil
+                    framebuffer = nil
+                    throw error
+                }
+            } else {
                 stencilBuffer = nil
                 framebuffer = nil
-                throw error
             }
-        } else {
-            stencilBuffer = nil
-            framebuffer = nil
-        }
-    }
-    
-    deinit {
-        if (!textureOverride) {
-            var mutableTexture = texture
-            glDeleteTextures(1, &mutableTexture)
-            debugPrint("Delete texture at size: \(size)")
         }
         
-        if let framebuffer = framebuffer {
-			var mutableFramebuffer = framebuffer
-            glDeleteFramebuffers(1, &mutableFramebuffer)
+        deinit{
+            if (!textureOverride) {
+                var mutableTexture = texture
+                glDeleteTextures(1, &mutableTexture)
+                debugPrint("Delete texture at size: \(size)")
+            }
+            
+            if let framebuffer = framebuffer {
+                var mutableFramebuffer = framebuffer
+                glDeleteFramebuffers(1, &mutableFramebuffer)
+            }
+            
+            if let stencilBuffer = stencilBuffer {
+                var mutableStencil = stencilBuffer
+                glDeleteRenderbuffers(1, &mutableStencil)
+            }
         }
-
-        if let stencilBuffer = stencilBuffer {
-            var mutableStencil = stencilBuffer
-            glDeleteRenderbuffers(1, &mutableStencil)
+        
+        func sizeForTargetOrientation(_ targetOrientation:ImageOrientation) -> GLSize {
+            if self.orientation.rotationNeededForOrientation(targetOrientation).flipsDimensions() {
+                return GLSize(width:size.height, height:size.width)
+            } else {
+                return size
+            }
+        }
+        
+        func aspectRatioForRotation(_ rotation:Rotation) -> Float {
+            if rotation.flipsDimensions() {
+                return Float(size.width) / Float(size.height)
+            } else {
+                return Float(size.height) / Float(size.width)
+            }
+        }
+        
+        public func texelSize(for rotation:Rotation) -> Size {
+            if rotation.flipsDimensions() {
+                return Size(width:1.0 / Float(size.height), height:1.0 / Float(size.width))
+            } else {
+                return Size(width:1.0 / Float(size.width), height:1.0 / Float(size.height))
+            }
+        }
+        
+        func initialStageTexelSize(for rotation:Rotation) -> Size {
+            if rotation.flipsDimensions() {
+                return Size(width:1.0 / Float(size.height), height:0.0)
+            } else {
+                return Size(width:0.0, height:1.0 / Float(size.height))
+            }
+        }
+        
+        public func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
+            return InputTextureProperties(textureVBO:context!.textureVBO(for:rotation), texture:texture)
+        }
+        
+        public func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {
+            return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
+        }
+        
+        public func activateFramebufferForRendering() {
+            guard let framebuffer = framebuffer else { fatalError("ERROR: Attempted to activate a framebuffer that has not been initialized") }
+            glBindFramebuffer(GLenum(GL_FRAMEBUFFER), framebuffer)
+            glViewport(0, 0, size.width, size.height)
+        }
+        
+        // MARK: -
+        // MARK: Framebuffer cache
+        
+        weak var cache:FramebufferCache?
+    }
+    
+    private let core : Core
+    
+    public var timingStyle: FramebufferTimingStyle {
+        
+        get {
+            return self.core.timingStyle
+        }
+        
+        set {
+            self.core.timingStyle = newValue
+        }
+        
+    }
+    
+    public var orientation: ImageOrientation {
+        get {
+            return self.core.orientation
+        }
+        set {
+            self.core.orientation = newValue
         }
     }
     
-    func sizeForTargetOrientation(_ targetOrientation:ImageOrientation) -> GLSize {
-        if self.orientation.rotationNeededForOrientation(targetOrientation).flipsDimensions() {
-            return GLSize(width:size.height, height:size.width)
-        } else {
-            return size
+    public let texture: GLuint
+    
+    internal let framebuffer: GLuint?
+    
+    internal let stencilBuffer: GLuint?
+    
+    public let size: GLSize
+    
+    internal let internalFormat: Int32
+    
+    internal let format: Int32
+    
+    internal let type: Int32
+    
+    internal let hash: Int64
+    
+    internal let textureOverride: Bool
+    
+    weak internal var cache: FramebufferCache? {
+        get {
+            return self.core.cache
+        }
+        set {
+            self.core.cache = newValue
+        }
+    }
+
+    
+    weak internal var context: OpenGLContext? {
+        get {
+            return self.core.context
+        }
+        set {
+            self.core.context = newValue
         }
     }
     
-    func aspectRatioForRotation(_ rotation:Rotation) -> Float {
-        if rotation.flipsDimensions() {
-            return Float(size.width) / Float(size.height)
-        } else {
-            return Float(size.height) / Float(size.width)
-        }
+    internal init(with core: Core) {
+        
+        self.core = core
+        
+        self.texture = core.texture
+        self.framebuffer = core.framebuffer
+        self.stencilBuffer = core.stencilBuffer
+        self.size = core.size
+        self.internalFormat = core.internalFormat
+        self.format = core.format
+        self.type = core.type
+        self.hash = core.hash
+        self.textureOverride = core.textureOverride
+        
     }
-
-    public func texelSize(for rotation:Rotation) -> Size {
-        if rotation.flipsDimensions() {
-            return Size(width:1.0 / Float(size.height), height:1.0 / Float(size.width))
-        } else {
-            return Size(width:1.0 / Float(size.width), height:1.0 / Float(size.height))
-        }
+    
+    public convenience init(context:OpenGLContext, orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false, overriddenTexture:GLuint? = nil) throws {
+        
+        try self.init(with:Core(context: context, orientation: orientation, size: size, textureOnly: textureOnly, minFilter: minFilter, magFilter: magFilter, wrapS: wrapS, wrapT: wrapT, internalFormat: internalFormat, format: format, type: type, stencil: stencil, overriddenTexture: overriddenTexture))
+    
     }
-
-    func initialStageTexelSize(for rotation:Rotation) -> Size {
-        if rotation.flipsDimensions() {
-            return Size(width:1.0 / Float(size.height), height:0.0)
-        } else {
-            return Size(width:0.0, height:1.0 / Float(size.height))
-        }
+    internal func sizeForTargetOrientation(_ targetOrientation: ImageOrientation) -> GLSize {
+        return self.core.sizeForTargetOrientation(targetOrientation)
     }
-
-    public func texturePropertiesForOutputRotation(_ rotation:Rotation) -> InputTextureProperties {
-        return InputTextureProperties(textureVBO:context!.textureVBO(for:rotation), texture:texture)
+    
+    internal func aspectRatioForRotation(_ rotation: Rotation) -> Float {
+        return self.core.aspectRatioForRotation(rotation)
     }
-
-    public func texturePropertiesForTargetOrientation(_ targetOrientation:ImageOrientation) -> InputTextureProperties {
-        return texturePropertiesForOutputRotation(self.orientation.rotationNeededForOrientation(targetOrientation))
+    
+    public func texelSize(for rotation: Rotation) -> Size {
+        return self.core.texelSize(for:rotation)
+    }
+    
+    internal func initialStageTexelSize(for rotation: Rotation) -> Size {
+        return self.core.initialStageTexelSize(for:rotation)
+    }
+    
+    public func texturePropertiesForOutputRotation(_ rotation: Rotation) -> InputTextureProperties {
+        return self.core.texturePropertiesForOutputRotation(rotation)
+    }
+    
+    public func texturePropertiesForTargetOrientation(_ targetOrientation: ImageOrientation) -> InputTextureProperties {
+        return self.core.texturePropertiesForTargetOrientation(targetOrientation)
     }
     
     public func activateFramebufferForRendering() {
-        guard let framebuffer = framebuffer else { fatalError("ERROR: Attempted to activate a framebuffer that has not been initialized") }
-        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), framebuffer)
-        glViewport(0, 0, size.width, size.height)
-    }
-    
-    // MARK: -
-    // MARK: Framebuffer cache
-
-    weak var cache:FramebufferCache?
-    var framebufferRetainCount = 0
-    func lock() {
-        framebufferRetainCount += 1
+        self.core.activateFramebufferForRendering()
     }
 
-    func resetRetainCount() {
-        framebufferRetainCount = 0
+    deinit {
+        self.core.cache?.returnToCache(self.core)
     }
     
-    public func unlock() {
-        framebufferRetainCount -= 1
-        if (framebufferRetainCount < 1) {
-            if ((framebufferRetainCount < 0) && (cache != nil)) {
-                print("WARNING: Tried to overrelease a framebuffer")
-            }
-            framebufferRetainCount = 0
-            cache?.returnToCache(self)
-        }
-    }
+ 
 }
 
 func hashForFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Int64 {

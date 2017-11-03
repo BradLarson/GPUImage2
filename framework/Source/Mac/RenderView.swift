@@ -29,6 +29,6 @@ public class RenderView:NSOpenGLView, ImageConsumer {
         renderQuadWithShader(self.displayShader, vertices:scaledVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.portrait)])
         sharedImageProcessingContext.presentBufferForDisplay()
         
-        framebuffer.unlock()
+        
     }
 }
