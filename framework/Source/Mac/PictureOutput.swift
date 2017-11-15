@@ -81,8 +81,8 @@ public class PictureOutput: ImageConsumer {
             let bitmapRepresentation = NSBitmapImageRep(cgImage:cgImageFromBytes)
             let imageData:Data
             switch encodedImageFormat {
-                case .png: imageData = bitmapRepresentation.representation(using: .PNG, properties: ["":""])!
-                case .jpeg: imageData = bitmapRepresentation.representation(using: .JPEG, properties: ["":""])!
+                case .png: imageData = bitmapRepresentation.representation(using: .png, properties: [NSBitmapImageRep.PropertyKey(rawValue: ""):""])!
+                case .jpeg: imageData = bitmapRepresentation.representation(using: .jpeg, properties: [NSBitmapImageRep.PropertyKey(rawValue: ""):""])!
             }
 
             imageCallback(imageData)
