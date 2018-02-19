@@ -178,7 +178,7 @@ public class MovieInput: ImageSource {
             fatalError("Could not create a framebuffer of the size (\(bufferWidth), \(bufferHeight)), error: \(error)")
         }
         
-        luminanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
+//         luminanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
         luminanceFramebuffer.lock()
         
         
@@ -203,7 +203,7 @@ public class MovieInput: ImageSource {
             fatalError("Could not create a framebuffer of the size (\(bufferWidth), \(bufferHeight)), error: \(error)")
         }
         
-        chrominanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
+//         chrominanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
         chrominanceFramebuffer.lock()
         
         let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
