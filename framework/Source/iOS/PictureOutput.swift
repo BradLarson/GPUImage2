@@ -114,14 +114,14 @@ public extension ImageSource {
 }
 
 public extension UIImage {
-    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) -> UIImage {
-        return filterWithPipeline{input, output in
+    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) throws -> UIImage  {
+        return try filterWithPipeline{input, output in
             input --> operation --> output
         }
     }
     
-    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> UIImage {
-        let picture = PictureInput(image:self)
+    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) throws -> UIImage  {
+        let picture = try PictureInput(image:self)
         var outputImage:UIImage?
         let pictureOutput = PictureOutput()
         pictureOutput.onlyCaptureNextFrame = true

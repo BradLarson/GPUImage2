@@ -3,7 +3,7 @@ public class LanczosResampling: BasicOperation {
         super.init(vertexShader:LanczosResamplingVertexShader, fragmentShader:LanczosResamplingFragmentShader)
     }
 
-    override func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
+    override public func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
         let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
         
         // Shrink the vertical component of the first stage

@@ -1,6 +1,6 @@
 open class OperationGroup: ImageProcessingOperation {
-    let inputImageRelay = ImageRelay()
-    let outputImageRelay = ImageRelay()
+    public let inputImageRelay = ImageRelay()
+    public let outputImageRelay = ImageRelay()
     
     public var sources:SourceContainer { get { return inputImageRelay.sources } }
     public var targets:TargetContainer { get { return outputImageRelay.targets } }

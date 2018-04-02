@@ -172,7 +172,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback: nil,
         filterOperationType:.custom(filterSetupFunction:{(camera, filter, outputView) in
             let castFilter = filter as! Luminance
-            let maskImage = PictureInput(imageName:"Mask.png")
+            let maskImage = try! PictureInput(imageName:"Mask.png")
             castFilter.drawUnmodifiedImageOutsideOfMask = false
             castFilter.mask = maskImage
             maskImage.processImage()
@@ -739,7 +739,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             let blendFilter = AlphaBlend()
             blendFilter.mix = 1.0
             
-            let inputImage = PictureInput(imageName:blendImageName)
+            let inputImage = try! PictureInput(imageName:blendImageName)
             
             inputImage --> blendFilter
             camera --> castFilter --> blendFilter --> outputView

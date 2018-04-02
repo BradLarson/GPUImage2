@@ -8,7 +8,7 @@ public class Sharpen: BasicOperation {
         ({sharpness = 0.0})()
     }
     
-    override func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
+    override open func configureFramebufferSpecificUniforms(_ inputFramebuffer:Framebuffer) {
         let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
         let texelSize = overriddenTexelSize ?? inputFramebuffer.texelSize(for:outputRotation)
         uniformSettings["texelWidth"] = texelSize.width

@@ -92,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				BC9E36731E525BC000B8604F /* GPUImage.framework */,
-				BC9E36751E525BC000B8604F /* GPUImage.xctest */,
+				BC9E36751E525BC000B8604F /* GPUImageTests_macOS.xctest */,
 				BC9E36771E525BC000B8604F /* GPUImage.framework */,
 				BC9E36791E525BC000B8604F /* GPUImageTests_iOS.xctest */,
 			);
@@ -209,10 +209,10 @@
 			remoteRef = BC9E36721E525BC000B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BC9E36751E525BC000B8604F /* GPUImage.xctest */ = {
+		BC9E36751E525BC000B8604F /* GPUImageTests_macOS.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = GPUImage.xctest;
+			path = GPUImageTests_macOS.xctest;
 			remoteRef = BC9E36741E525BC000B8604F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

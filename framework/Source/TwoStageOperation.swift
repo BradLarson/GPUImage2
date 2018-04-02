@@ -5,7 +5,7 @@ open class TwoStageOperation: BasicOperation {
 
     var downsamplingFactor:Float?
 
-    override func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
+    override open func internalRenderFunction(_ inputFramebuffer:Framebuffer, textureProperties:[InputTextureProperties]) {
         let outputRotation = overriddenOutputRotation ?? inputFramebuffer.orientation.rotationNeededForOrientation(.portrait)
 
         // Downsample

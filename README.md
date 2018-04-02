@@ -152,7 +152,7 @@ There are a few different ways to approach filtering an image. The easiest are t
 ```swift
 let testImage = UIImage(named:"WID-small.jpg")!
 let toonFilter = SmoothToonFilter()
-let filteredImage = testImage.filterWithOperation(toonFilter)
+let filteredImage = try! testImage.filterWithOperation(toonFilter)
 ```
 
 for a more complex pipeline:
@@ -161,7 +161,7 @@ for a more complex pipeline:
 let testImage = UIImage(named:"WID-small.jpg")!
 let toonFilter = SmoothToonFilter()
 let luminanceFilter = Luminance()
-let filteredImage = testImage.filterWithPipeline{input, output in
+let filteredImage = try! testImage.filterWithPipeline{input, output in
     input --> toonFilter --> luminanceFilter --> output
 }
 ```
@@ -173,7 +173,7 @@ Both of these convenience methods wrap several operations. To feed a picture int
 ```swift
 let toonFilter = SmoothToonFilter()
 let testImage = UIImage(named:"WID-small.jpg")!
-let pictureInput = PictureInput(image:testImage)
+let pictureInput = try! PictureInput(image:testImage)
 let pictureOutput = PictureOutput()
 pictureOutput.imageAvailableCallback = {image in
     // Do something with image

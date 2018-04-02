@@ -35,10 +35,14 @@ public extension ImageSource {
         if let targetIndex = atTargetIndex {
             target.setSource(self, atIndex:targetIndex)
             targets.append(target, indexAtTarget:targetIndex)
-            transmitPreviousImage(to:target, atIndex:targetIndex)
+            sharedImageProcessingContext.runOperationAsynchronously {
+                self.transmitPreviousImage(to:target, atIndex:targetIndex)
+            }
         } else if let indexAtTarget = target.addSource(self) {
             targets.append(target, indexAtTarget:indexAtTarget)
-            transmitPreviousImage(to:target, atIndex:indexAtTarget)
+            sharedImageProcessingContext.runOperationAsynchronously {
+                self.transmitPreviousImage(to:target, atIndex:indexAtTarget)
+            }
         } else {
             debugPrint("Warning: tried to add target beyond target's input capacity")
         }
@@ -51,17 +55,31 @@ public extension ImageSource {
         targets.removeAll()
     }
     
+    public func remove(_ target:ImageConsumer) {
+        for (testTarget, index) in targets {
+            if(target === testTarget) {
+                target.removeSourceAtIndex(index)
+                targets.remove(target)
+            }
+        }
+    }
+    
     public func updateTargetsWithFramebuffer(_ framebuffer:Framebuffer) {
-        if targets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
+        var foundTargets = [(ImageConsumer, UInt)]()
+        for target in targets {
+            foundTargets.append(target)
+        }
+        
+        if foundTargets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
             framebuffer.lock()
             framebuffer.unlock()
         } else {
             // Lock first for each output, to guarantee proper ordering on multi-output operations
-            for _ in targets {
+            for _ in foundTargets {
                 framebuffer.lock()
             }
         }
-        for (target, index) in targets {
+        for (target, index) in foundTargets {
             target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
         }
     }
@@ -91,8 +109,10 @@ class WeakImageConsumer {
 }
 
 public class TargetContainer:Sequence {
-    var targets = [WeakImageConsumer]()
-    var count:Int { get {return targets.count}}
+    private var targets = [WeakImageConsumer]()
+    
+    private var count:Int { get { return targets.count } }
+
 #if !os(Linux)
     let dispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.targetContainerQueue", attributes: [])
 #endif
@@ -158,10 +178,20 @@ public class TargetContainer:Sequence {
         }
 #endif
     }
+    
+    public func remove(_ target:ImageConsumer) {
+        #if os(Linux)
+            self.targets = self.targets.filter { $0.value !== target }
+        #else
+            dispatchQueue.async{
+                self.targets = self.targets.filter { $0.value !== target }
+            }
+        #endif
+    }
 }
 
 public class SourceContainer {
-    var sources:[UInt:ImageSource] = [:]
+    public var sources:[UInt:ImageSource] = [:]
     
     public init() {
     }
