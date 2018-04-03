@@ -100,6 +100,9 @@ class ViewController: UIViewController {
         
         movieInput.completion = {
             self.movieOutput.finishRecording {
+                self.movieInput.audioEncodingTarget = nil
+                self.movieInput.synchronizedMovieOutput = nil
+                
                 DispatchQueue.main.async {
                     print("Encoding finished")
                 }

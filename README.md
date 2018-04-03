@@ -278,6 +278,8 @@ movieInput --> filter --> movieOutput
 
 movieInput.completion = {
     self.movieOutput.finishRecording {
+        self.movieInput.audioEncodingTarget = nil
+        self.movieInput.synchronizedMovieOutput = nil
         print("Encoding finished")
     }
 }
