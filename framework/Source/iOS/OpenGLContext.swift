@@ -4,6 +4,8 @@ import UIKit
 // TODO: Find a way to warn people if they set this after the context has been created
 var imageProcessingShareGroup:EAGLSharegroup? = nil
 
+var dispatchQueKeyValueCounter = 81
+
 public class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
@@ -25,14 +27,17 @@ public class OpenGLContext: SerialDispatch {
     }()
     
     
-    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
+    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", qos: .userInitiated)
     public let dispatchQueueKey = DispatchSpecificKey<Int>()
+    public let dispatchQueueKeyValue: Int
     
     // MARK: -
     // MARK: Initialization and teardown
 
     init() {
-        serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:81)
+        dispatchQueueKeyValue = dispatchQueKeyValueCounter
+        serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:dispatchQueueKeyValue)
+        dispatchQueKeyValueCounter += 1
         
         let generatedContext:EAGLContext?
         if let shareGroup = imageProcessingShareGroup {

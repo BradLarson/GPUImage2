@@ -63,7 +63,7 @@ public let standardImageVertices:[GLfloat] = [-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 
 public let verticallyInvertedImageVertices:[GLfloat] = [-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]
 
 // "position" and "inputTextureCoordinate", "inputTextureCoordinate2" attribute naming follows the convention of the old GPUImage
-public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat]? = nil, vertexBufferObject:GLuint? = nil, inputTextures:[InputTextureProperties]) {
+public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderUniformSettings? = nil, vertices:[GLfloat]? = nil, vertexBufferObject:GLuint? = nil, inputTextures:[InputTextureProperties], context: OpenGLContext = sharedImageProcessingContext) {
     switch (vertices, vertexBufferObject) {
         case (.none, .some): break
         case (.some, .none): break
@@ -71,7 +71,7 @@ public func renderQuadWithShader(_ shader:ShaderProgram, uniformSettings:ShaderU
         case (.none, .none): fatalError("Can't specify both vertices and a VBO in renderQuadWithShader()")
     }
     
-    sharedImageProcessingContext.makeCurrentContext()
+    context.makeCurrentContext()
     shader.use()
     uniformSettings?.restoreShaderSettings(shader)
 

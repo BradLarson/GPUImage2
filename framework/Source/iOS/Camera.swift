@@ -1,18 +1,20 @@
 import Foundation
 import AVFoundation
 
-public protocol CameraDelegate {
+public protocol CameraDelegate: class {
     func didCaptureBuffer(_ sampleBuffer: CMSampleBuffer)
 }
 public enum PhysicalCameraLocation {
     case backFacing
     case frontFacing
+    case frontFacingMirrored
     
     // Documentation: "The front-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeLeft and the back-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeRight."
     func imageOrientation() -> ImageOrientation {
         switch self {
             case .backFacing: return .landscapeRight
             case .frontFacing: return .landscapeLeft
+            case .frontFacingMirrored: return .landscapeLeft
         }
     }
     
@@ -20,6 +22,7 @@ public enum PhysicalCameraLocation {
         switch self {
             case .backFacing: return .back
             case .frontFacing: return .front
+            case .frontFacingMirrored: return .front
         }
     }
     
@@ -51,40 +54,41 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     public var audioEncodingTarget:AudioEncodingTarget? {
         didSet {
             guard let audioEncodingTarget = audioEncodingTarget else {
-                self.removeAudioInputsAndOutputs()
                 return
             }
             do {
                 try self.addAudioInputsAndOutputs()
                 audioEncodingTarget.activateAudioTrack()
             } catch {
-                fatalError("ERROR: Could not connect audio target with error: \(error)")
+                print("ERROR: Could not connect audio target with error: \(error)")
             }
         }
     }
     
     public let targets = TargetContainer()
-    public var delegate: CameraDelegate?
+    public weak var delegate: CameraDelegate?
     public let captureSession:AVCaptureSession
-    let inputCamera:AVCaptureDevice!
-    let videoInput:AVCaptureDeviceInput!
-    let videoOutput:AVCaptureVideoDataOutput!
-    var microphone:AVCaptureDevice?
-    var audioInput:AVCaptureDeviceInput?
-    var audioOutput:AVCaptureAudioDataOutput?
+    public let inputCamera:AVCaptureDevice!
+    public let videoInput:AVCaptureDeviceInput!
+    public let videoOutput:AVCaptureVideoDataOutput!
+    public var microphone:AVCaptureDevice?
+    public var audioInput:AVCaptureDeviceInput?
+    public var audioOutput:AVCaptureAudioDataOutput?
 
     var supportsFullYUVRange:Bool = false
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
-    let audioProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
+    let cameraProcessingQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.cameraProcessingQueue", qos: .default)
+    let audioProcessingQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.audioProcessingQueue", qos: .default)
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
     var totalFrameTimeDuringCapture:Double = 0.0
     var framesSinceLastCheck = 0
     var lastCheckTime = CFAbsoluteTimeGetCurrent()
+    
+    var captureSessionRestartAttempts = 0
 
     public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .backFacing, captureAsYUV:Bool = true) throws {
         
@@ -151,19 +155,45 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             captureSession.addOutput(videoOutput)
         }
         captureSession.sessionPreset = sessionPreset
+        
+        if let connections = videoOutput.connections as? [AVCaptureConnection] {
+            for connection in connections {
+                if(connection.isVideoMirroringSupported) {
+                    connection.isVideoMirrored = (location == .frontFacingMirrored)
+                }
+            }
+        }
+
         captureSession.commitConfiguration()
 
         super.init()
         
         videoOutput.setSampleBufferDelegate(self, queue:cameraProcessingQueue)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(Camera.captureSessionRuntimeError(note:)), name: NSNotification.Name.AVCaptureSessionRuntimeError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(Camera.captureSessionDidStartRunning(note:)), name: NSNotification.Name.AVCaptureSessionDidStartRunning, object: nil)
     }
     
     deinit {
         sharedImageProcessingContext.runOperationSynchronously{
             self.stopCapture()
-            self.videoOutput.setSampleBufferDelegate(nil, queue:nil)
+            self.videoOutput?.setSampleBufferDelegate(nil, queue:nil)
             self.audioOutput?.setSampleBufferDelegate(nil, queue:nil)
         }
+    }
+    
+    func captureSessionRuntimeError(note: NSNotification) {
+        print("ERROR: Capture session runtime error: \(String(describing: note.userInfo))")
+        if(self.captureSessionRestartAttempts < 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.startCapture()
+            }
+            self.captureSessionRestartAttempts += 1
+        }
+    }
+    
+    func captureSessionDidStartRunning(note: NSNotification) {
+        self.captureSessionRestartAttempts = 0
     }
     
     public func captureOutput(_ captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, from connection:AVCaptureConnection!) {
@@ -287,7 +317,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     // MARK: -
     // MARK: Audio processing
     
-    func addAudioInputsAndOutputs() throws {
+    public func addAudioInputsAndOutputs() throws {
         guard (audioOutput == nil) else { return }
         
         captureSession.beginConfiguration()
@@ -306,7 +336,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         audioOutput?.setSampleBufferDelegate(self, queue:audioProcessingQueue)
     }
     
-    func removeAudioInputsAndOutputs() {
+    public func removeAudioInputsAndOutputs() {
         guard (audioOutput != nil) else { return }
         
         captureSession.beginConfiguration()
@@ -319,6 +349,6 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     
     func processAudioSampleBuffer(_ sampleBuffer:CMSampleBuffer) {
-        self.audioEncodingTarget?.processAudioBuffer(sampleBuffer)
+        self.audioEncodingTarget?.processAudioBuffer(sampleBuffer, shouldInvalidateSampleWhenDone: false)
     }
 }
