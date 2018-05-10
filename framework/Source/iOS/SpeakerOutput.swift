@@ -16,6 +16,9 @@ public class SpeakerOutput: AudioEncodingTarget {
     public var changesAudioSession = true
     
     public private(set) var isPlaying = false
+    
+    public var isMuted = false
+    
     var hasBuffer = false
     var isReadyForMoreMediaData = true {
         willSet {
@@ -301,8 +304,10 @@ func playbackCallback(
         let requestedBytesSize = inNumberFrames * p.unitSize * numberOfChannels
         
         let bytesToRead = min(availableBytes, requestedBytesSize)
-        // Copy the bytes from the circular buffer into the outSample
-        memcpy(outSamples, bufferTail, Int(bytesToRead))
+        if(!p.isMuted) {
+            // Copy the bytes from the circular buffer into the outSample
+            memcpy(outSamples, bufferTail, Int(bytesToRead))
+        }
         // Clear what we just read out of the circular buffer
         TPCircularBufferConsume(&p.circularBuffer, bytesToRead)
         
