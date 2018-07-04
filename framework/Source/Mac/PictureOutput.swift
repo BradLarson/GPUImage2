@@ -127,5 +127,5 @@ public extension NSImage {
 func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer?, data:UnsafeRawPointer, size:Int) {
 //    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
     // FIXME: Verify this is correct
-    data.deallocate(bytes:size, alignedTo:1)
+    data.deallocate()
 }

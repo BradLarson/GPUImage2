@@ -10,7 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var movie:MovieInput!
     var filter:Pixellate!
     
-    dynamic var filterValue = 0.05 {
+    @objc dynamic var filterValue = 0.05 {
         didSet {
             filter.fractionalWidthOfAPixel = GLfloat(filterValue)
         }

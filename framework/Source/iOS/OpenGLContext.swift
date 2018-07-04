@@ -74,7 +74,7 @@ public class OpenGLContext: SerialDispatch {
     // MARK: Device capabilities
     
     func supportsTextureCaches() -> Bool {
-#if (arch(i386) || arch(x86_64)) && os(iOS)
+#if targetEnvironment(simulator)
         return false // Simulator glitches out on use of texture caches
 #else
         return true // Every iOS version and device that can run Swift can handle texture caches

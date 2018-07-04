@@ -112,7 +112,7 @@ public class PictureInput: ImageSource {
         glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         
         if (shouldRedrawUsingCoreGraphics) {
-            imageData.deallocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData.deallocate()
         }
     }
     

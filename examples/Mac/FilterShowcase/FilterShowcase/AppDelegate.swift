@@ -8,7 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var windowController:FilterShowcaseWindowController?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        self.windowController = FilterShowcaseWindowController(windowNibName:"FilterShowcaseWindowController")
+        self.windowController = FilterShowcaseWindowController(windowNibName:NSNib.Name(rawValue: "FilterShowcaseWindowController"))
         self.windowController?.showWindow(self)
     }
 }
