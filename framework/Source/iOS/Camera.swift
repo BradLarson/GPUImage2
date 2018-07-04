@@ -16,7 +16,7 @@ public enum PhysicalCameraLocation {
         }
     }
     
-    func captureDevicePosition() -> AVCaptureDevicePosition {
+    func captureDevicePosition() -> AVCaptureDevice.Position {
         switch self {
             case .backFacing: return .back
             case .frontFacing: return .front
@@ -24,14 +24,14 @@ public enum PhysicalCameraLocation {
     }
     
     func device() -> AVCaptureDevice? {
-        let devices = AVCaptureDevice.devices(withMediaType:AVMediaTypeVideo)
-        for case let device as AVCaptureDevice in devices! {
+        let devices = AVCaptureDevice.devices(for:AVMediaType.video)
+        for case let device in devices {
             if (device.position == self.captureDevicePosition()) {
                 return device
             }
         }
         
-        return AVCaptureDevice.defaultDevice(withMediaType:AVMediaTypeVideo)
+        return AVCaptureDevice.default(for: AVMediaType.video)
     }
 }
 
@@ -77,8 +77,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
-    let audioProcessingQueue = DispatchQueue.global(priority:DispatchQueue.GlobalQueuePriority.default)
+    let cameraProcessingQueue = DispatchQueue.global()
+    let audioProcessingQueue = DispatchQueue.global()
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -86,8 +86,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     var framesSinceLastCheck = 0
     var lastCheckTime = CFAbsoluteTimeGetCurrent()
 
-    public init(sessionPreset:String, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .backFacing, captureAsYUV:Bool = true) throws {
-        
+    public init(sessionPreset:AVCaptureSession.Preset, cameraDevice:AVCaptureDevice? = nil, location:PhysicalCameraLocation = .backFacing, captureAsYUV:Bool = true) throws {
         self.location = location
         self.captureAsYUV = captureAsYUV
 
@@ -128,23 +127,23 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
 
         if captureAsYUV {
             supportsFullYUVRange = false
-            let supportedPixelFormats = videoOutput.availableVideoCVPixelFormatTypes
-            for currentPixelFormat in supportedPixelFormats! {
-                if ((currentPixelFormat as! NSNumber).int32Value == Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)) {
+            let supportedPixelFormats = videoOutput.availableVideoPixelFormatTypes
+            for currentPixelFormat in supportedPixelFormats {
+                if ((currentPixelFormat as NSNumber).int32Value == Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)) {
                     supportsFullYUVRange = true
                 }
             }
             
             if (supportsFullYUVRange) {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionFullRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
             } else {
                 yuvConversionShader = crashOnShaderCompileFailure("Camera"){try sharedImageProcessingContext.programForVertexShader(defaultVertexShaderForInputs(2), fragmentShader:YUVConversionVideoRangeFragmentShader)}
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String:NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange))]
             }
         } else {
             yuvConversionShader = nil
-            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:NSNumber(value:Int32(kCVPixelFormatType_32BGRA))]
+            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String:NSNumber(value:Int32(kCVPixelFormatType_32BGRA))]
         }
 
         if (captureSession.canAddOutput(videoOutput)) {
@@ -166,8 +165,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         }
     }
     
-    public func captureOutput(_ captureOutput:AVCaptureOutput!, didOutputSampleBuffer sampleBuffer:CMSampleBuffer!, from connection:AVCaptureConnection!) {
-        guard (captureOutput != audioOutput) else {
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard (output != audioOutput) else {
             self.processAudioSampleBuffer(sampleBuffer)
             return
         }
@@ -288,22 +287,27 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     // MARK: Audio processing
     
     func addAudioInputsAndOutputs() throws {
-        guard (audioOutput == nil) else { return }
+        guard (self.audioOutput == nil) else { return }
         
         captureSession.beginConfiguration()
         defer {
             captureSession.commitConfiguration()
         }
-        microphone = AVCaptureDevice.defaultDevice(withMediaType:AVMediaTypeAudio)
-        audioInput = try AVCaptureDeviceInput(device:microphone)
+        guard let microphone = AVCaptureDevice.default(for: .audio) else {
+            return
+        }
+        let audioInput = try AVCaptureDeviceInput(device:microphone)
         if captureSession.canAddInput(audioInput) {
            captureSession.addInput(audioInput)
         }
-        audioOutput = AVCaptureAudioDataOutput()
+        let audioOutput = AVCaptureAudioDataOutput()
         if captureSession.canAddOutput(audioOutput) {
             captureSession.addOutput(audioOutput)
         }
-        audioOutput?.setSampleBufferDelegate(self, queue:audioProcessingQueue)
+        self.microphone = microphone
+        self.audioInput = audioInput
+        self.audioOutput = audioOutput
+        audioOutput.setSampleBufferDelegate(self, queue:audioProcessingQueue)
     }
     
     func removeAudioInputsAndOutputs() {
