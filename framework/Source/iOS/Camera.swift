@@ -11,8 +11,8 @@ public enum PhysicalCameraLocation {
     // Documentation: "The front-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeLeft and the back-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeRight."
     func imageOrientation() -> ImageOrientation {
         switch self {
-            case .backFacing: return .landscapeRight
-            case .frontFacing: return .landscapeLeft
+            case .backFacing: return .portrait
+            case .frontFacing: return .portrait
         }
     }
     
@@ -150,6 +150,20 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
             captureSession.addOutput(videoOutput)
         }
         captureSession.sessionPreset = sessionPreset
+
+        var captureConnection: AVCaptureConnection!
+        for connection in videoOutput.connections {
+            for port in (connection as! AVCaptureConnection).inputPorts {
+                if (port as AnyObject).mediaType == AVMediaTypeVideo {
+                    captureConnection = connection as? AVCaptureConnection
+                    captureConnection.isVideoMirrored = location == .frontFacing
+                }
+            }
+        }
+
+        if captureConnection.isVideoOrientationSupported {
+            captureConnection.videoOrientation = .portrait
+        }
         captureSession.commitConfiguration()
 
         super.init()
