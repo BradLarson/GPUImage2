@@ -1,4 +1,4 @@
-public class ImageGenerator: ImageSource {
+open class ImageGenerator: ImageSource {
     public var size:Size
 
     public let targets = TargetContainer()
