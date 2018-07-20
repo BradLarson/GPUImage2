@@ -154,7 +154,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
         var captureConnection: AVCaptureConnection!
         for connection in videoOutput.connections {
             for port in (connection as! AVCaptureConnection).inputPorts {
-                if (port as AnyObject).mediaType == AVMediaTypeVideo {
+                if (port as AnyObject).mediaType == AVMediaType.video {
                     captureConnection = connection as? AVCaptureConnection
                     captureConnection.isVideoMirrored = location == .frontFacing
                 }
