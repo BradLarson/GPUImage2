@@ -52,16 +52,21 @@ public extension ImageSource {
     }
     
     public func updateTargetsWithFramebuffer(_ framebuffer:Framebuffer) {
-        if targets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
+        var foundTargets = [(ImageConsumer, UInt)]()
+        for target in targets {
+            foundTargets.append(target)
+        }
+        
+        if foundTargets.count == 0 { // Deal with the case where no targets are attached by immediately returning framebuffer to cache
             framebuffer.lock()
             framebuffer.unlock()
         } else {
             // Lock first for each output, to guarantee proper ordering on multi-output operations
-            for _ in targets {
+            for _ in foundTargets {
                 framebuffer.lock()
             }
         }
-        for (target, index) in targets {
+        for (target, index) in foundTargets {
             target.newFramebufferAvailable(framebuffer, fromSourceIndex:index)
         }
     }
