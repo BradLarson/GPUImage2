@@ -190,7 +190,16 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.singleInput
     ),
-// TODO : Tone curve
+    FilterOperation(
+        filter:{ToneCurveFilter()},
+        listName:"Tone curve",
+        titleName:"Tone curve",
+        sliderConfiguration:.enabled(minimumValue:0.0, maximumValue:1.00, initialValue:0.5),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.blueControlPoints = [Position(0, 0), Position(0.5, sliderValue), Position(1, 1)]
+        },
+        filterOperationType:.singleInput
+    ),
     FilterOperation(
         filter:{HighlightsAndShadows()},
         listName:"Highlights and shadows",
