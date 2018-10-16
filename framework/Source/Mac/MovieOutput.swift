@@ -22,6 +22,15 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     private var previousAudioTime = kCMTimeNegativeInfinity
     private var encodingLiveVideo:Bool
     
+    var transform:CGAffineTransform {
+        get {
+            return assetWriterVideoInput.transform
+        }
+        set {
+            assetWriterVideoInput.transform = transform
+        }
+    }
+    
     public init(URL:Foundation.URL, size:Size, fileType:AVFileType = .mov, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
         self.size = size
         assetWriter = try AVAssetWriter(url:URL, fileType:fileType)
@@ -52,7 +61,10 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         assetWriter.add(assetWriterVideoInput)
     }
     
-    public func startRecording() {
+    public func startRecording(transform:CGAffineTransform? = nil) {
+        if let transform = transform {
+            assetWriterVideoInput.transform = transform
+        }
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()

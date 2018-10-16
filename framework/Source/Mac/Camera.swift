@@ -24,7 +24,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
 
     public let targets = TargetContainer()
     let captureSession:AVCaptureSession
-    let inputCamera:AVCaptureDevice
+    public let inputCamera:AVCaptureDevice
     let videoInput:AVCaptureDeviceInput!
     let videoOutput:AVCaptureVideoDataOutput!
     var microphone:AVCaptureDevice?

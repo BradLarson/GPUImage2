@@ -26,6 +26,15 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     var pixelBuffer:CVPixelBuffer? = nil
     var renderFramebuffer:Framebuffer!
     
+    var transform:CGAffineTransform {
+        get {
+            return assetWriterVideoInput.transform
+        }
+        set {
+            assetWriterVideoInput.transform = transform
+        }
+    }
+    
     public init(URL:Foundation.URL, size:Size, fileType:AVFileType = AVFileType.mov, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
         if sharedImageProcessingContext.supportsTextureCaches() {
             self.colorSwizzlingShader = sharedImageProcessingContext.passthroughShader
@@ -62,7 +71,10 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         assetWriter.add(assetWriterVideoInput)
     }
     
-    public func startRecording() {
+    public func startRecording(transform:CGAffineTransform? = nil) {
+        if let transform = transform {
+            assetWriterVideoInput.transform = transform
+        }
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
