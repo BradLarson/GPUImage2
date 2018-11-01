@@ -15,7 +15,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     required init(coder aDecoder: NSCoder)
     {
         do {
-            videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.backFacing)
+            videoCamera = try Camera(sessionPreset:.vga640x480, location:.backFacing)
             videoCamera!.runBenchmark = true
         } catch {
             videoCamera = nil
@@ -45,7 +45,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
                     currentFilterConfiguration.filter.addTarget(view)
                 case .blend:
                     videoCamera.addTarget(currentFilterConfiguration.filter)
-                    self.blendImage = PictureInput(imageName:blendImageName)
+                    self.blendImage = try? PictureInput(imageName:blendImageName)
                     self.blendImage?.addTarget(currentFilterConfiguration.filter)
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)

@@ -88,7 +88,7 @@ func extractCornersFromImage(_ framebuffer:Framebuffer) -> [Position] {
         currentByte += 4
     }
     
-    rawImagePixels.deallocate(capacity:imageByteSize)
+    rawImagePixels.deallocate()
 
 //    print("Harris extraction frame time: \(CFAbsoluteTimeGetCurrent() - startTime)")
 

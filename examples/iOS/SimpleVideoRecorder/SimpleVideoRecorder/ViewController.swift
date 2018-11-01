@@ -13,7 +13,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         do {
-            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+            camera = try Camera(sessionPreset:.vga640x480)
             camera.runBenchmark = true
             filter = SaturationAdjustment()
             camera --> filter --> renderView
@@ -45,15 +45,15 @@ class ViewController: UIViewController {
                     fatalError("ERROR: Could not connect audio target with error: \(error)")
                 }
                 
-                let audioSettings = self.camera!.audioOutput?.recommendedAudioSettingsForAssetWriter(withOutputFileType:AVFileTypeMPEG4) as? [String : Any]
+                let audioSettings = self.camera!.audioOutput?.recommendedAudioSettingsForAssetWriter(writingTo:.mp4) as? [String : Any]
                 var videoSettings:[String : Any]? = nil
                 if #available(iOS 11.0, *) {
-                    videoSettings = self.camera!.videoOutput.recommendedVideoSettings(forVideoCodecType:.h264, assetWriterOutputFileType:AVFileTypeMPEG4) as? [String : Any]
+                    videoSettings = self.camera!.videoOutput.recommendedVideoSettings(forVideoCodecType:.h264, assetWriterOutputFileType:.mp4) as? [String : Any]
                     videoSettings![AVVideoWidthKey] = nil
                     videoSettings![AVVideoHeightKey] = nil
                 }
                 
-                movieOutput = try MovieOutput(URL:fileURL, size:Size(width:480, height:640), fileType:AVFileTypeMPEG4, liveVideo:true, videoSettings:videoSettings, audioSettings:audioSettings)
+                movieOutput = try MovieOutput(URL:fileURL, size:Size(width:480, height:640), fileType:.mp4, liveVideo:true, videoSettings:videoSettings, audioSettings:audioSettings)
                 camera.audioEncodingTarget = movieOutput
                 filter --> movieOutput!
                 movieOutput!.startRecording() { started, error in

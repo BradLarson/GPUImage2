@@ -22,7 +22,16 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     private var previousAudioTime = kCMTimeNegativeInfinity
     private var encodingLiveVideo:Bool
     
-    public init(URL:Foundation.URL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
+    var transform:CGAffineTransform {
+        get {
+            return assetWriterVideoInput.transform
+        }
+        set {
+            assetWriterVideoInput.transform = transform
+        }
+    }
+    
+    public init(URL:Foundation.URL, size:Size, fileType:AVFileType = .mov, liveVideo:Bool = false, settings:[String:AnyObject]? = nil) throws {
         self.size = size
         assetWriter = try AVAssetWriter(url:URL, fileType:fileType)
         // Set this to make sure that a functional movie is produced, even if the recording is cut off mid-stream. Only the last second should be lost in that case.
@@ -39,7 +48,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         localSettings[AVVideoHeightKey] = localSettings[AVVideoHeightKey] ?? NSNumber(value:size.height)
         localSettings[AVVideoCodecKey] =  localSettings[AVVideoCodecKey] ?? AVVideoCodecH264 as NSString
 
-        assetWriterVideoInput = AVAssetWriterInput(mediaType:AVMediaTypeVideo, outputSettings:localSettings)
+        assetWriterVideoInput = AVAssetWriterInput(mediaType:AVMediaType.video, outputSettings:localSettings)
         assetWriterVideoInput.expectsMediaDataInRealTime = liveVideo
         encodingLiveVideo = liveVideo
         
@@ -52,7 +61,10 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         assetWriter.add(assetWriterVideoInput)
     }
     
-    public func startRecording() {
+    public func startRecording(transform:CGAffineTransform? = nil) {
+        if let transform = transform {
+            assetWriterVideoInput.transform = transform
+        }
         startTime = nil
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
@@ -149,7 +161,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     
     public func activateAudioTrack() {
         // TODO: Add ability to set custom output settings
-        assetWriterAudioInput = AVAssetWriterInput(mediaType:AVMediaTypeAudio, outputSettings:nil)
+        assetWriterAudioInput = AVAssetWriterInput(mediaType:AVMediaType.audio, outputSettings:nil)
         assetWriter.add(assetWriterAudioInput!)
         assetWriterAudioInput?.expectsMediaDataInRealTime = encodingLiveVideo
     }

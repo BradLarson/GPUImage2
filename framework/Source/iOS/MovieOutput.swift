@@ -58,7 +58,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     var synchronizedEncodingDebug = false
     var totalFramesAppended:Int = 0
     
-    public init(URL:Foundation.URL, size:Size, fileType:String = AVFileTypeQuickTimeMovie, liveVideo:Bool = false, videoSettings:[String:Any]? = nil, videoNaturalTimeScale:CMTimeScale? = nil, audioSettings:[String:Any]? = nil, audioSourceFormatHint:CMFormatDescription? = nil) throws {
+    public init(URL:Foundation.URL, size:Size, fileType:AVFileType = .mov, liveVideo:Bool = false, videoSettings:[String:Any]? = nil, videoNaturalTimeScale:CMTimeScale? = nil, audioSettings:[String:Any]? = nil, audioSourceFormatHint:CMFormatDescription? = nil) throws {
         imageProcessingShareGroup = sharedImageProcessingContext.context.sharegroup
         let movieProcessingContext = OpenGLContext()
         
@@ -83,7 +83,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         localSettings[AVVideoHeightKey] = localSettings[AVVideoHeightKey] ?? size.height
         localSettings[AVVideoCodecKey] =  localSettings[AVVideoCodecKey] ?? AVVideoCodecH264
         
-        assetWriterVideoInput = AVAssetWriterInput(mediaType:AVMediaTypeVideo, outputSettings:localSettings)
+        assetWriterVideoInput = AVAssetWriterInput(mediaType:.video, outputSettings:localSettings)
         assetWriterVideoInput.expectsMediaDataInRealTime = liveVideo
         
         // You should provide a naturalTimeScale if you have one for the current media.
@@ -114,12 +114,16 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         self.movieProcessingContext = movieProcessingContext
     }
     
-    public func startRecording(_ completionCallback:((_ started: Bool, _ error: Error?) -> Void)? = nil) {
+    public func startRecording(transform:CGAffineTransform? = nil, _ completionCallback:((_ started: Bool, _ error: Error?) -> Void)? = nil) {
         // Don't do this work on the movieProcessingContext queue so we don't block it.
         // If it does get blocked framebuffers will pile up from live video and after it is no longer blocked (this work has finished)
         // we will be able to accept framebuffers but the ones that piled up will come in too quickly resulting in most being dropped.
         DispatchQueue.global(qos: .utility).async {
             do {
+                if let transform = transform {
+                    self.assetWriterVideoInput.transform = transform
+                }
+                
                 var success = false
                 try NSObject.catchException {
                     success = self.assetWriter.startWriting()
@@ -297,7 +301,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     // MARK: Audio support
     
     public func activateAudioTrack() {
-        assetWriterAudioInput = AVAssetWriterInput(mediaType:AVMediaTypeAudio, outputSettings:self.audioSettings, sourceFormatHint:self.audioSourceFormatHint)
+        assetWriterAudioInput = AVAssetWriterInput(mediaType:.audio, outputSettings:self.audioSettings, sourceFormatHint:self.audioSourceFormatHint)
 
         assetWriter.add(assetWriterAudioInput!)
         assetWriterAudioInput?.expectsMediaDataInRealTime = encodingLiveVideo

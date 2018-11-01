@@ -84,7 +84,7 @@ class ViewController: UIViewController {
             AVVideoCodecKey:AVVideoCodecH264]
         
         do {
-            movieOutput = try MovieOutput(URL: exportedURL, size:Size(width:Float(videoTrack.naturalSize.width), height:Float(videoTrack.naturalSize.height)), fileType:AVFileType.mp4.rawValue, liveVideo:false, videoSettings:videoEncodingSettings, videoNaturalTimeScale:videoTrack.naturalTimeScale, audioSettings:audioEncodingSettings, audioSourceFormatHint:audioSourceFormatHint)
+            movieOutput = try MovieOutput(URL: exportedURL, size:Size(width:Float(videoTrack.naturalSize.width), height:Float(videoTrack.naturalSize.height)), fileType:.mp4, liveVideo:false, videoSettings:videoEncodingSettings, videoNaturalTimeScale:videoTrack.naturalTimeScale, audioSettings:audioEncodingSettings, audioSourceFormatHint:audioSourceFormatHint)
         }
         catch {
             print("ERROR: Unable to setup MovieOutput with error: \(error)")
@@ -114,7 +114,7 @@ class ViewController: UIViewController {
             }
         }
         
-        movieOutput.startRecording() { started, error in
+        movieOutput.startRecording { started, error in
             if(!started) {
                 print("ERROR: MovieOutput unable to start writing with error: \(String(describing: error))")
                 return

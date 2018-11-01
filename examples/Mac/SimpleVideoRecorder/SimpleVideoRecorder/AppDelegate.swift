@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         do {
-            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+            camera = try Camera(sessionPreset:.vga640x480)
             filter = SmoothToonFilter()
             
             camera --> filter --> renderView
@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             movieSavingDialog.allowedFileTypes = ["mp4"]
             let okayButton = movieSavingDialog.runModal()
             
-            if okayButton == NSModalResponseOK {
+            if okayButton == NSApplication.ModalResponse.OK {
                 do {
                     self.isRecording = true
 //                    movieOutput = try MovieOutput(URL:movieSavingDialog.url!, size:Size(width:1280, height:720), liveVideo:true)

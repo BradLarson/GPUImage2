@@ -10,7 +10,7 @@ class FilterShowcaseWindowController: NSWindowController {
 
     @IBOutlet weak var filterSlider: NSSlider!
     
-    dynamic var currentSliderValue:Float = 0.5 {
+    @objc dynamic var currentSliderValue:Float = 0.5 {
         willSet(newSliderValue) {
             switch (currentFilterOperation!.sliderConfiguration) {
                 case .enabled: currentFilterOperation!.updateBasedOnSliderValue(newSliderValue)
@@ -30,7 +30,7 @@ class FilterShowcaseWindowController: NSWindowController {
         super.windowDidLoad()
 
         do {
-            videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset1280x720)
+            videoCamera = try Camera(sessionPreset:.hd1280x720)
             videoCamera.runBenchmark = true
             videoCamera.startCapture()
         } catch {

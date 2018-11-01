@@ -136,5 +136,5 @@ public extension UIImage {
 
 // Why are these flipped in the callback definition?
 func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer?, data:UnsafeRawPointer, size:Int) {
-    data.deallocate(bytes:size, alignedTo:1)
+    data.deallocate()
 }
