@@ -10,7 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var image:PictureInput!
     var filter:SaturationAdjustment!
 
-    dynamic var filterValue = 1.0 {
+    @objc dynamic var filterValue = 1.0 {
         didSet {
             filter.saturation = GLfloat(filterValue)
             image.processImage()
@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let inputImage = NSImage(named:"Lambeau.jpg")!
+        let inputImage = NSImage(named:NSImage.Name(rawValue: "Lambeau.jpg"))!
         image = PictureInput(image:inputImage)
         
         filter = SaturationAdjustment()

@@ -18,22 +18,21 @@ extension SerialDispatch {
 
 #else
 
-public let standardProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
-    // DispatchQueue.QoSClass.default
+    public var standardProcessingQueue:DispatchQueue {
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalQueuePriority.default
+            return DispatchQueue.global(qos: .default)
     } else {
-        return DispatchQueue.GlobalQueuePriority.default
+            return DispatchQueue.global(priority: .default)
+        }
     }
-}()
     
-public let lowProcessingQueuePriority:DispatchQueue.GlobalQueuePriority = {
+    public var lowProcessingQueue:DispatchQueue {
     if #available(iOS 10, OSX 10.10, *) {
-        return DispatchQueue.GlobalQueuePriority.low
+            return DispatchQueue.global(qos: .background)
     } else {
-        return DispatchQueue.GlobalQueuePriority.low
+            return DispatchQueue.global(priority: .low)
+        }
     }
-}()
 
 func runAsynchronouslyOnMainQueue(_ mainThreadOperation:@escaping () -> ()) {
     if (Thread.isMainThread) {

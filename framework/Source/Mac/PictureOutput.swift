@@ -61,7 +61,7 @@ public class PictureOutput: ImageConsumer {
         guard let dataProvider = CGDataProvider(dataInfo: nil, data: data, size: imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not create CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         
-        return CGImage(width: Int(framebuffer.size.width), height: Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
+      return CGImage(width: Int(framebuffer.size.width), height: Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue), provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
     
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
@@ -81,8 +81,8 @@ public class PictureOutput: ImageConsumer {
             let bitmapRepresentation = NSBitmapImageRep(cgImage:cgImageFromBytes)
             let imageData:Data
             switch encodedImageFormat {
-                case .png: imageData = bitmapRepresentation.representation(using: .PNG, properties: ["":""])!
-                case .jpeg: imageData = bitmapRepresentation.representation(using: .JPEG, properties: ["":""])!
+                case .png: imageData = bitmapRepresentation.representation(using: .png, properties: [NSBitmapImageRep.PropertyKey(rawValue: ""):""])!
+                case .jpeg: imageData = bitmapRepresentation.representation(using: .jpeg, properties: [NSBitmapImageRep.PropertyKey(rawValue: ""):""])!
             }
 
             imageCallback(imageData)
@@ -127,5 +127,5 @@ public extension NSImage {
 func dataProviderReleaseCallback(_ context:UnsafeMutableRawPointer?, data:UnsafeRawPointer, size:Int) {
 //    UnsafeMutablePointer<UInt8>(data).deallocate(capacity:size)
     // FIXME: Verify this is correct
-    data.deallocate(bytes:size, alignedTo:1)
+    data.deallocate()
 }
