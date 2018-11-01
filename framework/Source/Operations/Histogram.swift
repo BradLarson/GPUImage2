@@ -84,6 +84,6 @@ public class Histogram: BasicOperation {
         }
 
         disableBlending()
-        data.deallocate(capacity:inputByteSize)
+        data.deallocate()
     }
 }

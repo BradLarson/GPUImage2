@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         do {
-            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+            camera = try Camera(sessionPreset:.vga640x480)
             camera.runBenchmark = true
             camera.delegate = self
             camera --> saturationFilter --> blendFilter --> renderView
@@ -76,7 +76,7 @@ extension ViewController: CameraDelegate {
     func faceLines(_ bounds: CGRect) -> [Line] {
         // convert from CoreImage to GL coords
         let flip = CGAffineTransform(scaleX: 1, y: -1)
-        let rotate = flip.rotated(by: CGFloat(-M_PI_2))
+        let rotate = flip.rotated(by: CGFloat(-.pi / 2.0))
         let translate = rotate.translatedBy(x: -1, y: -1)
         let xform = translate.scaledBy(x: CGFloat(2/fbSize.width), y: CGFloat(2/fbSize.height))
         let glRect = bounds.applying(xform)

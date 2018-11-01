@@ -15,7 +15,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     required init(coder aDecoder: NSCoder)
     {
         do {
-            videoCamera = try Camera(sessionPreset:AVCaptureSessionPreset640x480, location:.backFacing)
+            videoCamera = try Camera(sessionPreset:.vga640x480, location:.backFacing)
             videoCamera!.runBenchmark = true
         } catch {
             videoCamera = nil

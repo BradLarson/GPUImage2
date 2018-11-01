@@ -10,7 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var camera:Camera!
     var filter:Pixellate!
 
-    dynamic var filterSetting:Float = 0.01 {
+    @objc dynamic var filterSetting:Float = 0.01 {
         didSet {
             filter.fractionalWidthOfAPixel = filterSetting
         }
@@ -21,14 +21,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         imageSavingDialog.allowedFileTypes = ["png"]
         let okayButton = imageSavingDialog.runModal()
         
-        if okayButton == NSModalResponseOK {
+        if okayButton == NSApplication.ModalResponse.OK {
             filter.saveNextFrameToURL(imageSavingDialog.url!, format:.png)
         }
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         do {
-            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+            camera = try Camera(sessionPreset:.vga640x480)
             filter = Pixellate()
 
             camera --> filter --> renderView

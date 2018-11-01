@@ -131,7 +131,7 @@ public class PictureInput: ImageSource {
         }
         
         if (shouldRedrawUsingCoreGraphics) {
-            imageData.deallocate(capacity:Int(widthToUseForTexture * heightToUseForTexture) * 4)
+            imageData.deallocate()
         }
         
     }

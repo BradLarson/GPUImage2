@@ -21,8 +21,11 @@ public class HistogramEqualization: OperationGroup {
         
         ({downsamplingFactor = 16})()
         
-        self.configureGroup{input, output in
-            self.rawDataOutput.dataAvailableCallback = {data in
+        self.configureGroup{[weak self] input, output in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.rawDataOutput.dataAvailableCallback = { data in
                 var redHistogramBin = [Int](repeating:0, count:256)
                 var greenHistogramBin = [Int](repeating:0, count:256)
                 var blueHistogramBin = [Int](repeating:0, count:256)
@@ -46,12 +49,12 @@ public class HistogramEqualization: OperationGroup {
                     equalizationLookupTable[(binIndex * 4) + 3] = 255
                 }
                 
-                self.rawDataInput.uploadBytes(equalizationLookupTable, size:Size(width:256, height:1), pixelFormat:.rgba)
+                self?.rawDataInput.uploadBytes(equalizationLookupTable, size:Size(width:256, height:1), pixelFormat:.rgba)
             }
             
-            input --> self.histogram --> self.rawDataOutput
-            input --> self.equalizationFilter --> output
-            self.rawDataInput --> self.equalizationFilter
+            input --> strongSelf.histogram --> strongSelf.rawDataOutput
+            input --> strongSelf.equalizationFilter --> output
+            strongSelf.rawDataInput --> strongSelf.equalizationFilter
         }
     }
 }

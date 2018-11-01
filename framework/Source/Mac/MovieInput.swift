@@ -27,7 +27,7 @@ public class MovieInput: ImageSource {
         assetReader = try AVAssetReader(asset:self.asset)
         
         let outputSettings:[String:AnyObject] = [(kCVPixelBufferPixelFormatTypeKey as String):NSNumber(value:Int32(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange))]
-        let readerVideoTrackOutput = AVAssetReaderTrackOutput(track:self.asset.tracks(withMediaType: AVMediaTypeVideo)[0], outputSettings:outputSettings)
+        let readerVideoTrackOutput = AVAssetReaderTrackOutput(track:self.asset.tracks(withMediaType: AVMediaType.video)[0], outputSettings:outputSettings)
         readerVideoTrackOutput.alwaysCopiesSampleData = false
         assetReader.add(readerVideoTrackOutput)
         // TODO: Audio here
@@ -44,7 +44,7 @@ public class MovieInput: ImageSource {
 
     public func start() {
         asset.loadValuesAsynchronously(forKeys: ["tracks"], completionHandler: {
-            DispatchQueue.global(priority:standardProcessingQueuePriority).async {
+            standardProcessingQueue.async {
                 guard (self.asset.statusOfValue(forKey:"tracks", error:nil) == .loaded) else { return }
 
                 guard self.assetReader.startReading() else {
@@ -55,7 +55,7 @@ public class MovieInput: ImageSource {
                 var readerVideoTrackOutput:AVAssetReaderOutput? = nil;
                 
                 for output in self.assetReader.outputs {
-                    if(output.mediaType == AVMediaTypeVideo) {
+                    if(output.mediaType == AVMediaType.video.rawValue) {
                         readerVideoTrackOutput = output;
                     }
                 }
