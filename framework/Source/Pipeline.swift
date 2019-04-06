@@ -232,7 +232,9 @@ public class ImageRelay: ImageProcessingOperation {
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
-        sources.sources[0]?.transmitPreviousImage(to:self, atIndex:0)
+        if(sources.sources.count > 0) {
+            sources.sources[0]?.transmitPreviousImage(to:self, atIndex:0)
+        }
     }
 
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
