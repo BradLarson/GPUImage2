@@ -232,8 +232,14 @@ public class ImageRelay: ImageProcessingOperation {
     }
     
     public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
-        if(sources.sources.count > 0) {
-            sources.sources[0]?.transmitPreviousImage(to:self, atIndex:0)
+        DispatchQueue.main.async {
+            // Sources is not thread safe so we should only access it from the main thread
+            // Note: addTarget() modifies the sources from the main thread
+            if let source = self.sources.sources[0] {
+                sharedImageProcessingContext.runOperationAsynchronously {
+                    source.transmitPreviousImage(to:self, atIndex:0)
+                }
+            }
         }
     }
 
