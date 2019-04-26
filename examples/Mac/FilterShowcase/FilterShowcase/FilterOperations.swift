@@ -291,7 +291,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback:nil,
         filterOperationType:.singleInput
     ),
-    FilterOperation(
+/*    FilterOperation(
         filter:{Histogram(type:.rgb)},
         listName:"Histogram",
         titleName:"Histogram",
@@ -310,7 +310,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             
             return blendFilter
         })
-    ),
+    ),*/
     FilterOperation (
         filter:{HistogramEqualization(type:.rgb)},
         listName:"Histogram equalization",
@@ -678,7 +678,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         sliderUpdateCallback: nil,
         filterOperationType:.singleInput
     ),
-    FilterOperation(
+/*    FilterOperation(
         filter:{Posterize()},
         listName:"Posterize",
         titleName:"Posterize",
@@ -687,7 +687,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             filter.colorLevels = round(sliderValue)
         },
         filterOperationType:.singleInput
-    ),
+    ),*/
     FilterOperation(
         filter:{Convolution3x3()},
         listName:"3x3 convolution",
@@ -747,7 +747,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             return blendFilter
         })
     ),
-    FilterOperation(
+/*    FilterOperation(
         filter:{KuwaharaFilter()},
         listName:"Kuwahara",
         titleName:"Kuwahara",
@@ -756,7 +756,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             filter.radius = Int(round(sliderValue))
         },
         filterOperationType:.singleInput
-    ),
+    ),*/
     FilterOperation(
         filter:{KuwaharaRadius3Filter()},
         listName:"Kuwahara (radius 3)",
