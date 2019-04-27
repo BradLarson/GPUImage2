@@ -350,6 +350,10 @@
 		BCFF46FC1CBAF85000A0C521 /* TransformOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF46FB1CBAF85000A0C521 /* TransformOperation.swift */; };
 		BCFF46FE1CBB0C1F00A0C521 /* AverageColorExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF46FD1CBB0C1F00A0C521 /* AverageColorExtractor.swift */; };
 		BCFF47081CBB443B00A0C521 /* CameraConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFF47071CBB443B00A0C521 /* CameraConversion.swift */; };
+		E9E37505215920AF00CA9F00 /* ToneCurveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E37504215920AF00CA9F00 /* ToneCurveFilter.swift */; };
+		E9E37506215920AF00CA9F00 /* ToneCurveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E37504215920AF00CA9F00 /* ToneCurveFilter.swift */; };
+		E9E37517215923D200CA9F00 /* ACVFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E37516215923D200CA9F00 /* ACVFile.swift */; };
+		E9E37518215923D200CA9F00 /* ACVFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E37516215923D200CA9F00 /* ACVFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -686,6 +690,9 @@
 		BCFF46FF1CBB0D8900A0C521 /* AverageColor_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AverageColor_GL.fsh; path = Source/Operations/Shaders/AverageColor_GL.fsh; sourceTree = "<group>"; };
 		BCFF47001CBB0D8900A0C521 /* AverageColor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AverageColor.vsh; path = Source/Operations/Shaders/AverageColor.vsh; sourceTree = "<group>"; };
 		BCFF47071CBB443B00A0C521 /* CameraConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraConversion.swift; path = Source/CameraConversion.swift; sourceTree = "<group>"; };
+		E9E37504215920AF00CA9F00 /* ToneCurveFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToneCurveFilter.swift; path = Source/Operations/ToneCurveFilter.swift; sourceTree = "<group>"; };
+		E9E37507215920E000CA9F00 /* ToneCurve_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ToneCurve_GL.fsh; path = Source/Operations/Shaders/ToneCurve_GL.fsh; sourceTree = "<group>"; };
+		E9E37516215923D200CA9F00 /* ACVFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACVFile.swift; path = Source/Operations/ACVFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -783,6 +790,9 @@
 		BC4C85F31C9F114600FD95D8 /* Color processing */ = {
 			isa = PBXGroup;
 			children = (
+				E9E37516215923D200CA9F00 /* ACVFile.swift */,
+				E9E37504215920AF00CA9F00 /* ToneCurveFilter.swift */,
+				E9E37507215920E000CA9F00 /* ToneCurve_GL.fsh */,
 				BC4C85F11C9F05EB00FD95D8 /* Luminance.swift */,
 				BC4C85F01C9F054100FD95D8 /* Luminance_GL.fsh */,
 				BC7FD0851CA62E1100037949 /* BrightnessAdjustment.swift */,
@@ -1404,6 +1414,7 @@
 				BCFF46E21CBADB3E00A0C521 /* SingleComponentGaussianBlur.swift in Sources */,
 				BC7FD0F71CB0620E00037949 /* ChromaKeyBlend.swift in Sources */,
 				BC7FD0861CA62E1100037949 /* BrightnessAdjustment.swift in Sources */,
+				E9E37517215923D200CA9F00 /* ACVFile.swift in Sources */,
 				BC7FD1631CB17C8D00037949 /* ImageOrientation.swift in Sources */,
 				BC9673411C8B897100FB64C2 /* FramebufferCache.swift in Sources */,
 				BC7FD0BB1CA7799B00037949 /* Halftone.swift in Sources */,
@@ -1488,6 +1499,7 @@
 				BC7FD0F31CB0612700037949 /* AddBlend.swift in Sources */,
 				BC7FD1931CB1D38500037949 /* Size.swift in Sources */,
 				BC4EE1741CB3711600AD8A65 /* GaussianBlur.swift in Sources */,
+				E9E37505215920AF00CA9F00 /* ToneCurveFilter.swift in Sources */,
 				BC7FD0A21CA6316600037949 /* Haze.swift in Sources */,
 				BCB279EA1C8D0E800013E213 /* Camera.swift in Sources */,
 				BC4C85FA1C9F169D00FD95D8 /* SaturationAdjustment.swift in Sources */,
@@ -1587,6 +1599,7 @@
 				BC9E35871E52571D00B8604F /* PrewittEdgeDetection.swift in Sources */,
 				BC9E35551E52522200B8604F /* ConvertedShaders_GLES.swift in Sources */,
 				BC9E35D21E52580700B8604F /* SoftLightBlend.swift in Sources */,
+				E9E37518215923D200CA9F00 /* ACVFile.swift in Sources */,
 				BC9E353C1E524D8400B8604F /* Color.swift in Sources */,
 				BC9E357B1E5256F500B8604F /* AverageColorExtractor.swift in Sources */,
 				BC9E35701E5256D200B8604F /* LuminanceRangeReduction.swift in Sources */,
@@ -1671,6 +1684,7 @@
 				BC9E35621E5256A500B8604F /* OperationGroup.swift in Sources */,
 				BC9E35381E524D7E00B8604F /* OpenGLRendering.swift in Sources */,
 				BC9E35B41E5257A900B8604F /* ToonFilter.swift in Sources */,
+				E9E37506215920AF00CA9F00 /* ToneCurveFilter.swift in Sources */,
 				BC9E354F1E52508A00B8604F /* RawDataInput.swift in Sources */,
 				BC9E35681E5256BD00B8604F /* GammaAdjustment.swift in Sources */,
 				BC9E35A81E52578400B8604F /* Vignette.swift in Sources */,
