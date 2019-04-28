@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F2393812071FDE4001886DD /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F23937D2071FDE4001886DD /* Assets-iOS.xcassets */; };
+		1FDF369F2071965100089948 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDF369E2071965100089948 /* CoreAudio.framework */; };
+		1FDF36A12071966B00089948 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDF36A02071966B00089948 /* AVFoundation.framework */; };
 		BC9E367C1E525BCF00B8604F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BC9E36771E525BC000B8604F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BCC49F931CD6E1D800B63EEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */; };
 		BCC49F951CD6E1D800B63EEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC49F941CD6E1D800B63EEB /* ViewController.swift */; };
@@ -67,6 +70,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F23937D2071FDE4001886DD /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Assets-iOS.xcassets"; path = "../../../SharedAssets/Assets-iOS.xcassets"; sourceTree = "<group>"; };
+		1FDF369E2071965100089948 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		1FDF36A02071966B00089948 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		BC9E366B1E525BC000B8604F /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../../../../framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		BCC49F8F1CD6E1D800B63EEB /* SimpleMovieFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMovieFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,12 +88,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FDF36A12071966B00089948 /* AVFoundation.framework in Frameworks */,
+				1FDF369F2071965100089948 /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1FDF369D2071965000089948 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1FDF36A02071966B00089948 /* AVFoundation.framework */,
+				1FDF369E2071965100089948 /* CoreAudio.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BC9E366C1E525BC000B8604F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +122,7 @@
 				BCC49F911CD6E1D800B63EEB /* Application */,
 				BCC49FA41CD6E1E300B63EEB /* Resources */,
 				BCC49F901CD6E1D800B63EEB /* Products */,
+				1FDF369D2071965000089948 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +140,7 @@
 				BCC49F921CD6E1D800B63EEB /* AppDelegate.swift */,
 				BCC49F941CD6E1D800B63EEB /* ViewController.swift */,
 				BCC49F961CD6E1D800B63EEB /* Main.storyboard */,
+				1F23937D2071FDE4001886DD /* Assets-iOS.xcassets */,
 				BC9E366B1E525BC000B8604F /* GPUImage.xcodeproj */,
 			);
 			name = Application;
@@ -239,6 +258,7 @@
 			files = (
 				BCC49FA61CD6E20000B63EEB /* sample_iPod.m4v in Resources */,
 				BCC49F9D1CD6E1D800B63EEB /* LaunchScreen.storyboard in Resources */,
+				1F2393812071FDE4001886DD /* Assets-iOS.xcassets in Resources */,
 				BCC49F981CD6E1D800B63EEB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,19 +19,11 @@ extension SerialDispatch {
 #else
 
     public var standardProcessingQueue:DispatchQueue {
-    if #available(iOS 10, OSX 10.10, *) {
-            return DispatchQueue.global(qos: .default)
-    } else {
-            return DispatchQueue.global(priority: .default)
-        }
+        return DispatchQueue.global(qos: .default)
     }
     
     public var lowProcessingQueue:DispatchQueue {
-    if #available(iOS 10, OSX 10.10, *) {
-            return DispatchQueue.global(qos: .background)
-    } else {
-            return DispatchQueue.global(priority: .low)
-        }
+        return DispatchQueue.global(qos: .background)
     }
 
 func runAsynchronouslyOnMainQueue(_ mainThreadOperation:@escaping () -> ()) {
@@ -64,6 +56,7 @@ func runOnMainQueue<T>(_ mainThreadOperation:() -> T) -> T {
 public protocol SerialDispatch {
     var serialDispatchQueue:DispatchQueue { get }
     var dispatchQueueKey:DispatchSpecificKey<Int> { get }
+    var dispatchQueueKeyValue:Int { get }
     func makeCurrentContext()
 }
 
@@ -77,7 +70,7 @@ public extension SerialDispatch {
     
     public func runOperationSynchronously(_ operation:() -> ()) {
         // TODO: Verify this works as intended
-        if (DispatchQueue.getSpecific(key:self.dispatchQueueKey) == 81) {
+        if (DispatchQueue.getSpecific(key:self.dispatchQueueKey) == self.dispatchQueueKeyValue) {
             operation()
         } else {
             self.serialDispatchQueue.sync {

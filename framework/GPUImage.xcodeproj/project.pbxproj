@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F499A731FDA0F9F0000E37E /* NSObject+Exception.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F499A711FDA0F9E0000E37E /* NSObject+Exception.m */; };
+		1F499A741FDA0F9F0000E37E /* NSObject+Exception.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F499A711FDA0F9E0000E37E /* NSObject+Exception.m */; };
+		1F499A751FDA0F9F0000E37E /* NSObject+Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F499A721FDA0F9F0000E37E /* NSObject+Exception.h */; };
+		1F499A761FDA0F9F0000E37E /* NSObject+Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F499A721FDA0F9F0000E37E /* NSObject+Exception.h */; };
+		1F6D1CB32048F81D00317B5F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6D1CB22048F81D00317B5F /* AudioToolbox.framework */; };
+		1F6D1CB52048F8DD00317B5F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6D1CB42048F8DD00317B5F /* AVFoundation.framework */; };
+		1F6D1CB82048FB0300317B5F /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F6D1CB62048FB0300317B5F /* TPCircularBuffer.h */; };
+		1F6D1CB92048FB0300317B5F /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F6D1CB62048FB0300317B5F /* TPCircularBuffer.h */; };
+		1F6D1CBA2048FB0300317B5F /* TPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F6D1CB72048FB0300317B5F /* TPCircularBuffer.m */; };
+		1F6D1CBB2048FB0300317B5F /* TPCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F6D1CB72048FB0300317B5F /* TPCircularBuffer.m */; };
+		1F6D1CC02048FFD900317B5F /* SpeakerOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6D1CBF2048FFD900317B5F /* SpeakerOutput.swift */; };
 		BC09239E1C92658200A2ADFA /* ShaderProgram_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09239D1C92658200A2ADFA /* ShaderProgram_Tests.swift */; };
 		BC0923A11C92661D00A2ADFA /* Pipeline_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09239F1C9265A600A2ADFA /* Pipeline_Tests.swift */; };
 		BC0923A21C92664900A2ADFA /* Framebuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB279EB1C8D11630013E213 /* Framebuffer.swift */; };
@@ -370,6 +381,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F499A711FDA0F9E0000E37E /* NSObject+Exception.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Exception.m"; path = "Source/NSObject+Exception.m"; sourceTree = "<group>"; };
+		1F499A721FDA0F9F0000E37E /* NSObject+Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Exception.h"; path = "Source/NSObject+Exception.h"; sourceTree = "<group>"; };
+		1F499A771FDA0FE20000E37E /* GPUImage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "GPUImage-Bridging-Header.h"; path = "Source/GPUImage-Bridging-Header.h"; sourceTree = "<group>"; };
+		1F6D1CB22048F81D00317B5F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		1F6D1CB42048F8DD00317B5F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		1F6D1CB62048FB0300317B5F /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPCircularBuffer.h; path = Source/TPCircularBuffer.h; sourceTree = "<group>"; };
+		1F6D1CB72048FB0300317B5F /* TPCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TPCircularBuffer.m; path = Source/TPCircularBuffer.m; sourceTree = "<group>"; };
+		1F6D1CBF2048FFD900317B5F /* SpeakerOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpeakerOutput.swift; path = Source/iOS/SpeakerOutput.swift; sourceTree = "<group>"; };
 		BC09239D1C92658200A2ADFA /* ShaderProgram_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShaderProgram_Tests.swift; path = Tests/ShaderProgram_Tests.swift; sourceTree = SOURCE_ROOT; };
 		BC09239F1C9265A600A2ADFA /* Pipeline_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pipeline_Tests.swift; path = Tests/Pipeline_Tests.swift; sourceTree = SOURCE_ROOT; };
 		BC1E12F41C9F2FD7008F844F /* ThreeInput.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ThreeInput.vsh; path = Source/Operations/Shaders/ThreeInput.vsh; sourceTree = "<group>"; };
@@ -710,6 +729,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F6D1CB52048F8DD00317B5F /* AVFoundation.framework in Frameworks */,
+				1F6D1CB32048F81D00317B5F /* AudioToolbox.framework in Frameworks */,
 				BC9E35021E524BE200B8604F /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -961,8 +982,13 @@
 		BC6E7CAD1C39A9D8006DF678 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				1F6D1CB62048FB0300317B5F /* TPCircularBuffer.h */,
+				1F6D1CB72048FB0300317B5F /* TPCircularBuffer.m */,
+				1F499A721FDA0F9F0000E37E /* NSObject+Exception.h */,
+				1F499A711FDA0F9E0000E37E /* NSObject+Exception.m */,
 				BC4C85ED1C9F042900FD95D8 /* ConvertedShaders_GL.swift */,
 				BC9E35531E52521F00B8604F /* ConvertedShaders_GLES.swift */,
+				1F499A771FDA0FE20000E37E /* GPUImage-Bridging-Header.h */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -1002,6 +1028,8 @@
 		BC6E7CCB1C39ADDD006DF678 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1F6D1CB42048F8DD00317B5F /* AVFoundation.framework */,
+				1F6D1CB22048F81D00317B5F /* AudioToolbox.framework */,
 				BC9E35011E524BE200B8604F /* OpenGLES.framework */,
 				BC6E7CC91C39ADCC006DF678 /* OpenGL.framework */,
 			);
@@ -1123,6 +1151,7 @@
 		BC9E35201E524D2A00B8604F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				1F6D1CBF2048FFD900317B5F /* SpeakerOutput.swift */,
 				BC9E35231E524D4D00B8604F /* RenderView.swift */,
 				BC9E35221E524D4D00B8604F /* PictureOutput.swift */,
 				BC9E35211E524D4D00B8604F /* MovieOutput.swift */,
@@ -1198,6 +1227,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F499A751FDA0F9F0000E37E /* NSObject+Exception.h in Headers */,
+				1F6D1CB82048FB0300317B5F /* TPCircularBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1236,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F499A761FDA0F9F0000E37E /* NSObject+Exception.h in Headers */,
+				1F6D1CB92048FB0300317B5F /* TPCircularBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1295,13 +1328,14 @@
 				TargetAttributes = {
 					BC6E7CAA1C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0910;
 					};
 					BC6E7CB41C39A9D8006DF678 = {
 						CreatedOnToolsVersion = 7.2;
 					};
 					BC9E34E81E524A2200B8604F = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 					BC9E34F01E524A2200B8604F = {
@@ -1447,6 +1481,7 @@
 				BCFF46C01CB9556B00A0C521 /* WhiteBalance.swift in Sources */,
 				BC7FD14E1CB0BD3900037949 /* ZoomBlur.swift in Sources */,
 				BCFB07921CBF37A1009B2333 /* TextureInput.swift in Sources */,
+				1F6D1CBA2048FB0300317B5F /* TPCircularBuffer.m in Sources */,
 				BC6E7CC71C39AD9E006DF678 /* ShaderProgram.swift in Sources */,
 				BCFF46CA1CB96BD700A0C521 /* HighPassFilter.swift in Sources */,
 				BC7FD1321CB0A57F00037949 /* HighlightsAndShadows.swift in Sources */,
@@ -1454,6 +1489,7 @@
 				BC7FD11C1CB0795A00037949 /* NormalBlend.swift in Sources */,
 				BC4EE15E1CB3481F00AD8A65 /* ThresholdSobelEdgeDetection.swift in Sources */,
 				BC7FD1911CB1D2A300037949 /* ImageGenerator.swift in Sources */,
+				1F499A731FDA0F9F0000E37E /* NSObject+Exception.m in Sources */,
 				BC7FD1201CB079B200037949 /* SaturationBlend.swift in Sources */,
 				BCA4E2491CC3EF26007B51BA /* ColourFASTFeatureDetection.swift in Sources */,
 				BC7FD0FD1CB06E0000037949 /* Position.swift in Sources */,
@@ -1630,6 +1666,7 @@
 				BC9E35511E52518F00B8604F /* Timestamp.swift in Sources */,
 				BC9E35781E5256EB00B8604F /* ColorMatrixFilter.swift in Sources */,
 				BC9E35D11E52580400B8604F /* ScreenBlend.swift in Sources */,
+				1F6D1CBB2048FB0300317B5F /* TPCircularBuffer.m in Sources */,
 				BC9E356A1E5256C200B8604F /* Haze.swift in Sources */,
 				BC9E35D31E52580A00B8604F /* SourceOverBlend.swift in Sources */,
 				BC9E357E1E5256FE00B8604F /* Vibrance.swift in Sources */,
@@ -1637,6 +1674,8 @@
 				BC9E356E1E5256CE00B8604F /* FalseColor.swift in Sources */,
 				BC9E35881E52572000B8604F /* ThresholdSobelEdgeDetection.swift in Sources */,
 				BC9E356F1E5256D000B8604F /* HighlightsAndShadows.swift in Sources */,
+				1F6D1CC02048FFD900317B5F /* SpeakerOutput.swift in Sources */,
+				1F499A741FDA0F9F0000E37E /* NSObject+Exception.m in Sources */,
 				BC9E35AA1E52578900B8604F /* Halftone.swift in Sources */,
 				BC9E35961E52574A00B8604F /* ImageBuffer.swift in Sources */,
 				BC9E35831E52571100B8604F /* LocalBinaryPattern.swift in Sources */,
@@ -1798,6 +1837,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/GPUImage-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1851,6 +1891,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/GPUImage-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1932,6 +1973,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1961,6 +2003,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

@@ -45,7 +45,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
                     currentFilterConfiguration.filter.addTarget(view)
                 case .blend:
                     videoCamera.addTarget(currentFilterConfiguration.filter)
-                    self.blendImage = PictureInput(imageName:blendImageName)
+                    self.blendImage = try? PictureInput(imageName:blendImageName)
                     self.blendImage?.addTarget(currentFilterConfiguration.filter)
                     self.blendImage?.processImage()
                     currentFilterConfiguration.filter.addTarget(view)

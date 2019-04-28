@@ -14,7 +14,14 @@ class ViewController: UIViewController {
         // Filtering image for saving
         let testImage = UIImage(named:"WID-small.jpg")!
         let toonFilter = SmoothToonFilter()
-        let filteredImage = testImage.filterWithOperation(toonFilter)
+        
+        let filteredImage:UIImage
+        do {
+            filteredImage = try testImage.filterWithOperation(toonFilter)
+        } catch {
+            print("Couldn't filter image with error: \(error)")
+            return
+        }
         
         let pngImage = UIImagePNGRepresentation(filteredImage)!
         do {
@@ -25,8 +32,14 @@ class ViewController: UIViewController {
             print("Couldn't write to file with error: \(error)")
         }
         
+        
         // Filtering image for display
-        picture = PictureInput(image:UIImage(named:"WID-small.jpg")!)
+        do {
+            picture = try PictureInput(image:UIImage(named:"WID-small.jpg")!)
+        } catch {
+            print("Couldn't create PictureInput with error: \(error)")
+            return
+        }
         filter = SaturationAdjustment()
         picture --> filter --> renderView
         picture.processImage()

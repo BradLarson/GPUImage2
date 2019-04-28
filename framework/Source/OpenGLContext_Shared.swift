@@ -23,7 +23,7 @@ extension OpenGLContext {
         if let shaderFromCache = shaderCache[lookupKeyForShaderProgram] {
             return shaderFromCache
         } else {
-            return try sharedImageProcessingContext.runOperationSynchronously{
+            return try self.runOperationSynchronously{
                 let program = try ShaderProgram(vertexShader:vertexShader, fragmentShader:fragmentShader)
                 self.shaderCache[lookupKeyForShaderProgram] = program
                 return program

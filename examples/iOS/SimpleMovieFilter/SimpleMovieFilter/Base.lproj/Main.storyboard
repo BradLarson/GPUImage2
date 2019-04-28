@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -14,18 +19,61 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mTz-kJ-GVc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZG-4E-PsH" customClass="RenderView" customModule="GPUImage">
-                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZG-4E-PsH" customClass="RenderView" customModule="GPUImage">
+                                <rect key="frame" x="0.0" y="20" width="320" height="391"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="391" id="1Fu-8M-b3C"/>
+                                </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YaA-ZX-EiV">
+                                <rect key="frame" x="16" y="428" width="91" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="91" id="Uzz-I1-s9K"/>
+                                    <constraint firstAttribute="height" constant="42" id="pQO-MS-UwF"/>
+                                </constraints>
+                                <state key="normal" title="Stop"/>
+                                <connections>
+                                    <action selector="cancel" destination="BYZ-38-t0r" eventType="touchUpInside" id="wNI-Ee-dSf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T7t-bj-SQh">
+                                <rect key="frame" x="114.5" y="428" width="91" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="AJz-Wc-8YZ"/>
+                                    <constraint firstAttribute="width" constant="91" id="a6o-dO-qKe"/>
+                                </constraints>
+                                <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pause" destination="BYZ-38-t0r" eventType="touchUpInside" id="iyO-Pp-3Yh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tdq-Of-mOB">
+                                <rect key="frame" x="213" y="428" width="91" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="Lj1-fi-w5w"/>
+                                    <constraint firstAttribute="width" constant="91" id="ZP5-r7-P25"/>
+                                </constraints>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="play" destination="BYZ-38-t0r" eventType="touchUpInside" id="8zK-fn-9zT"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Tdq-Of-mOB" firstAttribute="trailing" secondItem="mTz-kJ-GVc" secondAttribute="trailingMargin" id="1gn-5i-tV3"/>
+                            <constraint firstItem="TZG-4E-PsH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Bly-iZ-xDE"/>
+                            <constraint firstItem="Tdq-Of-mOB" firstAttribute="top" secondItem="TZG-4E-PsH" secondAttribute="bottom" constant="17" id="HNc-ap-DEC"/>
+                            <constraint firstItem="T7t-bj-SQh" firstAttribute="centerX" secondItem="mTz-kJ-GVc" secondAttribute="centerX" id="aSh-Qd-XBH"/>
                             <constraint firstAttribute="trailing" secondItem="TZG-4E-PsH" secondAttribute="trailing" id="eaB-aM-y2J"/>
+                            <constraint firstItem="T7t-bj-SQh" firstAttribute="top" secondItem="TZG-4E-PsH" secondAttribute="bottom" constant="17" id="hOl-8u-4hY"/>
                             <constraint firstItem="TZG-4E-PsH" firstAttribute="leading" secondItem="mTz-kJ-GVc" secondAttribute="leading" id="j8T-4u-Tsw"/>
+                            <constraint firstItem="YaA-ZX-EiV" firstAttribute="leading" secondItem="mTz-kJ-GVc" secondAttribute="leadingMargin" id="sny-xs-bEi"/>
+                            <constraint firstItem="YaA-ZX-EiV" firstAttribute="top" secondItem="TZG-4E-PsH" secondAttribute="bottom" constant="17" id="wIW-Hx-1v8"/>
                         </constraints>
                     </view>
                     <connections>
@@ -34,6 +82,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="114.375" y="117.25352112676056"/>
         </scene>
     </scenes>
 </document>

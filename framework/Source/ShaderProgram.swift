@@ -59,7 +59,7 @@ public class ShaderProgram {
     }
     
     deinit {
-        debugPrint("Shader deallocated")
+        //debugPrint("Shader deallocated")
 
         if (vertexShader != nil) {
             glDeleteShader(vertexShader)
