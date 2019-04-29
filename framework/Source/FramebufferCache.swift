@@ -25,13 +25,18 @@ public class FramebufferCache {
     public func requestFramebufferWithProperties(orientation:ImageOrientation, size:GLSize, textureOnly:Bool = false, minFilter:Int32 = GL_LINEAR, magFilter:Int32 = GL_LINEAR, wrapS:Int32 = GL_CLAMP_TO_EDGE, wrapT:Int32 = GL_CLAMP_TO_EDGE, internalFormat:Int32 = GL_RGBA, format:Int32 = GL_BGRA, type:Int32 = GL_UNSIGNED_BYTE, stencil:Bool = false) -> Framebuffer {
         let hash = hashForFramebufferWithProperties(orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
         let framebuffer:Framebuffer
+        
+        if(framebufferCache.count > 20) {
+            print("WARNING: Runaway framebuffer cache with size: \(framebufferCache.count)")
+        }
+        
         if ((framebufferCache[hash]?.count ?? -1) > 0) {
-//            print("Restoring previous framebuffer")
+            //print("Restoring previous framebuffer")
             framebuffer = framebufferCache[hash]!.removeLast()
             framebuffer.orientation = orientation
         } else {
             do {
-                debugPrint("Generating new framebuffer at size: \(size)")
+                //debugPrint("Generating new framebuffer at size: \(size)")
 
                 framebuffer = try Framebuffer(context:context, orientation:orientation, size:size, textureOnly:textureOnly, minFilter:minFilter, magFilter:magFilter, wrapS:wrapS, wrapT:wrapT, internalFormat:internalFormat, format:format, type:type, stencil:stencil)
                 framebuffer.cache = self
@@ -47,7 +52,7 @@ public class FramebufferCache {
     }
     
     func returnToCache(_ framebuffer:Framebuffer) {
-//        print("Returning to cache: \(framebuffer)")
+        //print("Returning to cache: \(framebuffer)")
         context.runOperationSynchronously{
             if (self.framebufferCache[framebuffer.hash] != nil) {
                 self.framebufferCache[framebuffer.hash]!.append(framebuffer)

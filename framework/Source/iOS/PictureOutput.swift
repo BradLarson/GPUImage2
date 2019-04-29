@@ -53,7 +53,7 @@ public class PictureOutput: ImageConsumer {
         renderFramebuffer.unlock()
         guard let dataProvider = CGDataProvider(dataInfo:nil, data:data, size:imageByteSize, releaseData: dataProviderReleaseCallback) else {fatalError("Could not allocate a CGDataProvider")}
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
-        return CGImage(width:Int(framebuffer.size.width), height:Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
+        return CGImage(width:Int(framebuffer.size.width), height:Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue), provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
     
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
@@ -114,14 +114,14 @@ public extension ImageSource {
 }
 
 public extension UIImage {
-    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) -> UIImage {
-        return filterWithPipeline{input, output in
+    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) throws -> UIImage  {
+        return try filterWithPipeline{input, output in
             input --> operation --> output
         }
     }
     
-    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> UIImage {
-        let picture = PictureInput(image:self)
+    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) throws -> UIImage  {
+        let picture = try PictureInput(image:self)
         var outputImage:UIImage?
         let pictureOutput = PictureOutput()
         pictureOutput.onlyCaptureNextFrame = true
