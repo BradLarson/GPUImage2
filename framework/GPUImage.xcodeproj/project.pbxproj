@@ -1313,11 +1313,11 @@
 			};
 			buildConfigurationList = BC6E7CA51C39A9D8006DF678 /* Build configuration list for PBXProject "GPUImage" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = BC6E7CA11C39A9D8006DF678;
 			productRefGroup = BC6E7CAC1C39A9D8006DF678 /* Products */;
