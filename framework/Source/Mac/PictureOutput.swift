@@ -95,7 +95,7 @@ public class PictureOutput: ImageConsumer {
 }
 
 public extension ImageSource {
-    public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
+    func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
         let pictureOutput = PictureOutput()
         pictureOutput.saveNextFrameToURL(url, format:format)
         self --> pictureOutput
@@ -103,13 +103,13 @@ public extension ImageSource {
 }
 
 public extension NSImage {
-    public func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) -> NSImage {
+    func filterWithOperation<T:ImageProcessingOperation>(_ operation:T) -> NSImage {
         return filterWithPipeline{input, output in
             input --> operation --> output
         }
     }
 
-    public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> NSImage {
+    func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> NSImage {
         let picture = PictureInput(image:self)
         var outputImage:NSImage?
         let pictureOutput = PictureOutput()
