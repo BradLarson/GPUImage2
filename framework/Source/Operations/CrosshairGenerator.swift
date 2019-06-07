@@ -1,16 +1,19 @@
-#if os(Linux)
-#if GLES
-    import COpenGLES.gles2
-#else
-    import COpenGL
+#if canImport(OpenGL)
+import OpenGL.GL
 #endif
-#else
-#if GLES
-    import OpenGLES
-#else
-    import OpenGL.GL
+
+#if canImport(OpenGLES)
+import OpenGLES
 #endif
+
+#if canImport(COpenGLES)
+import COpenGLES.gles2
 #endif
+
+#if canImport(COpenGL)
+import COpenGL
+#endif
+
 
 public class CrosshairGenerator: ImageGenerator {
     
@@ -32,7 +35,7 @@ public class CrosshairGenerator: ImageGenerator {
     public func renderCrosshairs(_ positions:[Position]) {
         imageFramebuffer.activateFramebufferForRendering()
         imageFramebuffer.timingStyle = .stillImage
-#if GL
+#if canImport(OpenGL) || canImport(COpenGL)
         glEnable(GLenum(GL_POINT_SPRITE))
         glEnable(GLenum(GL_VERTEX_PROGRAM_POINT_SIZE))
 #else

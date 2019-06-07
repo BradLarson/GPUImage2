@@ -379,7 +379,7 @@
 		BC1E12FD1C9F5283008F844F /* OpenGLContext_Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenGLContext_Shared.swift; path = Source/OpenGLContext_Shared.swift; sourceTree = "<group>"; };
 		BC1E13281C9F6282008F844F /* PictureInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PictureInput.swift; path = Source/Mac/PictureInput.swift; sourceTree = "<group>"; };
 		BC2C48031CB80E860085E4BC /* Crop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Crop.swift; path = Source/Operations/Crop.swift; sourceTree = "<group>"; };
-		BC4C85ED1C9F042900FD95D8 /* ConvertedShaders_GL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConvertedShaders_GL.swift; path = Source/Operations/Shaders/ConvertedShaders_GL.swift; sourceTree = SOURCE_ROOT; };
+		BC4C85ED1C9F042900FD95D8 /* ConvertedShaders_GL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConvertedShaders_GL.swift; path = Source/Operations/ConvertedShaders_GL.swift; sourceTree = SOURCE_ROOT; };
 		BC4C85F01C9F054100FD95D8 /* Luminance_GL.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Luminance_GL.fsh; path = Source/Operations/Shaders/Luminance_GL.fsh; sourceTree = "<group>"; };
 		BC4C85F11C9F05EB00FD95D8 /* Luminance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Luminance.swift; path = Source/Operations/Luminance.swift; sourceTree = "<group>"; };
 		BC4C85F71C9F167B00FD95D8 /* Saturation_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Saturation_GL.fsh; path = Source/Operations/Shaders/Saturation_GL.fsh; sourceTree = "<group>"; };
@@ -582,7 +582,7 @@
 		BC9E35491E524DC100B8604F /* Crosshair_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Crosshair_GLES.fsh; path = Source/Operations/Shaders/Crosshair_GLES.fsh; sourceTree = "<group>"; };
 		BC9E354B1E524DD400B8604F /* Line_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Line_GLES.fsh; path = Source/Operations/Shaders/Line_GLES.fsh; sourceTree = "<group>"; };
 		BC9E354D1E524E0300B8604F /* Circle_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Circle_GLES.fsh; path = Source/Operations/Shaders/Circle_GLES.fsh; sourceTree = "<group>"; };
-		BC9E35531E52521F00B8604F /* ConvertedShaders_GLES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConvertedShaders_GLES.swift; path = Source/Operations/Shaders/ConvertedShaders_GLES.swift; sourceTree = SOURCE_ROOT; };
+		BC9E35531E52521F00B8604F /* ConvertedShaders_GLES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConvertedShaders_GLES.swift; path = Source/Operations/ConvertedShaders_GLES.swift; sourceTree = SOURCE_ROOT; };
 		BC9E355C1E5252E900B8604F /* Passthrough_GLES.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Passthrough_GLES.fsh; path = Source/Operations/Shaders/Passthrough_GLES.fsh; sourceTree = "<group>"; };
 		BCA4E22F1CC31276007B51BA /* Solarize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Solarize.swift; path = Source/Operations/Solarize.swift; sourceTree = "<group>"; };
 		BCA4E2311CC312EF007B51BA /* Solarize_GL.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Solarize_GL.fsh; path = Source/Operations/Shaders/Solarize_GL.fsh; sourceTree = "<group>"; };
@@ -1316,6 +1316,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = BC6E7CA11C39A9D8006DF678;
@@ -1799,7 +1800,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1851,7 +1852,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

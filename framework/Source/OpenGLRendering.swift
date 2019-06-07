@@ -1,18 +1,20 @@
-#if os(Linux)
-#if GLES
-    import COpenGLES.gles2
-    let GL_DEPTH24_STENCIL8 = GL_DEPTH24_STENCIL8_OES
-    let GL_TRUE = GLboolean(1)
-    let GL_FALSE = GLboolean(0)
-#else
-    import COpenGL
+#if canImport(OpenGL)
+import OpenGL.GL3
 #endif
-#else
-#if GLES
-    import OpenGLES
-#else
-    import OpenGL.GL3
+
+#if canImport(OpenGLES)
+import OpenGLES
 #endif
+
+#if canImport(COpenGLES)
+import COpenGLES.gles2
+let GL_DEPTH24_STENCIL8 = GL_DEPTH24_STENCIL8_OES
+let GL_TRUE = GLboolean(1)
+let GL_FALSE = GLboolean(0)
+#endif
+
+#if canImport(COpenGL)
+import COpenGL
 #endif
 
 import Foundation

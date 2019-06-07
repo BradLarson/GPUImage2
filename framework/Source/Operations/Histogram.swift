@@ -1,16 +1,19 @@
-#if os(Linux)
-#if GLES
-    import COpenGLES.gles2
-    #else
-    import COpenGL
+#if canImport(OpenGL)
+import OpenGL.GL3
 #endif
-#else
-#if GLES
-    import OpenGLES
-    #else
-    import OpenGL.GL3
+
+#if canImport(OpenGLES)
+import OpenGLES
 #endif
+
+#if canImport(COpenGLES)
+import COpenGLES.gles2
 #endif
+
+#if canImport(COpenGL)
+import COpenGL
+#endif
+
 
 /* Unlike other filters, this one uses a grid of GL_POINTs to sample the incoming image in a grid. A custom vertex shader reads the color in the texture at its position
  and outputs a bin position in the final histogram as the vertex position. That point is then written into the image of the histogram using translucent pixels.

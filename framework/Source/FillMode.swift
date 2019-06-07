@@ -1,16 +1,17 @@
 #if os(Linux)
 import Glibc
-#if GLES
-    import COpenGLES.gles2
-    #else
-    import COpenGL
 #endif
-#else
-#if GLES
-    import OpenGLES
-    #else
-    import OpenGL.GL3
+
+#if canImport(OpenGL)
+import OpenGL.GL3
 #endif
+
+#if canImport(OpenGLES)
+import OpenGLES
+#endif
+
+#if canImport(COpenGL)
+import COpenGL
 #endif
 
 
