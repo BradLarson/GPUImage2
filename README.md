@@ -54,15 +54,21 @@ Note that you may need to build your project once to parse and build the GPUImag
 
 ## Using GPUImage in a Linux application ##
 
-Eventually, this project will support the Swift Package Manager, which will make it trivial to use with a Linux project. Unfortunately, that's not yet the case, so it can take a little work to get this to build for a Linux project.
+This project supports the Swift Package Manager, so you should be able to add it as a dependency in your Package.swift file like the following:
 
-Right now, there are two build scripts in the framework directory, one named compile-LinuxGL.sh and one named compile-RPi.sh. The former builds the framework for a Linux target using OpenGL and the latter builds for the Raspberry Pi. I can add other targets as I test them, but I've only gotten this operational in desktop Ubuntu, on Ubuntu running on a Jetson TK1 development board, and on Raspbian running on a Raspberry Pi 2 and Pi 3.
+```
+.package(url: "https://github.com/BradLarson/GPUImage2.git", from: "0.0.1"), 
+```
 
-Before compiling the framework, you'll need to get Swift up and running on your system. For desktop Ubuntu installs, you can follow Apple's guidelines on <a href="https://swift.org/download/">their Downloads page</a>. Those instructions also worked for me on the Jetson TK1 dev board.
+along with an 
 
-For ARM Linux devices like the Raspberry Pi, follow <a href="http://dev.iachieved.it/iachievedit/open-source-swift-on-raspberry-pi-2/">these steps exactly</a> to get a working Swift compiler installed. Pay close attention to the steps for getting Clang-2.6 installed and the use of update-alternatives. These are the steps I used to go from stock Raspbian to a Swift install on 
+```
+import GPUImage
+```
 
-I have noticed that Swift 2.2 compiler snapshots newer than January 11 or so are missing Foundation, which I need for the framework, so maybe go with a snaphot earlier than that. 
+in your application code.
+
+Before compiling the framework, you'll need to get Swift up and running on your system. For desktop Ubuntu installs, you can follow Apple's guidelines on <a href="https://swift.org/download/">their Downloads page</a>.
 
 After Swift, you'll need to install Video4Linux to get access to standard USB webcams as inputs:
 
@@ -76,13 +82,15 @@ On the Raspberry Pi, you'll need to make sure that the Broadcom Videocore header
 sudo apt-get install libraspberrypi-dev
 ```
 
-For desktop Linux and other OpenGL devices (Jetson TK1), you'll need to make sure GLUT and the OpenGL headers are installed. The framework currently uses GLUT for its output. GLUT can be used on the Raspberry Pi via the new experimental OpenGL support there, but I've found that it's significantly slower than using the OpenGL ES APIs and the Videocore interface that ships with the Pi. Also, if you enable the OpenGL support you currently lock yourself out of using the Videocore interface.
+For desktop Linux and other OpenGL devices (Jetson family), you'll need to make sure GLUT and the OpenGL headers are installed. The framework currently uses GLUT for its output. GLUT can be used on the Raspberry Pi via the new experimental OpenGL support there, but I've found that it's significantly slower than using the OpenGL ES APIs and the Videocore interface that ships with the Pi. Also, if you enable the OpenGL support you currently lock yourself out of using the Videocore interface.
 
-Once all of that is set up, to build the framework go to the /framework directory and run the appropriate build script. This will compile and generate a Swift module and a shared library for the framework. Copy the shared library into a system-accessible library path, like /usr/lib.
+Once all of that is set up, you can use
 
-To build any of the sample applications, go to the examples/ subdirectory for that example (examples are platform-specific) and run the compile.sh build script to compile the example. The framework must be built before any example application.
+```
+swift build
+```
 
-As Swift becomes incorporated into more platforms, and as I add support for the Swift Package Manager, these Linux build steps will become much easier. My setup is kind of a hack at present.
+in the main GPUImage directory to build the framework, or do the same in the examples/Linux-OpenGL/SimpleVideoFilter directory. This will build a sample application that filters live video from a USB camera and displays the results in real time to the screen. The application itself will be contained within the .build directory and its platform-specific subdirectories. Look for the SimpleVideoFilter binary and run that.
 
 ## Performing common tasks ##
 

@@ -1,6 +1,9 @@
 # Exclude the build directory
 build/*
 examples/FilterShowcase/build*
+examples/Linux-OpenGL/SimpleVideoFilter/.build
+.build
+.swiftpm
  
 # Exclude temp nibs and swap files
 *~.nib

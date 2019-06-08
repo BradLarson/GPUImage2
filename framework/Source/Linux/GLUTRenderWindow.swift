@@ -14,8 +14,11 @@ public class GLUTRenderWindow: ImageConsumer {
 	
 
 	public init(width:UInt32, height:UInt32, title:String) {
-	    var localArgc = Process.argc
-	    glutInit(&localArgc, Process.unsafeArgv)
+//	    var localArgc = Process.argc
+//	    glutInit(&localArgc, Process.unsafeArgv)
+
+        var input1:Int32 = 1
+	    glutInit(&input1, nil)
 	    glutInitDisplayMode(UInt32(GLUT_DOUBLE))
 	    glutInitWindowSize(Int32(width), Int32(height))
 	    glutInitWindowPosition(100,100)
@@ -28,7 +31,7 @@ public class GLUTRenderWindow: ImageConsumer {
 		// glutReshapeFunc(void (*func)(int width, int height) // Maybe use this to get window reshape events
 	}
 	
-    public func newFramebufferAvailable(framebuffer:Framebuffer, fromSourceIndex:UInt) {
+    public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
         glBindRenderbuffer(GLenum(GL_RENDERBUFFER), 0)
 
@@ -39,12 +42,12 @@ public class GLUTRenderWindow: ImageConsumer {
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClear(GLenum(GL_COLOR_BUFFER_BIT))
 
-        renderQuadWithShader(self.displayShader, vertices:verticallyInvertedImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.Portrait)])
+        renderQuadWithShader(self.displayShader, vertices:verticallyInvertedImageVertices, inputTextures:[framebuffer.texturePropertiesForTargetOrientation(.portrait)])
 		framebuffer.unlock()
 	    glutSwapBuffers()
     }
 	
-	public func loopWithFunction(idleFunction:() -> ()) {
+	public func loopWithFunction(_ idleFunction:@escaping () -> ()) {
 		loopFunction = idleFunction
 	    glutIdleFunc(glutCallbackFunction)
 	    glutMainLoop()

@@ -1,11 +1,17 @@
 import COpenGL
+import Dispatch
 
 public class OpenGLContext: SerialDispatch {
     lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
     var shaderCache:[String:ShaderProgram] = [:]
-    
+    public let standardImageVBO:GLuint
+    var textureVBOs:[Rotation:GLuint] = [:]
+        
+    public let serialDispatchQueue:DispatchQueue = DispatchQueue(label:"com.sunsetlakesoftware.GPUImage.processingQueue", attributes: [])
+    public let dispatchQueueKey = DispatchSpecificKey<Int>()
+
     lazy var passthroughShader:ShaderProgram = {
         return crashOnShaderCompileFailure("OpenGLContext"){return try self.programForVertexShader(OneInputVertexShader, fragmentShader:PassthroughFragmentShader)}
     }()
@@ -14,7 +20,11 @@ public class OpenGLContext: SerialDispatch {
     // MARK: Initialization and teardown
 
     init() {
-        
+        serialDispatchQueue.setSpecific(key:dispatchQueueKey, value:81)
+
+        standardImageVBO = generateVBO(for:standardImageVertices)
+        generateTextureVBOs()
+
         glDisable(GLenum(GL_DEPTH_TEST))
         glEnable(GLenum(GL_TEXTURE_2D))
     }
@@ -22,7 +32,7 @@ public class OpenGLContext: SerialDispatch {
     // MARK: -
     // MARK: Rendering
     
-    func makeCurrentContext() {
+    public func makeCurrentContext() {
     }
     
     func presentBufferForDisplay() {
@@ -49,7 +59,8 @@ public class OpenGLContext: SerialDispatch {
     lazy var extensionString:String = {
         return self.runOperationSynchronously{
             self.makeCurrentContext()
-            return String.fromCString(UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))!
+            return String(cString:unsafeBitCast(glGetString(GLenum(GL_EXTENSIONS)), to:UnsafePointer<CChar>.self))
+//            return String.fromCString(UnsafePointer<CChar>(glGetString(GLenum(GL_EXTENSIONS))))!
         }
     }()
 }

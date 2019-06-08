@@ -1,11 +1,13 @@
-#if GLES
-    import COpenGLES.gles2
-#else
-    import COpenGL
+#if canImport(COpenGL)
+import COpenGL
 #endif
 
-/*
+#if canImport(COpenGLES)
+import COpenGLES.gles2
+#endif
+
 import CVideo4Linux
+import V4LSupplement
 import Glibc
 import Foundation
 
@@ -65,7 +67,7 @@ public class V4LCamera:ImageSource {
         
         let startTime = NSDate()
         
-        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(size), textureOnly:true)
+        let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(size), textureOnly:true)
         luminanceFramebuffer.lock()
         
         glActiveTexture(GLenum(GL_TEXTURE0))
@@ -73,14 +75,14 @@ public class V4LCamera:ImageSource {
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(round(Double(size.width))), GLsizei(round(Double(size.height))), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), buffers[Int(currentBuffer)].start)
         
         // YUV 420 chrominance is split into two planes in V4L
-        let chrominanceFramebuffer1 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
+        let chrominanceFramebuffer1 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
         chrominanceFramebuffer1.lock()
         
         glActiveTexture(GLenum(GL_TEXTURE1))
         glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer1.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE, GLsizei(round(Double(size.width) / 2.0)), GLsizei(round(Double(size.height) / 2.0)), 0, GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), buffers[Int(currentBuffer)].start + (Int(round(Double(size.width))) * Int(round(Double(size.height)))))
         
-        let chrominanceFramebuffer2 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
+        let chrominanceFramebuffer2 = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(round(Double(size.width) / 2.0)), height:GLint(round(Double(size.height) / 2.0))), textureOnly:true)
         chrominanceFramebuffer2.lock()
         
         glActiveTexture(GLenum(GL_TEXTURE2))
@@ -94,7 +96,7 @@ public class V4LCamera:ImageSource {
             currentBuffer = 0
         }
         
-        let cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.Portrait, size:luminanceFramebuffer.sizeForTargetOrientation(.Portrait), textureOnly:false)
+        let cameraFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:luminanceFramebuffer.sizeForTargetOrientation(.portrait), textureOnly:false)
         
         let conversionMatrix = colorConversionMatrix601FullRangeDefault
         convertYUVToRGB(shader:self.yuvConversionShader!, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer1, secondChrominanceFramebuffer:chrominanceFramebuffer2, resultFramebuffer:cameraFramebuffer, colorConversionMatrix:conversionMatrix)
@@ -118,8 +120,7 @@ public class V4LCamera:ImageSource {
         }
     }
 
-    public func transmitPreviousImageToTarget(target:ImageConsumer, atIndex:UInt) {
+    public func transmitPreviousImage(to target:ImageConsumer, atIndex:UInt) {
         // Not needed for camera inputs
     }
 }
-*/
