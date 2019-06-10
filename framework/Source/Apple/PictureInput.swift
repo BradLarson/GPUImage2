@@ -1,5 +1,14 @@
+#if canImport(OpenGL)
 import OpenGL.GL3
+#else
+import OpenGLES
+#endif
+
+#if canImport(UIKit)
+import UIKit
+#else
 import Cocoa
+#endif
 
 public class PictureInput: ImageSource {
     public let targets = TargetContainer()
@@ -87,42 +96,57 @@ public class PictureInput: ImageSource {
         } else {
             // Access the raw image bytes directly
             dataFromImageDataProvider = image.dataProvider?.data
+#if os(iOS)
+            imageData = UnsafeMutablePointer<GLubyte>(mutating:CFDataGetBytePtr(dataFromImageDataProvider))
+#else
             imageData = UnsafeMutablePointer<GLubyte>(mutating:CFDataGetBytePtr(dataFromImageDataProvider)!)
+#endif
         }
         
-        sharedImageProcessingContext.makeCurrentContext()
-        do {
-            imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(width:widthToUseForTexture, height:heightToUseForTexture), textureOnly:true)
-            imageFramebuffer.timingStyle = .stillImage
-        } catch {
-            fatalError("ERROR: Unable to initialize framebuffer of size (\(widthToUseForTexture), \(heightToUseForTexture)) with error: \(error)")
-        }
-
-        glActiveTexture(GLenum(GL_TEXTURE1))
-        glBindTexture(GLenum(GL_TEXTURE_2D), imageFramebuffer.texture)
-        if (smoothlyScaleOutput) {
-            glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR_MIPMAP_LINEAR)
-        }
-
-        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, widthToUseForTexture, heightToUseForTexture, 0, GLenum(format), GLenum(GL_UNSIGNED_BYTE), imageData)
+        sharedImageProcessingContext.runOperationSynchronously{
+            do {
+                // TODO: Alter orientation based on metadata from photo
+                self.imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(width:widthToUseForTexture, height:heightToUseForTexture), textureOnly:true)
+            } catch {
+                fatalError("ERROR: Unable to initialize framebuffer of size (\(widthToUseForTexture), \(heightToUseForTexture)) with error: \(error)")
+            }
             
-        if (smoothlyScaleOutput) {
-            glGenerateMipmap(GLenum(GL_TEXTURE_2D))
+            glBindTexture(GLenum(GL_TEXTURE_2D), self.imageFramebuffer.texture)
+            if (smoothlyScaleOutput) {
+                glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR_MIPMAP_LINEAR)
+            }
+            
+            glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, widthToUseForTexture, heightToUseForTexture, 0, GLenum(format), GLenum(GL_UNSIGNED_BYTE), imageData)
+            
+            if (smoothlyScaleOutput) {
+                glGenerateMipmap(GLenum(GL_TEXTURE_2D))
+            }
+            glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         }
-        glBindTexture(GLenum(GL_TEXTURE_2D), 0)
-        
+
         if (shouldRedrawUsingCoreGraphics) {
             imageData.deallocate()
         }
     }
-    
+
+#if canImport(UIKit)
+    public convenience init(image:UIImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
+        self.init(image:image.cgImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
+    }
+#else
     public convenience init(image:NSImage, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
         self.init(image:image.cgImage(forProposedRect:nil, context:nil, hints:nil)!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
     }
+#endif
 
     public convenience init(imageName:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
+#if canImport(UIKit)
+        guard let image = UIImage(named:imageName) else { fatalError("No such image named: \(imageName) in your application bundle") }
+        self.init(image:image.cgImage!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
+#else
         guard let image = NSImage(named:NSImage.Name(imageName)) else { fatalError("No such image named: \(imageName) in your application bundle") }
         self.init(image:image.cgImage(forProposedRect:nil, context:nil, hints:nil)!, smoothlyScaleOutput:smoothlyScaleOutput, orientation:orientation)
+#endif
     }
 
     public func processImage(synchronously:Bool = false) {

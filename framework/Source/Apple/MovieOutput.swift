@@ -31,7 +31,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             return assetWriterVideoInput.transform
         }
         set {
-            assetWriterVideoInput.transform = transform
+            assetWriterVideoInput.transform = newValue
         }
     }
     
@@ -79,6 +79,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         sharedImageProcessingContext.runOperationSynchronously{
             self.isRecording = self.assetWriter.startWriting()
             
+#if os(iOS)
             CVPixelBufferPoolCreatePixelBuffer(nil, self.assetWriterPixelBufferInput.pixelBufferPool!, &self.pixelBuffer)
             
             /* AVAssetWriter will use BT.601 conversion matrix for RGB to YCbCr conversion
@@ -96,6 +97,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             let cachedTexture = CVOpenGLESTextureGetName(cachedTextureRef!)
             
             self.renderFramebuffer = try! Framebuffer(context:sharedImageProcessingContext, orientation:.portrait, size:bufferSize, textureOnly:false, overriddenTexture:cachedTexture)
+#endif
         }
     }
     
@@ -153,6 +155,7 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             return
         }
         
+#if os(iOS)
         if !sharedImageProcessingContext.supportsTextureCaches() {
             let pixelBufferStatus = CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput.pixelBufferPool!, &pixelBuffer)
             guard ((pixelBuffer != nil) && (pixelBufferStatus == kCVReturnSuccess)) else { return }
@@ -168,9 +171,24 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
         if !sharedImageProcessingContext.supportsTextureCaches() {
             pixelBuffer = nil
         }
+#else
+        var pixelBufferFromPool:CVPixelBuffer? = nil
+        
+        let pixelBufferStatus = CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput.pixelBufferPool!, &pixelBufferFromPool)
+        guard let pixelBuffer = pixelBufferFromPool, (pixelBufferStatus == kCVReturnSuccess) else { return }
+        
+        renderIntoPixelBuffer(pixelBuffer, framebuffer:framebuffer)
+        
+        if (!assetWriterPixelBufferInput.append(pixelBuffer, withPresentationTime:frameTime)) {
+            print("Problem appending pixel buffer at time: \(frameTime)")
+        }
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
+#endif
     }
     
     func renderIntoPixelBuffer(_ pixelBuffer:CVPixelBuffer, framebuffer:Framebuffer) {
+#if os(iOS)
         if !sharedImageProcessingContext.supportsTextureCaches() {
             renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
             renderFramebuffer.lock()
@@ -187,6 +205,19 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
             glReadPixels(0, 0, renderFramebuffer.size.width, renderFramebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
             renderFramebuffer.unlock()
         }
+#else
+        let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:GLSize(self.size))
+        renderFramebuffer.lock()
+        
+        renderFramebuffer.activateFramebufferForRendering()
+        clearFramebufferWithColor(Color.black)
+        
+        renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
+        
+        CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
+        glReadPixels(0, 0, renderFramebuffer.size.width, renderFramebuffer.size.height, GLenum(GL_BGRA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddress(pixelBuffer))
+        renderFramebuffer.unlock()
+#endif
     }
     
     // MARK: -

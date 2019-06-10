@@ -43,12 +43,12 @@ public class MovieInput: ImageSource {
     // MARK: Playback control
 
     public func start() {
-        asset.loadValuesAsynchronously(forKeys: ["tracks"], completionHandler: {
-            standardProcessingQueue.async {
-                guard (self.asset.statusOfValue(forKey:"tracks", error:nil) == .loaded) else { return }
+        asset.loadValuesAsynchronously(forKeys:["tracks"], completionHandler:{
+            standardProcessingQueue.async(execute: {
+                guard (self.asset.statusOfValue(forKey: "tracks", error:nil) == .loaded) else { return }
 
                 guard self.assetReader.startReading() else {
-                    debugPrint("Couldn't start reading")
+                    print("Couldn't start reading")
                     return
                 }
                 
@@ -73,7 +73,7 @@ public class MovieInput: ImageSource {
                         self.endProcessing()
                     }
                 }
-            }
+            })
         })
     }
     
@@ -141,7 +141,7 @@ public class MovieInput: ImageSource {
     func process(movieFrame:CVPixelBuffer, withSampleTime:CMTime) {
         let bufferHeight = CVPixelBufferGetHeight(movieFrame)
         let bufferWidth = CVPixelBufferGetWidth(movieFrame)
-        CVPixelBufferLockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
+        CVPixelBufferLockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
 
         let conversionMatrix = colorConversionMatrix601FullRangeDefault
         // TODO: Get this color query working
@@ -157,6 +157,56 @@ public class MovieInput: ImageSource {
         
         let startTime = CFAbsoluteTimeGetCurrent()
 
+#if os(iOS)
+        var luminanceGLTexture: CVOpenGLESTexture?
+        
+        glActiveTexture(GLenum(GL_TEXTURE0))
+        
+        let luminanceGLTextureResult = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, movieFrame, nil, GLenum(GL_TEXTURE_2D), GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), 0, &luminanceGLTexture)
+        
+        assert(luminanceGLTextureResult == kCVReturnSuccess && luminanceGLTexture != nil)
+        
+        let luminanceTexture = CVOpenGLESTextureGetName(luminanceGLTexture!)
+        
+        glBindTexture(GLenum(GL_TEXTURE_2D), luminanceTexture)
+        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE));
+        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE));
+        
+        let luminanceFramebuffer: Framebuffer
+        do {
+            luminanceFramebuffer = try Framebuffer(context: sharedImageProcessingContext, orientation: .portrait, size: GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly: true, overriddenTexture: luminanceTexture)
+        } catch {
+            fatalError("Could not create a framebuffer of the size (\(bufferWidth), \(bufferHeight)), error: \(error)")
+        }
+        
+//         luminanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
+        luminanceFramebuffer.lock()
+        
+        
+        var chrominanceGLTexture: CVOpenGLESTexture?
+        
+        glActiveTexture(GLenum(GL_TEXTURE1))
+        
+        let chrominanceGLTextureResult = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, movieFrame, nil, GLenum(GL_TEXTURE_2D), GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), 1, &chrominanceGLTexture)
+        
+        assert(chrominanceGLTextureResult == kCVReturnSuccess && chrominanceGLTexture != nil)
+        
+        let chrominanceTexture = CVOpenGLESTextureGetName(chrominanceGLTexture!)
+        
+        glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceTexture)
+        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE));
+        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE));
+        
+        let chrominanceFramebuffer: Framebuffer
+        do {
+            chrominanceFramebuffer = try Framebuffer(context: sharedImageProcessingContext, orientation: .portrait, size: GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly: true, overriddenTexture: chrominanceTexture)
+        } catch {
+            fatalError("Could not create a framebuffer of the size (\(bufferWidth), \(bufferHeight)), error: \(error)")
+        }
+        
+//         chrominanceFramebuffer.cache = sharedImageProcessingContext.framebufferCache
+        chrominanceFramebuffer.lock()
+#else
         let luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)
         luminanceFramebuffer.lock()
         glActiveTexture(GLenum(GL_TEXTURE0))
@@ -168,11 +218,11 @@ public class MovieInput: ImageSource {
         glActiveTexture(GLenum(GL_TEXTURE1))
         glBindTexture(GLenum(GL_TEXTURE_2D), chrominanceFramebuffer.texture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_LUMINANCE_ALPHA, GLsizei(bufferWidth / 2), GLsizei(bufferHeight / 2), 0, GLenum(GL_LUMINANCE_ALPHA), GLenum(GL_UNSIGNED_BYTE), CVPixelBufferGetBaseAddressOfPlane(movieFrame, 1))
-        
+#endif
         let movieFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:.portrait, size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:false)
         
         convertYUVToRGB(shader:self.yuvConversionShader, luminanceFramebuffer:luminanceFramebuffer, chrominanceFramebuffer:chrominanceFramebuffer, resultFramebuffer:movieFramebuffer, colorConversionMatrix:conversionMatrix)
-        CVPixelBufferUnlockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
+        CVPixelBufferUnlockBaseAddress(movieFrame, CVPixelBufferLockFlags(rawValue:CVOptionFlags(0)))
 
         movieFramebuffer.timingStyle = .videoFrame(timestamp:Timestamp(withSampleTime))
         self.updateTargetsWithFramebuffer(movieFramebuffer)

@@ -1,3 +1,5 @@
+#if canImport(UIKit)
+
 import UIKit
 
 // TODO: Add support for transparency
@@ -116,3 +118,4 @@ public class RenderView:UIView, ImageConsumer {
         sharedImageProcessingContext.presentBufferForDisplay()
     }
 }
+#endif

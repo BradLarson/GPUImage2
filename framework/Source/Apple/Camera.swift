@@ -77,8 +77,8 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     let captureAsYUV:Bool
     let yuvConversionShader:ShaderProgram?
     let frameRenderingSemaphore = DispatchSemaphore(value:1)
-    let cameraProcessingQueue = DispatchQueue.global()
-    let audioProcessingQueue = DispatchQueue.global()
+    let cameraProcessingQueue:DispatchQueue = standardProcessingQueue
+    let audioProcessingQueue:DispatchQueue = lowProcessingQueue
 
     let framesToIgnore = 5
     var numberOfFramesCaptured = 0
@@ -203,6 +203,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                 let luminanceFramebuffer:Framebuffer
                 let chrominanceFramebuffer:Framebuffer
                 if sharedImageProcessingContext.supportsTextureCaches() {
+#if os(iOS)
                     var luminanceTextureRef:CVOpenGLESTexture? = nil
                     let _ = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, sharedImageProcessingContext.coreVideoTextureCache, cameraFrame, nil, GLenum(GL_TEXTURE_2D), GL_LUMINANCE, GLsizei(bufferWidth), GLsizei(bufferHeight), GLenum(GL_LUMINANCE), GLenum(GL_UNSIGNED_BYTE), 0, &luminanceTextureRef)
                     let luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef!)
@@ -220,6 +221,9 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
                     glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_CLAMP_TO_EDGE)
                     glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_CLAMP_TO_EDGE)
                     chrominanceFramebuffer = try! Framebuffer(context:sharedImageProcessingContext, orientation:self.location.imageOrientation(), size:GLSize(width:GLint(bufferWidth / 2), height:GLint(bufferHeight / 2)), textureOnly:true, overriddenTexture:chrominanceTexture)
+#else
+                    fatalError("Texture cache processing isn't available on macOS")
+#endif
                 } else {
                     glActiveTexture(GLenum(GL_TEXTURE4))
                     luminanceFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:self.location.imageOrientation(), size:GLSize(width:GLint(bufferWidth), height:GLint(bufferHeight)), textureOnly:true)

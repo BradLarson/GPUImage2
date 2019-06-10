@@ -1,3 +1,5 @@
+#if canImport(Cocoa)
+
 import Cocoa
 
 public class RenderView:NSOpenGLView, ImageConsumer {
@@ -32,3 +34,5 @@ public class RenderView:NSOpenGLView, ImageConsumer {
         framebuffer.unlock()
     }
 }
+
+#endif

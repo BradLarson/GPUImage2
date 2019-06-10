@@ -1,3 +1,5 @@
+#if canImport(OpenGLES)
+
 import OpenGLES
 import UIKit
 
@@ -103,3 +105,4 @@ public class OpenGLContext: SerialDispatch {
         }
     }()
 }
+#endif

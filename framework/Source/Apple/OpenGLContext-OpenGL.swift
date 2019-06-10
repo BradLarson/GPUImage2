@@ -1,3 +1,5 @@
+#if canImport(OpenGL)
+
 import OpenGL.GL
 import Cocoa
 
@@ -65,6 +67,10 @@ public class OpenGLContext: SerialDispatch {
     // MARK: -
     // MARK: Device capabilities
 
+    func supportsTextureCaches() -> Bool {
+        return false
+    }
+    
     public var maximumTextureSizeForThisDevice:GLint {get { return _maximumTextureSizeForThisDevice } }
     private lazy var _maximumTextureSizeForThisDevice:GLint = {
         return self.openGLDeviceSettingForOption(GL_MAX_TEXTURE_SIZE)
@@ -87,3 +93,4 @@ public class OpenGLContext: SerialDispatch {
         }
     }()
 }
+#endif
