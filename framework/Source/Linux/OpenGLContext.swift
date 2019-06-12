@@ -2,7 +2,7 @@ import COpenGL
 import Dispatch
 
 public class OpenGLContext: SerialDispatch {
-    lazy var framebufferCache:FramebufferCache = {
+    public lazy var framebufferCache:FramebufferCache = {
         return FramebufferCache(context:self)
     }()
     var shaderCache:[String:ShaderProgram] = [:]

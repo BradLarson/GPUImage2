@@ -10,7 +10,7 @@ let package = Package(
     targets: [
         .target(
             name: "SimpleVideoFilter",
-            dependencies: ["GPUImage"],
+            dependencies: ["GPUImage", "GPUImageV4LCamera"],
             path: "Sources")
     ]
 )
