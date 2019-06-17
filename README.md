@@ -20,6 +20,8 @@ The objective of the framework is to make it as easy as possible to set up and p
 
 BSD-style, with the full license available with the framework in License.txt.
 
+Currently, GPUImage uses Lode Vandevenne's <a href="https://lodev.org/lodepng/">LodePNG</a> for PNG output on Linux, as well as Paul Hudson's <a href="https://github.com/twostraws/SwiftGD">SwiftGD</a> for image loading. lodepng is released under the zlib license, and SwiftGD is released under the MIT License.
+
 ## Technical requirements ##
 
 - Swift 3

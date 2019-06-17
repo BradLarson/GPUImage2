@@ -13,7 +13,7 @@ public class PictureInput: ImageSource {
     var imageFramebuffer:Framebuffer!
     var hasProcessedImage:Bool = false
 
-    public init?(path:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portraitUpsideDown) {
+    public init?(path:String, smoothlyScaleOutput:Bool = false, orientation:ImageOrientation = .portrait) {
         let location = URL(fileURLWithPath: path)
         guard let image = Image(url: location) else { return nil }
         let bitmapImage = try! image.export(as:.bmp(compression:false))
@@ -33,7 +33,6 @@ public class PictureInput: ImageSource {
             //     glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR_MIPMAP_LINEAR)
             // }
             bitmapImage.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
-                print("Image byte size: \(bitmapImage.count), width: \(widthToUseForTexture), height: \(heightToUseForTexture)")
                 let imageData = UnsafeRawPointer(u8Ptr) + 54
                 glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, widthToUseForTexture, heightToUseForTexture, 0, GLenum(GL_RGB), GLenum(GL_UNSIGNED_BYTE), imageData)
             }

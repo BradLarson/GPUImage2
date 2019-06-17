@@ -2,8 +2,12 @@
 build/*
 examples/FilterShowcase/build*
 examples/Linux-OpenGL/SimpleVideoFilter/.build
+examples/Linux-OpenGL/swift-install
+examples/Linux-OpenGL/.ipynb_checkpoints
+examples/Linux-OpenGL/test.png
 .build
 .swiftpm
+Package.resolved
  
 # Exclude temp nibs and swap files
 *~.nib

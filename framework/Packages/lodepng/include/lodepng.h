@@ -75,11 +75,11 @@ source files with custom allocators.*/
 #define LODEPNG_COMPILE_ALLOCATORS
 #endif
 /*compile the C++ version (you can disable the C++ wrapper here even when compiling for C++)*/
-#ifdef __cplusplus
-#ifndef LODEPNG_NO_COMPILE_CPP
-#define LODEPNG_COMPILE_CPP
-#endif
-#endif
+// #ifdef __cplusplus
+// #ifndef LODEPNG_NO_COMPILE_CPP
+// #define LODEPNG_COMPILE_CPP
+// #endif
+// #endif
 
 #ifdef LODEPNG_COMPILE_CPP
 #include <vector>
@@ -179,6 +179,11 @@ Converts raw pixel data into a PNG file on disk.
 Same as the other encode functions, but instead takes a filename as output.
 NOTE: This overwrites existing files without warning!
 */
+
+#ifdef __cplusplus
+extern "C" {
+#endif  
+
 unsigned lodepng_encode_file(const char* filename,
                              const unsigned char* image, unsigned w, unsigned h,
                              LodePNGColorType colortype, unsigned bitdepth);
@@ -190,6 +195,12 @@ unsigned lodepng_encode32_file(const char* filename,
 /*Same as lodepng_encode_file, but always encodes from 24-bit RGB raw image.*/
 unsigned lodepng_encode24_file(const char* filename,
                                const unsigned char* image, unsigned w, unsigned h);
+
+#ifdef __cplusplus
+}
+#endif  
+
+
 #endif /*LODEPNG_COMPILE_DISK*/
 #endif /*LODEPNG_COMPILE_ENCODER*/
 

@@ -2,3 +2,5 @@
 /.build
 /Packages
 /*.xcodeproj
+Package.resolved
+test.png

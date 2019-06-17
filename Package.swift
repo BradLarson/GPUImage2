@@ -19,18 +19,18 @@ let platformProducts: [Product] =  [
 // TODO: Add back in RPi support
 // TODO: Move the remote system library packages into this project
 let platformDependencies: [Package.Dependency] = [
-    .package(url: "https://github.com/twostraws/SwiftGD.git", from: "2.0.0"),
+    .package(url: "https://github.com/twostraws/SwiftGD.git", .exact("2.3.0")),
     .package(url: "https://github.com/BradLarson/COpenGL.git", from: "1.0.2"), 
     .package(url: "https://github.com/BradLarson/CFreeGLUT.git", from: "1.0.1"), 
     .package(url: "https://github.com/BradLarson/CVideo4Linux.git", from: "1.0.2")]
 let platformExcludes =  ["Apple", "Operations/Shaders", "Linux/RPiRenderWindow.swift", "Linux/OpenGLContext-RPi.swift", "Linux/V4LSupplement", "Linux/V4LCamera"]
 let platformTargets: [Target] = [
-        // .target(
-        //     name: "lodepng",
-        //     path: "framework/Packages/lodepng"),
+        .target(
+            name: "lodepng",
+            path: "framework/Packages/lodepng"),
         .target(
             name: "GPUImage",
-            dependencies: ["SwiftGD"],
+            dependencies: ["SwiftGD", "lodepng"],
             path: "framework/Source",
             exclude: platformExcludes),
         .target(

@@ -13,7 +13,7 @@ public class GLUTRenderWindow: ImageConsumer {
     }()
 	
 
-	public init(width:UInt32, height:UInt32, title:String) {
+	public init(width:UInt32 = 100, height:UInt32 = 100, title:String? = nil, offscreen:Bool = true) {
 //	    var localArgc = Process.argc
 //	    glutInit(&localArgc, Process.unsafeArgv)
 
@@ -22,13 +22,20 @@ public class GLUTRenderWindow: ImageConsumer {
 	    glutInitDisplayMode(UInt32(GLUT_DOUBLE))
 	    glutInitWindowSize(Int32(width), Int32(height))
 	    glutInitWindowPosition(100,100)
-	    glutCreateWindow(title)
-    
+	    glutCreateWindow(title ?? "Untitled")
+		if offscreen {
+	    	glutHideWindow()
+		}
+
 	    glViewport(0, 0, GLsizei(width), GLsizei(height))
 	    glClearColor(0.15, 0.25, 0.35, 1.0)
 	    glClear(GLenum(GL_COLOR_BUFFER_BIT))
 		
 		// glutReshapeFunc(void (*func)(int width, int height) // Maybe use this to get window reshape events
+	}
+
+	public func display(title:String) {
+		
 	}
 	
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
