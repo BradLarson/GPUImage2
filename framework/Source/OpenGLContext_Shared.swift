@@ -22,7 +22,7 @@ public let sharedImageProcessingContext = OpenGLContext()
 extension OpenGLContext {
     public func programForVertexShader(_ vertexShader:String, fragmentShader:String) throws -> ShaderProgram {
         let lookupKeyForShaderProgram = "V: \(vertexShader) - F: \(fragmentShader)"
-        if let shaderFromCache = shaderCache[lookupKeyForShaderProgram] {
+        if let shaderFromCache = sharedImageProcessingContext.runOperationSynchronously({ shaderCache[lookupKeyForShaderProgram] }) {
             return shaderFromCache
         } else {
             return try sharedImageProcessingContext.runOperationSynchronously{
