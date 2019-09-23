@@ -297,7 +297,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         titleName:"Histogram",
         sliderConfiguration:.enabled(minimumValue:4.0, maximumValue:32.0, initialValue:16.0),
         sliderUpdateCallback: {(filter, sliderValue) in
-            filter.downsamplingFactor = UInt(round(sliderValue))
+            filter.downsamplingFactor = UInt(roundf(sliderValue))
         },
         filterOperationType:.custom(filterSetupFunction: {(camera, filter, outputView) in
             let castFilter = filter as! Histogram
@@ -684,7 +684,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         titleName:"Posterize",
         sliderConfiguration:.enabled(minimumValue:1.0, maximumValue:20.0, initialValue:10.0),
         sliderUpdateCallback: {(filter, sliderValue) in
-            filter.colorLevels = round(sliderValue)
+            filter.colorLevels = roundf(sliderValue)
         },
         filterOperationType:.singleInput
     ),
@@ -753,7 +753,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         titleName:"Kuwahara",
         sliderConfiguration:.enabled(minimumValue:3.0, maximumValue:9.0, initialValue:3.0),
         sliderUpdateCallback: {(filter, sliderValue) in
-            filter.radius = Int(round(sliderValue))
+            filter.radius = Int(roundf(sliderValue))
         },
         filterOperationType:.singleInput
     ),

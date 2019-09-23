@@ -15,13 +15,15 @@
 public class TextureInput: ImageSource {
     public let targets = TargetContainer()
     
-    let textureFramebuffer:Framebuffer
+    var textureFramebuffer:Framebuffer!
 
     public init(texture:GLuint, size:Size, orientation:ImageOrientation = .portrait) {
-        do {
-            textureFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(size), textureOnly:true, overriddenTexture:texture)
-        } catch {
-            fatalError("Could not create framebuffer for custom input texture.")
+        sharedImageProcessingContext.runOperationSynchronously{
+            do {
+                textureFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:orientation, size:GLSize(size), textureOnly:true, overriddenTexture:texture)
+            } catch {
+                fatalError("Could not create framebuffer for custom input texture.")
+            }
         }
     }
 

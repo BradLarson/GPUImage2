@@ -6,10 +6,13 @@ public class ImageGenerator: ImageSource {
 
     public init(size:Size) {
         self.size = size
-        do {
-            imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:.portrait, size:GLSize(size))
-        } catch {
-            fatalError("Could not construct framebuffer of size: \(size), error:\(error)")
+        
+        sharedImageProcessingContext.runOperationSynchronously{
+            do {
+                imageFramebuffer = try Framebuffer(context:sharedImageProcessingContext, orientation:.portrait, size:GLSize(size))
+            } catch {
+                fatalError("Could not construct framebuffer of size: \(size), error:\(error)")
+            }
         }
     }
     

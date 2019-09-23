@@ -17,9 +17,32 @@ import Glibc
 import Foundation
 import AVFoundation
 
-// TODO: Add a good lookup table to this to allow for detailed error messages
-struct FramebufferCreationError:Error {
+struct FramebufferCreationError:Error, CustomStringConvertible {
+    var description:String {
+        return "FramebufferCreationError(errorCode: \(self.errorCode), errorCodeDescription: \(self.errorCodeDescription))"
+    }
+    
     let errorCode:GLenum
+    
+    var errorCodeDescription:String {
+        // Source --> https://www.khronos.org/registry/OpenGL-Refpages/es3.0/html/glCheckFramebufferStatus.xhtml
+        switch self.errorCode {
+        case GLenum(GL_FRAMEBUFFER_COMPLETE):
+            return "GL_FRAMEBUFFER_UNDEFINED"
+        case GLenum(GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT):
+            return "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"
+        case GLenum(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT):
+            return "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"
+        case GLenum(GL_FRAMEBUFFER_UNSUPPORTED):
+            return "GL_FRAMEBUFFER_UNSUPPORTED"
+        case GLenum(GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE):
+            return "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE"
+        case GLenum(GL_INVALID_ENUM):
+            return "GL_INVALID_ENUM"
+        default:
+            return "UNKNOWN"
+        }
+    }
 }
 
 public enum FramebufferTimingStyle {
