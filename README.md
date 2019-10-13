@@ -24,8 +24,8 @@ Currently, GPUImage uses Lode Vandevenne's <a href="https://lodev.org/lodepng/">
 
 ## Technical requirements ##
 
-- Swift 3
-- Xcode 8.0 on Mac or iOS
+- Swift 4.2 or higher
+- Xcode 10.1 or higher on Mac or iOS
 - iOS: 8.0 or higher (Swift is supported on 7.0, but not Mac-style frameworks)
 - OSX: 10.9 or higher
 - Linux: Wherever Swift code can be compiled. Currently, that's Ubuntu 14.04 or higher, along with the many other places it has been ported to. I've gotten this running on the latest Raspbian, for example. For camera input, Video4Linux needs to be installed.
