@@ -56,5 +56,5 @@ let package = Package(
     products: platformProducts,
     dependencies: platformDependencies,
     targets: platformTargets,
-    swiftLanguageVersions: [.v4]
+    swiftLanguageVersions: [.v4_2]
 )

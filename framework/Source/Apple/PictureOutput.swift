@@ -97,8 +97,8 @@ public class PictureOutput: ImageConsumer {
 #if canImport(UIKit)
             let image = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
             switch encodedImageFormat {
-                case .png: imageData = UIImagePNGRepresentation(image)! // TODO: Better error handling here
-                case .jpeg: imageData = UIImageJPEGRepresentation(image, 0.8)! // TODO: Be able to set image quality
+                case .png: imageData = image.pngData()! // TODO: Better error handling here
+                case .jpeg: imageData = image.jpegData(compressionQuality: 0.8)! // TODO: Be able to set image quality
             }
 #else
             let bitmapRepresentation = NSBitmapImageRep(cgImage:cgImageFromBytes)
