@@ -155,8 +155,6 @@ filter --> pictureOutput
 
 ### Processing a still image ###
 
-(Not currently available on Linux.)
-
 There are a few different ways to approach filtering an image. The easiest are the convenience extensions to UIImage or NSImage that let you filter that image and return a UIImage or NSImage:
 
 ```swift
