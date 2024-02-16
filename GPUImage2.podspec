@@ -15,13 +15,12 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/takmorgaming/GPUImage2"
   
   s.license      = "BSD"
-
   s.author             =  { "Brad Larson": "contact@sunsetlakesoftware.com" }
  
   s.platform     = :ios, "8.0"
   s.ios.deployment_target = "8.0"
 
-  s.source       = { :git => "https://github.com/takmorgaming/GPUImage2.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://github.com/takmorgaming/GPUImage2.git", :branch => "master"}
 
   s.framework  = "GPUImage2"
   s.swift_version = '4.0'
