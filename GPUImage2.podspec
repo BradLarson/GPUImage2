@@ -26,18 +26,5 @@ Pod::Spec.new do |s|
   s.framework  = "GPUImage2"
   s.swift_version = '4.0'
   s.source_files = "framework/Source/**/*.{swift}"
-
-  s.ios: {
-    "exclude_files": [
-      "framework/Source/Mac",
-      "framework/Source/Operations/Shaders/ConvertedShaders_GL.swift"
-    ]
-  }
-  s.frameworks: [
-    "OpenGLES",
-    "CoreMedia",
-    "QuartzCore",
-    "AVFoundation"
-  ]
   
 end
