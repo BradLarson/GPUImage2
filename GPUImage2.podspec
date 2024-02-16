@@ -43,7 +43,6 @@ Pod::Spec.new do |s|
   s.ios: {
     "exclude_files": [
       "framework/Source/Mac",
-      "framework/Source/Linux",
       "framework/Source/Operations/Shaders/ConvertedShaders_GL.swift"
     ]
   }
