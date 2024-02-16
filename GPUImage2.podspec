@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "EVGPUImage2"
-  s.version      = "0.2.0"
+  s.version      = "0.2.1"
   s.summary      = "An open source iOS framework for GPU-based image and video processing."
 
   s.homepage     = "https://github.com/takmorgaming/GPUImage2"
