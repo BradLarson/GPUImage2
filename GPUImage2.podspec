@@ -28,7 +28,6 @@ Pod::Spec.new do |s|
 
   s.source_files = "framework/Source/**/*.{swift}"
 
-  s.resources: "framework/Source/Operations/Shaders/*.{fsh}"
   s.requires_arc: true
   s.xcconfig: {
     "CLANG_MODULES_AUTOLINK": "YES",
