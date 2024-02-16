@@ -28,7 +28,6 @@ Pod::Spec.new do |s|
 
   s.source_files = "framework/Source/**/*.{swift}"
 
-  s.requires_arc: true
   s.xcconfig: {
     "CLANG_MODULES_AUTOLINK": "YES",
     "OTHER_SWIFT_FLAGS": "$(inherited) -DGLES"
