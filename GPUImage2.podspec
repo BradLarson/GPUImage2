@@ -22,7 +22,6 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/takmorgaming/GPUImage2.git", :branch => "master"}
 
-  s.framework  = "GPUImage2"
   s.swift_version = '4.0'
   s.source_files = "framework/Source/**/*.{swift}"
   
